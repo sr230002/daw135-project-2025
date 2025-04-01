@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout 
+                disableAnsi="false"
+                pattern="%highlight{[%-5level]-[DAW135]-%d{${LOG_DATEFORMAT_PATTERN:-dd-MM-yyyy HH:mm:ss.SSS}}  %logger{36} %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green bold, DEBUG=black bold, TRACE=blue}"  
+            />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+        </Root>
+        <Logger name="com.daw135" level="INFO" additivity="false"/>
+        <Logger name="org.hibernate.orm" level="WARN" additivity="false"/>
+    </Loggers>
+</Configuration>

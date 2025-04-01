@@ -1,0 +1,46 @@
+:root {
+    --header-height: 56px;
+    --footer-height: 45px;
+    --sidebar-width: 14vw;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: var(--header-height);
+    flex-shrink: 0;
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #343a40;
+    color: white;
+    overflow-y: auto;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+footer {
+    height: var(--footer-height);
+    flex-shrink: 0;
+}
