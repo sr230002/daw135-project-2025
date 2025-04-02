@@ -49,11 +49,9 @@ create table sec.usuario(
     constraint sec_user_fk_sede foreign key (sede_id) references sec.sede(sede_id)
 );
 
-create table ema.tipo_evento(
-	tipo_evento_id bigserial primary key,
-	descripcion varchar(250) not null,
-	estado varchar(5) not null,
-	constraint ema_tipo_evento_fk_estado foreign key (estado) references sec.estado(estado)
+create table ema.evento_tipo(
+	evento_tipo_id bigserial primary key,
+	descripcion varchar(250) not null
 );
 
 create table ema.evento(
@@ -63,11 +61,11 @@ create table ema.evento(
 	titulo varchar(250) not null,
 	descripcion varchar(500) not null,
 	descripcion_corta varchar(250) ,
-	tipo_evento_id bigint not null,
+	evento_tipo_id bigint not null,
 	estado varchar(5) not null,
     sede_id bigint not null,
 	constraint ema_evento_fk_estado foreign key (estado) references sec.estado(estado),
-    constraint ema_evento_fk_tipo_evento foreign key (tipo_evento_id) references ema.tipo_evento(tipo_evento_id),
+    constraint ema_evento_fk_evento_tipo foreign key (evento_tipo_id) references ema.evento_tipo(evento_tipo_id),
     constraint ema_evento_fk_sede foreign key (sede_id) references sec.sede(sede_id)
 );
 

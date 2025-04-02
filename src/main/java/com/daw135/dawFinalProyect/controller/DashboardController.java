@@ -1,4 +1,4 @@
-package com.daw135.dawFinalProyect.controller.dashboard;
+package com.daw135.dawFinalProyect.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/dashboard")
 public class DashboardController {
 
-    @RequestMapping("/")
-    public String getView() {
+    @RequestMapping({"", "/"})
+    public String obtenerVistaDashboard() {
         return "pages/dashboard/dashboard";
     }
     
