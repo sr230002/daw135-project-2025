@@ -3,26 +3,106 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/document}">
 <head>
-    <title>Evento</title>
+    <title>Eventos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
     <div layout:fragment="content">
-        <div class="d-flex justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Listado de Eventos</h1>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="text-xs font-weight-bold text-primary mb-1">
-                            Eventos Activos
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 text-gray-800">Listado de Eventos</h1>
+                <a href="#" class="btn btn-primary">Crear Evento</a>
+            </div>
+
+            <!-- Resumen de eventos -->
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="card border-left-info shadow h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-info mb-1">
+                                Total de Eventos
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosTotales}">0</div>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card border-left-success shadow h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-success mb-1">
+                                Eventos Activos
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosActivos}">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card border-left-warning shadow h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-warning mb-1">
+                                Eventos Finalizados
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosFinalizados}">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card border-left-danger shadow h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-danger mb-1">
+                                Eventos Cancelados
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosCancelados}">0</div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Tabla de eventos -->
+            <div class="card shadow mt-4">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">Eventos Registrados</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Código</th>
+                                    <th>Título</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="evento, iterStat : ${listadoEventos}">
+                                    <td th:text="${iterStat.index + 1}">1</td>
+                                    <td th:text="${evento.codigo}">EVT001</td>
+                                    <td th:text="${evento.titulo}">Nombre del evento</td>
+                                    <td th:text="${evento.descripcion}">Descripción breve</td>
+                                    <td>
+                                        <span class="badge bg-success" th:if="${evento.estado == 'ACT'}">Activo</span>
+                                        <span class="badge bg-secondary" th:if="${evento.estado == 'INA'}">Inactivo</span>
+                                        <span class="badge bg-warning text-dark" th:if="${evento.estado == 'SUS'}">Suspendido</span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-info">Ver</a>
+                                        <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                                        <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(listadoEventos)}">
+                                    <td colspan="6" class="text-center">No hay eventos registrados.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>
-</html> 
+</html>
