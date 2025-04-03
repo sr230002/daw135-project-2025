@@ -37,7 +37,6 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public List<EventoDTO> findAll() {
         try {
-            logger.info("Obteniendo eventos");
             return eventoRepository.findAll().stream().map(EventoMapper.INSTANCE::toEventoDTO).toList();
         } catch (Exception e) {
             logger.error("Error al obtener eventos", e);
