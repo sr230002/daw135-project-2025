@@ -10,10 +10,9 @@
     </Appenders>
 
     <Loggers>
+        <Logger name="org.hibernate.orm" level="INFO" additivity="false"/>
         <Root level="INFO">
             <AppenderRef ref="Console" />
         </Root>
-        <Logger name="com.daw135" level="INFO" additivity="false"/>
-        <Logger name="org.hibernate.orm" level="WARN" additivity="false"/>
     </Loggers>
 </Configuration>
