@@ -84,8 +84,9 @@
                                     <td th:text="${evento.descripcion}">Descripción</td>
                                     <td th:text="${evento.estado}">NA</td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-info">Ver</a>
-                                        <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                                        <a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarEvento(${evento.eventoId})|">
+                                            Ver
+                                        </a>
                                         <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
                                     </td>
                                 </tr>

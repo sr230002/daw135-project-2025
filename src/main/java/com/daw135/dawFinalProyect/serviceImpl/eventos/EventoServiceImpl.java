@@ -46,11 +46,12 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public String guardarEvento(EventoDTO eventoDto) throws Exception {
-        Evento evento = EventoMapper.INSTANCE.toEvento(eventoDto);
+    public String guardarEvento(EventoDTO dto) throws Exception {
+        dto.setFechaCreacion(null);
+        Evento evento = EventoMapper.INSTANCE.toEvento(dto);
         Estado estado = new Estado(EstadoEnum.Activo.getCodigo());
-        Sede sede = sedeRepository.findById(eventoDto.getSedeId()).orElse(null);
-        EventoTipo tipo = eventoTipoRepository.findById(eventoDto.getTipoEventoId()).orElse(null);
+        Sede sede = sedeRepository.findById(dto.getSedeId()).orElse(null);
+        EventoTipo tipo = eventoTipoRepository.findById(dto.getTipoEventoId()).orElse(null);
 
         if (sede == null) {
             throw new Exception("Sede no encontrada");
@@ -67,5 +68,32 @@ public class EventoServiceImpl implements EventoService {
         eventoRepository.save(evento);
         return "Evento guardado con exito";
     }
+
+    @Override
+    public String editarEvento(EventoDTO dto) throws Exception {
+        Evento evento = EventoMapper.INSTANCE.toEvento(dto);
+        Sede sede = sedeRepository.findById(dto.getSedeId()).orElse(null);
+        EventoTipo tipo = eventoTipoRepository.findById(dto.getTipoEventoId()).orElse(null);
+        Estado estado = new Estado(dto.getEstadoId());
+
+        if (sede == null) {
+            throw new Exception("Sede no encontrada");
+        }
+        if (tipo == null) {
+            throw new Exception("Tipo de evento no encontrado");
+        }
+
+        evento.setSedeId(sede);
+        evento.setEventoTipoId(tipo);
+        evento.setEstado(estado);
+        eventoRepository.save(evento);
+        return "Evento editado con exito";
+    }
+
+    @Override
+    public EventoDTO obtenerPorId(Long id) {
+        return EventoMapper.INSTANCE.toEventoDTO(eventoRepository.findById(id).orElse(null));
+    }
+
 
 }

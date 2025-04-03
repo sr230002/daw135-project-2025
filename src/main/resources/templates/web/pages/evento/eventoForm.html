@@ -9,8 +9,19 @@
                 </div>
                 <form id="eventoForm" th:action="@{/eventos/guardar}" th:object="${evento}" method="post">
                     <input type="hidden" id="eventoId" name="eventoId" th:value="*{eventoId}">
+                    <input type="hidden" id="estadoId" name="estadoId" th:value="*{estadoId}">
+                    <input type="hidden" id="fechaCreacion" name="fechaCreacion" th:value="*{fechaCreacion}">
+
 
                     <div class="modal-body overflow-auto" style="max-height: calc(70vh - 120px);">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="codigo" class="form-label">Codigo Evento</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" th:value="*{codigo}" required>
+                            </div>
+                        </div>
+
                         <!-- Sección Información Básica -->
                         <div class="row mb-3">
                             <div class="col-md-6">

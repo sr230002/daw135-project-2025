@@ -5,12 +5,15 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.daw135.dawFinalProyect.dto.admin.SedeDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
@@ -48,13 +51,12 @@ public class EventoController {
         long eventosCancelados = eventos.stream()
                 .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Cancelado.getCodigo()))).count();
 
-
         model.addAttribute("listadoEventos", eventos);
         model.addAttribute("eventosTotales", eventos.size());
         model.addAttribute("eventosActivos", eventosActivos);
         model.addAttribute("eventosFinalizados", eventosFinalizados);
         model.addAttribute("eventosCancelados", eventosCancelados);
-        model.addAttribute("evento", new EventoDTO()); 
+        model.addAttribute("evento", new EventoDTO());
         model.addAttribute("listTiposEventos", listTiposEvento);
         model.addAttribute("listSedes", listSedes);
 
@@ -69,6 +71,23 @@ public class EventoController {
             logger.error("Error al guardar evento", e);
         }
         return "redirect:/eventos";
+    }
+
+    @PostMapping("/editar")
+    public String editarEvento(@ModelAttribute("evento") EventoDTO eventoDto) {
+        try {
+            eventoService.editarEvento(eventoDto);
+        } catch (Exception e) {
+            logger.error("Error al editar evento", e);
+        }
+        return "redirect:/eventos";
+    }
+
+    @GetMapping("/ver/{id}")
+    @ResponseBody
+    public ResponseEntity<EventoDTO> obtenerEvento(@PathVariable Long id) {
+        EventoDTO evento = eventoService.obtenerPorId(id);
+        return ResponseEntity.ok(evento);
     }
 
 }
