@@ -16,15 +16,23 @@ import com.daw135.dawFinalProyect.entity.eventos.Evento;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
+import com.daw135.dawFinalProyect.repository.admin.SedeRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRepository;
+import com.daw135.dawFinalProyect.repository.eventos.TipoEventoRepository;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 
 @Service
-public class EventoServiceImpl implements EventoService{
+public class EventoServiceImpl implements EventoService {
     private static final Logger logger = LogManager.getLogger(EventoServiceImpl.class);
-    
+
     @Autowired
     private EventoRepository eventoRepository;
+
+    @Autowired
+    private TipoEventoRepository eventoTipoRepository;
+
+    @Autowired
+    private SedeRepository sedeRepository;
 
     @Override
     public List<EventoDTO> findAll() {
@@ -38,24 +46,26 @@ public class EventoServiceImpl implements EventoService{
     }
 
     @Override
-    public String guardarEvento(EventoDTO eventoDto) {
-        try {
-            Evento evento = EventoMapper.INSTANCE.toEvento(eventoDto);
-            Estado estado = new Estado(EstadoEnum.Activo.getCodigo());
-            Sede sede = new Sede(eventoDto.getSedeId());
-            EventoTipo tipo = new EventoTipo(eventoDto.getTipoEventoId());
+    public String guardarEvento(EventoDTO eventoDto) throws Exception {
+        Evento evento = EventoMapper.INSTANCE.toEvento(eventoDto);
+        Estado estado = new Estado(EstadoEnum.Activo.getCodigo());
+        Sede sede = sedeRepository.findById(eventoDto.getSedeId()).orElse(null);
+        EventoTipo tipo = eventoTipoRepository.findById(eventoDto.getTipoEventoId()).orElse(null);
 
-            evento.setEstado(estado);
-            evento.setSedeId(sede);
-            evento.setEventoTipoId(tipo);
-            evento.setFechaCreacion(new Date());
-            evento.setCodigo("SV-EVENTO-01");
-            eventoRepository.save(evento);
-            return "Evento guardado con exito";
-        } catch (Exception e) {
-            logger.error("Error al guardar evento", e);
-            return "Error al guardar evento";
+        if (sede == null) {
+            throw new Exception("Sede no encontrada");
         }
+        if (tipo == null) {
+            throw new Exception("Tipo de evento no encontrado");
+        }
+
+        evento.setEstado(estado);
+        evento.setSedeId(sede);
+        evento.setEventoTipoId(tipo);
+        evento.setFechaCreacion(new Date());
+        evento.setCodigo("SV-EVENTO-01");
+        eventoRepository.save(evento);
+        return "Evento guardado con exito";
     }
 
 }

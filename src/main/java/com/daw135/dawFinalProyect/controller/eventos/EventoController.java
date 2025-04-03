@@ -2,6 +2,8 @@ package com.daw135.dawFinalProyect.controller.eventos;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ import com.daw135.dawFinalProyect.service.eventos.TipoEventoService;
 @Controller
 @RequestMapping("/eventos")
 public class EventoController {
+
+    private static final Logger logger = LogManager.getLogger(EventoController.class);
 
     @Autowired
     private EventoService eventoService;
@@ -59,7 +63,11 @@ public class EventoController {
 
     @PostMapping("/guardar")
     public String guardarEvento(@ModelAttribute("evento") EventoDTO eventoDto) {
-        eventoService.guardarEvento(eventoDto);
+        try {
+            eventoService.guardarEvento(eventoDto);
+        } catch (Exception e) {
+            logger.error("Error al guardar evento", e);
+        }
         return "redirect:/eventos";
     }
 

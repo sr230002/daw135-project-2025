@@ -8,7 +8,7 @@ public interface EventoService {
 
     List<EventoDTO> findAll();
 
-    String guardarEvento(EventoDTO eventoDto);
+    String guardarEvento(EventoDTO eventoDto) throws Exception ;
      
 
 }
