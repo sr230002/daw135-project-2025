@@ -1,14 +1,20 @@
 package com.daw135.dawFinalProyect.entity.admin;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import com.daw135.dawFinalProyect.entity.eventos.Evento;
 
 import groovy.transform.ToString;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "EMA.EVENTO_PROGRAMACION")
+@Table(schema = "ema", name = "evento_programacion")
 @Getter
 @Setter
 @ToString
@@ -30,11 +36,11 @@ public class EventoProgramacion {
     @Column(name = "evento_programacion_id")
     private Long eventoProgramacionId;
 
-    @Column(name = "fecha_creacion", nullable = false)
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
     @Column(name = "fecha_programacion", nullable = false)
-    private LocalDateTime fechaProgramacion;
+    private LocalDate fechaProgramacion;
 
     @Column(name = "hora_inicio", nullable = false)
     private LocalTime horaInicio;
@@ -42,20 +48,25 @@ public class EventoProgramacion {
     @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
-    @Column(nullable = false)
+    @Column(name = "virtual", nullable = false)
     private Boolean virtual;
 
-    @Column(nullable = false)
+    @Column(name = "cupos")
     private Integer cupos;
 
+    @Column(name = "lugar", length = 250)
     private String lugar;
+
+    @Column(name = "enlace", length = 250)
     private String enlace;
 
-    @Column(name = "eventos_id")
-    private Long eventosId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evento_id", referencedColumnName = "evento_id")
+    private Evento eventosId;
 
-    @Column(name = "ponente_id")
-    private Long ponenteId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ponente_id", referencedColumnName = "usuario_id")
+    private Usuario ponenteId;
 
     
 }
