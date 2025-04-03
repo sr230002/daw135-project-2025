@@ -95,5 +95,15 @@ public class EventoServiceImpl implements EventoService {
         return EventoMapper.INSTANCE.toEventoDTO(eventoRepository.findById(id).orElse(null));
     }
 
+    @Override
+    public String eliminarEvento(Long id) {
+        Evento evento = eventoRepository.findById(id).orElse(null);
+        if (evento == null) {
+            return "No se encontro el evento";
+        }
+        eventoRepository.delete(evento);
+        return "Evento eliminado con exito";
+    }
+
 
 }

@@ -10,6 +10,6 @@ public interface EventoService {
     String guardarEvento(EventoDTO eventoDto) throws Exception ;
     String editarEvento(EventoDTO eventoDto) throws Exception ;
     EventoDTO obtenerPorId(Long id);
-     
+    String eliminarEvento(Long id);
 
 }

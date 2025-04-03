@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw135.dawFinalProyect.dto.admin.SedeDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
@@ -88,6 +89,13 @@ public class EventoController {
     public ResponseEntity<EventoDTO> obtenerEvento(@PathVariable Long id) {
         EventoDTO evento = eventoService.obtenerPorId(id);
         return ResponseEntity.ok(evento);
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarEvento(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String mensaje = eventoService.eliminarEvento(id);
+        redirectAttributes.addFlashAttribute("msj", mensaje);
+        return "redirect:/eventos";
     }
 
 }
