@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.daw135.dawFinalProyect.entity.eventos.Evento;
+import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 
@@ -21,13 +21,13 @@ public class EventoController {
 
     @GetMapping({ "", "/" })
     public String obtenerVistaEvento(Model model) {
-        List<Evento> eventos = eventoService.findAll();
+        List<EventoDTO> eventos = eventoService.findAll();
         long eventosActivos = eventos.stream()
-                .filter(e -> (e.getEstado().getEstado().contentEquals(EstadoEnum.Activo.getCodigo()))).count();
+                .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Activo.getCodigo()))).count();
         Long eventosFinalizados = eventos.stream()
-                .filter(e -> (e.getEstado().getEstado().contentEquals(EstadoEnum.Finalizado.getCodigo()))).count();
+                .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Finalizado.getCodigo()))).count();
         long eventosCancelados = eventos.stream()
-                .filter(e -> (e.getEstado().getEstado().contentEquals(EstadoEnum.Cancelado.getCodigo()))).count();
+                .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Cancelado.getCodigo()))).count();
         model.addAttribute("listadoEventos", eventos);
         model.addAttribute("eventosTotales", eventos.size());
         model.addAttribute("eventosActivos", eventosActivos);

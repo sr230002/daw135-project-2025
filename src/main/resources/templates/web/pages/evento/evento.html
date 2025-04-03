@@ -79,14 +79,10 @@
                             <tbody>
                                 <tr th:each="evento, iterStat : ${listadoEventos}">
                                     <td th:text="${iterStat.index + 1}">1</td>
-                                    <td th:text="${evento.codigo}">EVT001</td>
-                                    <td th:text="${evento.titulo}">Nombre del evento</td>
-                                    <td th:text="${evento.descripcion}">Descripción breve</td>
-                                    <td>
-                                        <span class="badge bg-success" th:if="${evento.estado == 'ACT'}">Activo</span>
-                                        <span class="badge bg-secondary" th:if="${evento.estado == 'INA'}">Inactivo</span>
-                                        <span class="badge bg-warning text-dark" th:if="${evento.estado == 'SUS'}">Suspendido</span>
-                                    </td>
+                                    <td th:text="${evento.codigo}">0</td>
+                                    <td th:text="${evento.titulo}">Nombre</td>
+                                    <td th:text="${evento.descripcion}">Descripción</td>
+                                    <td th:text="${evento.estado}">NA</td>
                                     <td>
                                         <a href="#" class="btn btn-sm btn-info">Ver</a>
                                         <a href="#" class="btn btn-sm btn-warning">Editar</a>

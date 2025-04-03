@@ -2,10 +2,10 @@ package com.daw135.dawFinalProyect.service.eventos;
 
 import java.util.List;
 
-import com.daw135.dawFinalProyect.entity.eventos.Evento;
+import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 
 public interface EventoService {
 
-    List<Evento> findAll(); 
+    List<EventoDTO> findAll(); 
 
 }
