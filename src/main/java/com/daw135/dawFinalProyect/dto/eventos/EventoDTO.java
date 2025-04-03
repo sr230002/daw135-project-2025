@@ -17,10 +17,10 @@ public class EventoDTO {
     private String titulo;
     private String descripcion;
     private String descripcionCorta;
-    private String tipoEventoId;
+    private Long tipoEventoId;
     private String tipoEvento;
     private String estadoId;
     private String estado;
-    private String sedeId;
+    private Long sedeId;
     private String sedeNombre;
 }

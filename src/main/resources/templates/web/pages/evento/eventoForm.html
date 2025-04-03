@@ -18,15 +18,15 @@
                                 <select class="form-select" id="tipoEventoId" name="tipoEventoId"
                                     th:value="*{tipoEventoId}" required>
                                     <option value="">Seleccione un tipo</option>
-                                    <option th:each="tipo : ${listTiposEventos}" th:value="${tipo.id}"
-                                        th:text="${tipo.nombre}"></option>
+                                    <option th:each="tipo : ${listTiposEventos}" th:value="${tipo.tipoEventoId}"
+                                        th:text="${tipo.descripcion}"></option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="sedeId" class="form-label">Sede</label>
                                 <select class="form-select" id="sedeId" name="sedeId" th:value="*{sedeId}" required>
                                     <option value="">Seleccione una Sede</option>
-                                    <option th:each="sede : ${listaSedes}" th:value="${sede.id}"
+                                    <option th:each="sede : ${listSedes}" th:value="${sede.sedeId}"
                                         th:text="${sede.nombre}"></option>
                                 </select>
                             </div>
