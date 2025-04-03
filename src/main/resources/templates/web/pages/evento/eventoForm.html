@@ -1,0 +1,66 @@
+<div th:fragment="formulario">
+    <div class="modal fade" id="eventoModal" tabindex="-1" aria-labelledby="eventoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="height: 70vh;">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="eventoModalLabel">Completa los datos de tu reservación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form id="eventoForm" th:action="@{/eventos/guardar}" th:object="${evento}" method="post">
+                    <input type="hidden" id="eventoId" name="eventoId" th:value="*{eventoId}">
+
+                    <div class="modal-body overflow-auto" style="max-height: calc(70vh - 120px);">
+                        <!-- Sección Información Básica -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tipoEventoId" class="form-label">Tipo de Evento</label>
+                                <select class="form-select" id="tipoEventoId" name="tipoEventoId"
+                                    th:value="*{tipoEventoId}" required>
+                                    <option value="">Seleccione un tipo</option>
+                                    <option th:each="tipo : ${listTiposEventos}" th:value="${tipo.id}"
+                                        th:text="${tipo.nombre}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="sedeId" class="form-label">Sede</label>
+                                <select class="form-select" id="sedeId" name="sedeId" th:value="*{sedeId}" required>
+                                    <option value="">Seleccione una Sede</option>
+                                    <option th:each="sede : ${listaSedes}" th:value="${sede.id}"
+                                        th:text="${sede.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Sección Detalles del Evento -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="titulo" class="form-label">Título del Evento</label>
+                                <input type="text" class="form-control" id="titulo" name="titulo" th:value="*{titulo}"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="descripcionCorta" class="form-label">Descripción Corta</label>
+                                <input type="text" class="form-control" id="descripcionCorta" name="descripcionCorta"
+                                    th:value="*{descripcionCorta}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3"
+                                    th:text="*{descripcion}" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
