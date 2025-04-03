@@ -25,4 +25,8 @@ public class Estado {
     @Column(name = "descripcion", nullable = false, length = 200)
     private String descripcion;
 
+    public Estado(String estado) {
+        this.estado = estado;
+    }
+
 }

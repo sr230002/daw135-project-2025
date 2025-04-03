@@ -26,4 +26,8 @@ public class EventoTipo {
     private Long eventoTipoId;
     @Column(name = "descripcion", nullable = false, length = 250)
     private String descripcion;
+
+    public EventoTipo(Long eventoTipoId) {
+        this.eventoTipoId = eventoTipoId;
+    }
 }

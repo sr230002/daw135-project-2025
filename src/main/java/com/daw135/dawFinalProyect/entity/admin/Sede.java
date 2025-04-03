@@ -42,4 +42,8 @@ public class Sede {
     @JoinColumn(name = "institucion_id", referencedColumnName = "institucion_id")
     private Institucion institucion;
 
+    public Sede(Long sedeId) {
+        this.sedeId = sedeId;
+    }
+
 }
