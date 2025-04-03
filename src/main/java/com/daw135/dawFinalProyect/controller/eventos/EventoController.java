@@ -46,11 +46,11 @@ public class EventoController {
         List<SedeDTO> listSedes = sedeService.findAll();
 
         long eventosActivos = eventos.stream()
-                .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Activo.getCodigo()))).count();
+                .filter(e -> (e.getEstadoId().contentEquals(EstadoEnum.Activo.getCodigo()))).count();
         Long eventosFinalizados = eventos.stream()
-                .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Finalizado.getCodigo()))).count();
+                .filter(e -> (e.getEstadoId().contentEquals(EstadoEnum.Finalizado.getCodigo()))).count();
         long eventosCancelados = eventos.stream()
-                .filter(e -> (e.getEstado().contentEquals(EstadoEnum.Cancelado.getCodigo()))).count();
+                .filter(e -> (e.getEstadoId().contentEquals(EstadoEnum.Cancelado.getCodigo()))).count();
 
         model.addAttribute("listadoEventos", eventos);
         model.addAttribute("eventosTotales", eventos.size());
