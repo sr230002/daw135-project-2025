@@ -108,3 +108,73 @@ create table ema.encuesta(
     constraint ema_encuesta_fk_evento_programacion foreign key (evento_programacion_id) references ema.evento_programacion(evento_programacion_id)
 );
 
+
+/******************************************************************************
+Cargando Datos Inciales
+******************************************************************************/
+
+-- Insertando en la tabla sec.estado
+INSERT INTO sec.estado (estado, descripcion) VALUES
+('ACT', 'Activo'),
+('FIN', 'Finalizado'),
+('INA', 'Inactivo'),
+('SUS', 'Suspendido'),
+('CNC', 'Cancelado');
+
+-- Insertando en la tabla sec.institucion
+INSERT INTO sec.institucion (codigo, nombre) VALUES
+('SVINST001', 'Universidad Nacional De El Salvador'),
+('SVINST002', 'Universidad Tecnológica De El Salvador');
+
+-- Insertando en la tabla sec.sede
+INSERT INTO sec.sede (codigo, nombre, direccion, telefono, email, institucion_id) VALUES
+('SVSD001', 'Sede Central', 'Av. Principal #123', '2222-3333', 'central@uni.edu', 1),
+('SVSD002', 'Sede Norte', 'Calle Secundaria #456', '2333-4444', 'norte@uni.edu', 1),
+('SVSD003', 'Sede Este', 'Blvd. Tecnológico #789', '2444-5555', 'este@tec.edu', 2);
+
+-- Insertando en la tabla ema.evento_tipo
+INSERT INTO ema.evento_tipo (descripcion) VALUES
+('Conferencia'),
+('Seminario'),
+('Taller');
+
+-- Insertando en la tabla ema.evento
+/*
+INSERT INTO ema.evento (codigo, titulo, descripcion, descripcion_corta, evento_tipo_id, estado, sede_id) VALUES
+('EVT001', 'Innovación Tecnológica', 'Evento sobre las últimas tendencias en tecnología.', 'Tendencias Tech', 1, 'ACT', 1),
+('EVT002', 'Gestión de Proyectos', 'Seminario sobre metodologías ágiles y tradicionales.', 'Proyectos Ágiles', 2, 'ACT', 2),
+('EVT003', 'Desarrollo Web Moderno', 'Taller práctico sobre frameworks de desarrollo.', 'Frameworks Web', 3, 'INA', 3);
+*/
+
+-- Insertando en la tabla sec.rol
+insert into sec.rol(codigo , descripcion , estado ) values
+('ADM', 'Admin', 'ACT'),
+('PNT', 'Ponente', 'ACT'),
+('PTP', 'Participante', 'ACT')
+;
+
+-- Insertando en la tabla sec.usuario
+INSERT INTO sec.usuario (nombre, correo, clave, estado, rol_id, sede_id) VALUES
+('Juan Pérez', 'juan.perez@email.com', 'clave_encriptada_1', 'ACT', 3, 1),
+('María López', 'maria.lopez@email.com', 'clave_encriptada_2', 'ACT', 3, 1),
+('Carlos Gómez', 'carlos.gomez@email.com', 'clave_encriptada_3', 'ACT', 3, 1),
+('Ana Ramírez', 'ana.ramirez@email.com', 'clave_encriptada_4', 'ACT', 3, 1),
+('Pedro Castillo', 'pedro.castillo@email.com', 'clave_encriptada_5', 'ACT', 3, 1),
+('Laura Méndez', 'laura.mendez@email.com', 'clave_encriptada_6', 'ACT', 3, 1),
+('Luis Fernández', 'luis.fernandez@email.com', 'clave_encriptada_7', 'ACT', 3, 1);
+
+-- Insertando en la tabla ema.evento_programacion
+/*
+INSERT INTO ema.evento_programacion (fecha_programacion, hora_inicio, hora_fin, virtual, cupos, lugar, enlace, evento_id, ponente_id) VALUES
+('2024-04-10', '10:00:00', '12:00:00', TRUE, 50, NULL, 'https://zoom.us/evento1', 3, 1),
+('2024-04-11', '14:00:00', '16:00:00', FALSE, 30, 'Sala 101', NULL, 3, 1),
+('2024-04-12', '09:00:00', '11:00:00', TRUE, 100, NULL, 'https://meet.google.com/evento2', 3, 1),
+('2024-04-13', '13:00:00', '15:00:00', FALSE, 40, 'Auditorio Principal', NULL, 3, 1),
+('2024-04-14', '08:00:00', '10:00:00', TRUE, 80, NULL, 'https://zoom.us/evento3', 3, 1),
+('2024-04-15', '17:00:00', '19:00:00', FALSE, 25, 'Sala 202', NULL, 3, 1),
+('2024-04-16', '11:00:00', '13:00:00', TRUE, 70, NULL, 'https://meet.google.com/evento4', 3, 1),
+('2024-04-17', '15:00:00', '17:00:00', FALSE, 35, 'Sala de Conferencias', NULL, 3, 1),
+('2024-04-18', '09:30:00', '11:30:00', TRUE, 90, NULL, 'https://zoom.us/evento5', 3, 1),
+('2024-04-19', '14:30:00', '16:30:00', FALSE, 20, 'Biblioteca', NULL, 3, 1);
+*/
+

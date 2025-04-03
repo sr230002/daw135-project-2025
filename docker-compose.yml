@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  daw135_parcial_app:
+    container_name: daw135_parcial_app
+    image: daw135_parcial_app_image:1.0
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://daw135_parcial_db:5432/daw-135-final-project
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - PORT=8080
+    depends_on:
+      - daw135_parcial_db
+
+  daw135_parcial_db:
+    container_name: daw135_parcial_db
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: daw-135-final-project
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
