@@ -14,6 +14,8 @@ public class EventoDTO {
     private Long eventoId;
     private String codigo;
     private String fechaCreacion;
+    private String fechaInicio;
+    private String fechaFin;
     private String titulo;
     private String descripcion;
     private String descripcionCorta;

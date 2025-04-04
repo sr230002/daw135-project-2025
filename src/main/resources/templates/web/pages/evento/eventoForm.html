@@ -43,6 +43,19 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="fechaInicio" class="form-label">Tipo de Evento</label>
+                                <input type="date" class="form-control" id="fechaInicio" name="fechaInicio"
+                                    th:value="*{fechaInicio}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaFin" class="form-label">Tipo de Evento</label>
+                                <input type="date" class="form-control" id="fechaFin" name="fechaFin"
+                                    th:value="*{fechaFin}" required>
+                            </div>
+                        </div>
+
                         <!-- Sección Detalles del Evento -->
                         <div class="row mb-3">
                             <div class="col-md-6">

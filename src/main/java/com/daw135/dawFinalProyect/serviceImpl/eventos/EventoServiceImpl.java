@@ -63,7 +63,6 @@ public class EventoServiceImpl implements EventoService {
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);
         evento.setFechaCreacion(new Date());
-        evento.setCodigo("SV-EVENTO-01");
         eventoRepository.save(evento);
         return "Evento guardado con exito";
     }

@@ -40,6 +40,12 @@ public class Evento {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_creacion", nullable = false)
     private Date fechaCreacion;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_inicio", nullable = false)
+    private Date fechaInicio;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_fin", nullable = false)
+    private Date fechaFin;
     @Column(name = "titulo", nullable = false, length = 250)
     private String titulo;
     @Column(name = "descripcion", nullable = false, length = 500)

@@ -15,6 +15,8 @@ function cargarEvento(eventoId) {
             document.getElementById("eventoId").value = evento.eventoId;
             document.getElementById("codigo").value = evento.codigo;
             document.getElementById("fechaCreacion").value = evento.fechaCreacion;
+            document.getElementById("fechaInicio").value = evento.fechaInicio;
+            document.getElementById("fechaFin").value = evento.fechaFin;
             document.getElementById("titulo").value = evento.titulo;
             document.getElementById("descripcion").value = evento.descripcion;
             document.getElementById("descripcionCorta").value = evento.descripcionCorta;
