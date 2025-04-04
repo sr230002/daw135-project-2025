@@ -68,22 +68,26 @@
                         <table class="table table-bordered table-hover">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Código</th>
-                                    <th>Título</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Código</th>
+                                    <th class="text-center">Titulo</th>
+                                    <th class="text-center">Descripción</th>
+                                    <th class="text-center">Inicio</th>
+                                    <th class="text-center">Fin</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="evento, iterStat : ${listadoEventos}">
                                     <td th:text="${iterStat.index + 1}">1</td>
-                                    <td th:text="${evento.codigo}">0</td>
-                                    <td th:text="${evento.titulo}">Nombre</td>
-                                    <td th:text="${evento.descripcion}">Descripción</td>
-                                    <td th:text="${evento.estado}">NA</td>
-                                    <td>
+                                    <td class="text-center" th:text="${evento.codigo}">0</td>
+                                    <td class="text-center" th:text="${evento.titulo}">Nombre</td>
+                                    <td class="text-center" th:text="${evento.descripcionCorta}">Descripción corta</td>
+                                    <td class="text-center" th:text="${evento.fechaInicio}">Inicio</td>
+                                    <td class="text-center" th:text="${evento.fechaFin}">Fin</td>
+                                    <td class="text-center" th:text="${evento.estado}">NA</td>
+                                    <td class="text-center">
                                         <a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarEvento(${evento.eventoId})|">
                                             Ver
                                         </a>
