@@ -11,7 +11,7 @@
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 text-gray-800">Listado de Participantes</h1>
-                <button class="btn btn-primary" onclick="mostrarFormulario()">Nuevo participante</button>
+                <button class="btn btn-primary" onclick="mostrarFormulario()">Registrar participante</button>
             </div>
 
             <!-- Tabla de participantes -->
@@ -25,11 +25,11 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th class="text-center">Nombre del participante</th>
-                                    <th class="text-center">Fecha de inscripción</th>
-                                    <th class="text-center">Fecha del evento</th>
+                                    <th class="text-center">Participante</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Hora Inicio</th>
+                                    <th class="text-center">Hora Fin</th>
                                     <th class="text-center">Evento</th>
-                                    <th class="text-center">Descripción</th>
                                     <th class="text-center">Estado de inscripción</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
@@ -38,16 +38,16 @@
                                 <tr th:each="registro, iterStat : ${listadoRegistros}">
                                     <td th:text="${iterStat.index + 1}">1</td>
                                     <td class="text-center" th:text="${registro.nombreParticipante}">0</td>
-                                    <td class="text-center" th:text="${registro.fechaCreacion}">Fecha1</td>
-                                    <td class="text-center" th:text="${registro.fechaCreacion}">Fecha2</td>
+                                    <td class="text-center" th:text="${registro.fechaProgramacion}">fecha</td>
+                                    <td class="text-center" th:text="${registro.horaInicio}">00:00</td>
+                                    <td class="text-center" th:text="${registro.horaFin}">00:00</td>
                                     <td class="text-center" th:text="${registro.tituloEvento}">Titulo</td>
-                                    <td class="text-center" th:text="${registro.descripcionEvento}">Descripción</td>
                                     <td class="text-center" th:text="${registro.estado}">Estado</td>
                                     <td class="text-center">
-                                        <!--<a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarEvento(${evento.eventoId})|">
+                                        <a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarParticipante(${registro.eventoRegistroId})|">
                                             Ver
                                         </a>
-                                        <a th:href="|eventos/eliminar/${evento.eventoId}|" class="btn btn-sm btn-danger">Eliminar</a>-->
+                                        <a th:href="|registros/eliminar/${registro.eventoRegistroId}|" class="btn btn-sm btn-danger">Eliminar</a>
                                     </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(listadoRegistros)}">

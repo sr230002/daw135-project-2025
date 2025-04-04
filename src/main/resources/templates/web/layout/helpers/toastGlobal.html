@@ -1,0 +1,14 @@
+<div th:fragment="toastGlobal">
+    <div id="toastContainer" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1085">
+        <div id="miToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMensaje">
+                    ¡Operación realizada con éxito!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+</div>

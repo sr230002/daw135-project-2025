@@ -7,8 +7,8 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <form id="participanteForm" th:action="@{/participantes/guardar}" th:object="${participante}" method="post">
-                    <input type="hidden" id="eventoRegistroId" name="eventoRegistroId" th:value="*{eventoRegistroId}">
+                <form id="participanteForm" th:action="@{/registros/guardar}" th:object="${participante}" method="post">
+                    <input type="hidden" id="eventoRegistroId" name="eventoRegistroId">
 
                     <div class="modal-body overflow-auto" style="max-height: calc(70vh - 120px);">
 
@@ -18,7 +18,7 @@
                                 <label for="participanteId" class="form-label">Participante</label>
                                 <select class="form-select" id="participanteId" name="participanteId"
                                     th:value="*{participanteId}" required>
-                                    <option value="">Seleccione el participante que desea registrar: </option>
+                                    <option value="">Seleccione el participante</option>
                                     <option th:each="user : ${listadoParticipantes}" th:value="${user.usuarioId}"
                                         th:text="${user.nombre}"></option>
                                 </select>
@@ -28,7 +28,7 @@
                             <div class="col-md-6">
                                 <label for="eventoId" class="form-label">Evento</label>
                                 <select class="form-select" id="eventoId" name="eventoId"
-                                    th:value="*{eventoId}" required>
+                                    th:value="*{eventoId}" onchange="cargarSesionesPorEvento(this.value)" required>
                                     <option value="">Seleccione un evento: </option>
                                     <option th:each="event : ${listadoEventos}" th:value="${event.eventoId}"
                                         th:text="${event.titulo}"></option>
@@ -36,12 +36,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="sesionId" class="form-label">Sesión</label>
-                                <select class="form-select" id="sesionId" name="sesionId"
-                                    th:value="*{sesionId}" required>
-                                    <option value="">Seleccione una sesión: </option>
-                                    <option th:each="sesion : ${listadoSesiones}" th:value="${sesion.eventoId}"
-                                        th:text="${sesion.fechaProgramacion}"></option>
-                                </select>
+                                <select class="form-select" id="sesionId" name="sesionId" required disabled> </select>
                             </div>
                         </div>
                     </div>

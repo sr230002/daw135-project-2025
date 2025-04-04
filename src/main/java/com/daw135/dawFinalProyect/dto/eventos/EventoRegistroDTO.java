@@ -23,6 +23,7 @@ public class EventoRegistroDTO {
     private String estadoId;
     private String estado;
 
+    private String fechaProgramacion;
     private String horaInicio;
     private String horaFin;
     private Boolean virtual;
