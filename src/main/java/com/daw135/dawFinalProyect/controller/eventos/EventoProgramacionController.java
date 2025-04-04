@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,21 +14,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.service.eventos.EventoProgramacionService;
 
-@RestController
+@Controller
 @RequestMapping("/sesiones")
 public class EventoProgramacionController {
 
     @Autowired
     private EventoProgramacionService eventoProgramacionService;
 
-    @GetMapping
-    public List<EventoProgramacionDTO> listarTodos() {
-        return eventoProgramacionService.listarTodos();
+    @GetMapping({ "", "/" })
+    public String obtenerVistaEvento(Model model) {
+        return "pages/sesion/sesion";
     }
 
     @PostMapping
