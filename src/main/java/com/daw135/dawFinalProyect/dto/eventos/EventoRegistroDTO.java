@@ -16,7 +16,18 @@ public class EventoRegistroDTO {
     private Long eventoRegistroId;
     private String fechaCreacion;
     private Long sesionId;
+    
     private Long participanteId;
+    private String nombreParticipante;
+
+    private String estadoId;
     private String estado;
+
+    private String horaInicio;
+    private String horaFin;
+    private Boolean virtual;
+    private String tituloEvento;
+    private String descripcionEvento;
+    private String descripcionCortaEvento;
 
 }

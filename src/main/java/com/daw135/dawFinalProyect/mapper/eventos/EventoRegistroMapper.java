@@ -16,7 +16,15 @@ public interface EventoRegistroMapper {
     @Mapping(target = "fechaCreacion", source = "fechaCreacion")
     @Mapping(target = "sesionId", source = "sesion.eventoProgramacionId")
     @Mapping(target = "participanteId", source = "participanteId.usuarioId")
-    @Mapping(target = "estado", source = "estado.estado")
+    @Mapping(target = "estadoId", source = "estado.estado")
+    @Mapping(target = "estado", source = "estado.descripcion")
+    @Mapping(target = "nombreParticipante", source = "participanteId.nombre")
+    @Mapping(target = "horaInicio", source = "sesion.horaInicio")
+    @Mapping(target = "horaFin", source = "sesion.horaFin")
+    @Mapping(target = "virtual", source = "sesion.virtual")
+    @Mapping(target = "tituloEvento", source = "sesion.evento.titulo")
+    @Mapping(target = "descripcionEvento", source = "sesion.evento.descripcion")
+    @Mapping(target = "descripcionCortaEvento", source = "sesion.evento.descripcionCorta")
     EventoRegistroDTO toEventoRegistroDTO(EventoRegistro eventoRegistro);
 
 
