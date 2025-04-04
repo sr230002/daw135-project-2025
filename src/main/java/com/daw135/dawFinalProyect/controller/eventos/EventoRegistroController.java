@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
 import com.daw135.dawFinalProyect.service.admin.UsuarioService;
@@ -75,6 +76,13 @@ public class EventoRegistroController {
         } catch (Exception e) {
             logger.error("Error al editar evento", e);
         }
+        return "redirect:/registros";
+    }
+
+    @GetMapping("/eliminar/{registroId}")
+    public String eliminarEvento(@PathVariable Long registroId, RedirectAttributes redirectAttributes) {
+        String mensaje = service.eliminarInscripcion(registroId);
+        redirectAttributes.addFlashAttribute("msj", mensaje);
         return "redirect:/registros";
     }
 

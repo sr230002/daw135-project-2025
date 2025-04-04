@@ -81,9 +81,13 @@ public class EventoRegistroServiceImpl implements EventoRegistroService {
     }
 
     @Override
-    public String eliminarInsCripcion(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarInsCripcion'");
+    public String eliminarInscripcion(Long id) {
+        EventoRegistro eventoRegistro = eventoRegistroRepository.findById(id).orElse(null);
+        if (eventoRegistro == null) {
+            return "No se encontro el evento";
+        }
+        eventoRegistroRepository.delete(eventoRegistro);
+        return "Evento eliminado con exito";
     }
 
 }
