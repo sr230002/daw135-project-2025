@@ -52,6 +52,7 @@ function cargarSesionesPorEvento(eventoId) {
                     combo.appendChild(new Option(sesion.descripcion, sesion.eventoProgramacionId));
                 });
             }
+            resolve();
         });
     });
 }
