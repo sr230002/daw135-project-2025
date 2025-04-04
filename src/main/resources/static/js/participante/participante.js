@@ -1,4 +1,5 @@
 let participanteModal;
+let listaDeSesiones = [];
 
 function mostrarFormulario() {
     document.getElementById('participanteForm').reset();
@@ -27,39 +28,56 @@ function cargarParticipante(registroId) {
 }
 
 function cargarSesionesPorEvento(eventoId) {
-    return new Promise((resolve, reject) => { 
+    let combo = document.getElementById('sesionId');
+    combo.innerHTML = '<option value="">Cargando...</option>';
+    return new Promise((resolve) => { 
         if(eventoId === '') { 
             resolve();
             return; 
         }
         fetch(`sesiones/sesionesPorEventoCmb/${eventoId}`)
-            .then(response => response.json())
-            .then(sesiones => {
-                let combo = document.getElementById('sesionId');
-                combo.required = true;       
-                while (combo.options.length) {
-                    combo.remove(0);
-                }
-                if (sesiones.length === 0) {
-                    combo.disabled = true;
-                    mostrarToast('No hay sesiones disponibles para este evento.', 'danger', 1000);
-                    resolve();
-                    return;
-                }
+        .then(response => response.json())
+        .then(sesiones => {
+            combo.innerHTML = '';
+            if (sesiones.length === 0) {
+                combo.disabled = true;
+                listaDeSesiones = [];
+                combo.appendChild(new Option('No hay sesiones', '0'));
+                mostrarToast('No hay sesiones disponibles.', 'danger', 1000);
+            } else {
                 combo.disabled = false;
-                combo.appendChild(new Option('Seleccione una sesión', '0'));
+                listaDeSesiones = sesiones;
+                combo.appendChild(new Option('Seleccione una sesión', ''));
                 sesiones.forEach(sesion => {
                     combo.appendChild(new Option(sesion.descripcion, sesion.eventoProgramacionId));
                 });
-                resolve(); 
-            })
-            .catch(error => {
-                console.error('Error al cargar las sesiones:', error);
-                reject(error);
-            });
+            }
+        });
     });
+}
+
+function mostrarCupos(sesionId) {
+    let cupos = document.getElementById('cupos');
+    let virtual = document.getElementById('virtual');
+    let sesion = listaDeSesiones.find(i => i.eventoProgramacionId === parseInt(sesionId));
+    if (sesion ) {
+        cupos.value = sesion.cupos;
+        virtual.value = sesion.virtual ? 'Virtual' : 'Presencial';
+    }else {
+        cupos.value = '';
+        virtual.value = '';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     participanteModal = new bootstrap.Modal(document.getElementById('participanteModal'));
+});
+
+document.getElementById('participanteForm').addEventListener('submit', (e) => {
+    const sesionId = document.getElementById('sesionId');
+    if (sesionId.value === '' || sesionId.value === '0') {
+        e.preventDefault();
+        mostrarToast('Debe seleccionar un Evento que tenga al menos una sesión.', 'danger');
+        sesionId.focus();
+    }
 });

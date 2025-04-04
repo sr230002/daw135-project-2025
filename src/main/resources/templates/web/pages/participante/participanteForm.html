@@ -1,7 +1,7 @@
 <div th:fragment="formulario">
     <div class="modal fade" id="participanteModal" tabindex="-1" aria-labelledby="participanteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="height: 70vh;">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="height: 60vh;">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="participanteModalLabel">Completa los datos del participante</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -36,7 +36,25 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="sesionId" class="form-label">Sesión</label>
-                                <select class="form-select" id="sesionId" name="sesionId" required disabled> </select>
+                                <select 
+                                    class="form-select"
+                                    id="sesionId" 
+                                    name="sesionId" 
+                                    onchange="mostrarCupos(this.value)" 
+                                    required
+                                    disabled
+                                > 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="cupos" class="form-label">Cupos Totales</label>
+                                <input type="text" class="form-control" id="cupos" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="virtual" class="form-label">Tipo de sesión</label>
+                                <input type="text" class="form-control" id="virtual" readonly>
                             </div>
                         </div>
                     </div>

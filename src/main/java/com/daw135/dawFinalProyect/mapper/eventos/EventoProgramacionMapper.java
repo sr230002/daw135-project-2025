@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import com.daw135.dawFinalProyect.dto.admin.EventoProgramacionDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
 import com.daw135.dawFinalProyect.helpers.DawUtil;
 

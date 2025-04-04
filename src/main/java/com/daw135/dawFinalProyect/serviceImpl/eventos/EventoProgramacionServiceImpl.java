@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.daw135.dawFinalProyect.dto.admin.EventoProgramacionDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoProgramacionMapper;
 import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepository;

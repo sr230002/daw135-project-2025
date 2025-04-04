@@ -2,7 +2,7 @@ package com.daw135.dawFinalProyect.service.eventos;
 
 import java.util.List;
 
-import com.daw135.dawFinalProyect.dto.admin.EventoProgramacionDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 
 public interface EventoProgramacionService {
     String guardarEventoProgramacion(EventoProgramacionDTO dto) throws Exception;
