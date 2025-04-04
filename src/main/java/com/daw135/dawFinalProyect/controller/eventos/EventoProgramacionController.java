@@ -4,13 +4,21 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.daw135.dawFinalProyect.dto.admin.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.service.eventos.EventoProgramacionService;
 
 @RestController
-@RequestMapping("/eventos/programacion")
+@RequestMapping("/sesiones")
 public class EventoProgramacionController {
 
     @Autowired
@@ -45,5 +53,12 @@ public class EventoProgramacionController {
     public ResponseEntity<String> eliminarEventoProgramacion(@PathVariable Long id) {
         String mensaje = eventoProgramacionService.eliminarEventoProgramacion(id);
         return ResponseEntity.ok(mensaje);
+    }
+
+    @GetMapping("/sesionesPorEventoCmb/{id}")
+    @ResponseBody
+    public ResponseEntity<List<EventoProgramacionDTO>> obtenerSesionesPorEventoId(@PathVariable Long id) {
+        List<EventoProgramacionDTO> listSesiones = eventoProgramacionService.obtenerSesionesPorEventoId(id);
+        return ResponseEntity.ok(listSesiones);
     }
 }

@@ -52,4 +52,11 @@ public class EventoProgramacionServiceImpl implements EventoProgramacionService 
         eventoProgramacionRepository.delete(eventoProgramacion);
         return "Evento programado eliminado con éxito";
     }
+
+    @Override
+    public List<EventoProgramacionDTO> obtenerSesionesPorEventoId(Long eventoId) {
+        return eventoProgramacionRepository.findByEventoEventoId(eventoId).stream()
+                .map(EventoProgramacionMapper.INSTANCE::toEventoProgramacionDTOCmb)
+                .toList();        
+    }
 }

@@ -62,11 +62,11 @@ public class EventoProgramacion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "evento_id", referencedColumnName = "evento_id")
-    private Evento eventosId;
+    private Evento evento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ponente_id", referencedColumnName = "usuario_id")
-    private Usuario ponenteId;
+    private Usuario ponente;
 
     
 }

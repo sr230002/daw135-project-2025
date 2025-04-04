@@ -9,4 +9,5 @@ public interface EventoProgramacionService {
     String editarEventoProgramacion(EventoProgramacionDTO dto) throws Exception;
     List<EventoProgramacionDTO> listarTodos();
     String eliminarEventoProgramacion(Long id);
+    List<EventoProgramacionDTO> obtenerSesionesPorEventoId(Long eventoId);
 }
