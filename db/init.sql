@@ -57,6 +57,8 @@ create table ema.evento(
 	evento_id bigserial primary key, 
 	codigo varchar(50) not null,
 	fecha_creacion timestamp default current_timestamp,
+    fecha_inicio date not null,
+	fecha_fin date not null,
 	titulo varchar(250) not null,
 	descripcion varchar(500) not null,
 	descripcion_corta varchar(250) ,
@@ -119,7 +121,9 @@ INSERT INTO sec.estado (estado, descripcion) VALUES
 ('FIN', 'Finalizado'),
 ('INA', 'Inactivo'),
 ('SUS', 'Suspendido'),
-('CNC', 'Cancelado');
+('CNC', 'Cancelado'),
+('INS', 'Inscrito')
+;
 
 -- Insertando en la tabla sec.institucion
 INSERT INTO sec.institucion (codigo, nombre) VALUES
@@ -140,10 +144,10 @@ INSERT INTO ema.evento_tipo (descripcion) VALUES
 
 -- Insertando en la tabla ema.evento
 /*
-INSERT INTO ema.evento (codigo, titulo, descripcion, descripcion_corta, evento_tipo_id, estado, sede_id) VALUES
-('EVT001', 'Innovación Tecnológica', 'Evento sobre las últimas tendencias en tecnología.', 'Tendencias Tech', 1, 'ACT', 1),
-('EVT002', 'Gestión de Proyectos', 'Seminario sobre metodologías ágiles y tradicionales.', 'Proyectos Ágiles', 2, 'ACT', 2),
-('EVT003', 'Desarrollo Web Moderno', 'Taller práctico sobre frameworks de desarrollo.', 'Frameworks Web', 3, 'INA', 3);
+INSERT INTO ema.evento (codigo, titulo, descripcion, descripcion_corta, evento_tipo_id, estado, sede_id, fecha_inicio, fecha_fin) VALUES
+('EVT001', 'Innovación Tecnológica', 'Evento sobre las últimas tendencias en tecnología.', 'Tendencias Tech', 1, 'ACT', 1, '2024-01-15', '2024-01-20'),
+('EVT002', 'Gestión de Proyectos', 'Seminario sobre metodologías ágiles y tradicionales.', 'Proyectos Ágiles', 2, 'ACT', 2, '2024-02-10', '2024-02-15'),
+('EVT003', 'Desarrollo Web Moderno', 'Taller práctico sobre frameworks de desarrollo.', 'Frameworks Web', 3, 'INA', 3, '2024-02-25', '2024-03-12');
 */
 
 -- Insertando en la tabla sec.rol
