@@ -29,5 +29,6 @@ public class EventoRegistroDTO {
     private String tituloEvento;
     private String descripcionEvento;
     private String descripcionCortaEvento;
+    private Long eventoId;
 
 }

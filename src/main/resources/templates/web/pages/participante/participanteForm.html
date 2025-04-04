@@ -1,0 +1,57 @@
+<div th:fragment="formulario">
+    <div class="modal fade" id="participanteModal" tabindex="-1" aria-labelledby="participanteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="height: 70vh;">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="participanteModalLabel">Completa los datos del participante</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form id="participanteForm" th:action="@{/participantes/guardar}" th:object="${participante}" method="post">
+                    <input type="hidden" id="eventoRegistroId" name="eventoRegistroId" th:value="*{eventoRegistroId}">
+
+                    <div class="modal-body overflow-auto" style="max-height: calc(70vh - 120px);">
+
+                        <div class="row mb-3">
+                            <div class="col-md-12
+                            ">
+                                <label for="participanteId" class="form-label">Participante</label>
+                                <select class="form-select" id="participanteId" name="participanteId"
+                                    th:value="*{participanteId}" required>
+                                    <option value="">Seleccione el participante que desea registrar: </option>
+                                    <option th:each="user : ${listadoParticipantes}" th:value="${user.usuarioId}"
+                                        th:text="${user.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="eventoId" class="form-label">Evento</label>
+                                <select class="form-select" id="eventoId" name="eventoId"
+                                    th:value="*{eventoId}" required>
+                                    <option value="">Seleccione un evento: </option>
+                                    <option th:each="event : ${listadoEventos}" th:value="${event.eventoId}"
+                                        th:text="${event.titulo}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="sesionId" class="form-label">Sesión</label>
+                                <select class="form-select" id="sesionId" name="sesionId"
+                                    th:value="*{sesionId}" required>
+                                    <option value="">Seleccione una sesión: </option>
+                                    <option th:each="sesion : ${listadoSesiones}" th:value="${sesion.eventoId}"
+                                        th:text="${sesion.fechaProgramacion}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

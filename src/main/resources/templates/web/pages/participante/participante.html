@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/document}">
+<head>
+    <title>Participantes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 text-gray-800">Listado de Participantes</h1>
+                <button class="btn btn-primary" onclick="mostrarFormulario()">Nuevo participante</button>
+            </div>
+
+            <!-- Tabla de participantes -->
+            <div class="card shadow mt-4">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">Participantes Registrados</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Nombre del participante</th>
+                                    <th class="text-center">Fecha de inscripción</th>
+                                    <th class="text-center">Fecha del evento</th>
+                                    <th class="text-center">Evento</th>
+                                    <th class="text-center">Descripción</th>
+                                    <th class="text-center">Estado de inscripción</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="registro, iterStat : ${listadoRegistros}">
+                                    <td th:text="${iterStat.index + 1}">1</td>
+                                    <td class="text-center" th:text="${registro.nombreParticipante}">0</td>
+                                    <td class="text-center" th:text="${registro.fechaCreacion}">Fecha1</td>
+                                    <td class="text-center" th:text="${registro.fechaCreacion}">Fecha2</td>
+                                    <td class="text-center" th:text="${registro.tituloEvento}">Titulo</td>
+                                    <td class="text-center" th:text="${registro.descripcionEvento}">Descripción</td>
+                                    <td class="text-center" th:text="${registro.estado}">Estado</td>
+                                    <td class="text-center">
+                                        <!--<a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarEvento(${evento.eventoId})|">
+                                            Ver
+                                        </a>
+                                        <a th:href="|eventos/eliminar/${evento.eventoId}|" class="btn btn-sm btn-danger">Eliminar</a>-->
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(listadoRegistros)}">
+                                    <td colspan="6" class="text-center">No hay participantes registrados.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para crear evento -->
+            <div th:replace="~{pages/participante/participanteForm :: formulario}"></div>
+            <script th:src="@{/js/participante/participante.js}"></script>
+
+        </div>
+    </div>
+</body>
+</html>

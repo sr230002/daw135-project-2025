@@ -25,6 +25,7 @@ public interface EventoRegistroMapper {
     @Mapping(target = "tituloEvento", source = "sesion.evento.titulo")
     @Mapping(target = "descripcionEvento", source = "sesion.evento.descripcion")
     @Mapping(target = "descripcionCortaEvento", source = "sesion.evento.descripcionCorta")
+    @Mapping(target = "eventoId", source = "sesion.evento.eventoId")
     EventoRegistroDTO toEventoRegistroDTO(EventoRegistro eventoRegistro);
 
 
