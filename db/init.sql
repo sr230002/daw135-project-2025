@@ -81,7 +81,7 @@ create table ema.evento_programacion(
     lugar varchar(250) null,
     enlace varchar(250) null,
     evento_id bigint not null,
-    ponente_id bigint not null,
+    ponente_id bigint ,
     constraint ema_evento_programacion_fk_evento foreign key (evento_id) references ema.evento(evento_id),
     constraint ema_evento_programacion_fk_usuario foreign key (ponente_id) references sec.usuario(usuario_id)
 );

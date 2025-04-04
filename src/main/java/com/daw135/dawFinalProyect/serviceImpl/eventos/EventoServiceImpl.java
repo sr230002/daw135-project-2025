@@ -1,5 +1,7 @@
 package com.daw135.dawFinalProyect.serviceImpl.eventos;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,15 +13,20 @@ import org.springframework.stereotype.Service;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
+import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
+import com.daw135.dawFinalProyect.helpers.DawUtil;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
 import com.daw135.dawFinalProyect.repository.admin.SedeRepository;
+import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRepository;
 import com.daw135.dawFinalProyect.repository.eventos.TipoEventoRepository;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class EventoServiceImpl implements EventoService {
@@ -33,6 +40,9 @@ public class EventoServiceImpl implements EventoService {
 
     @Autowired
     private SedeRepository sedeRepository;
+
+    @Autowired
+    private EventoProgramacionRepository eventoProgramacionRepository;
 
     @Override
     public List<EventoDTO> findAll() {
@@ -63,7 +73,23 @@ public class EventoServiceImpl implements EventoService {
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);
         evento.setFechaCreacion(new Date());
-        eventoRepository.save(evento);
+        Evento eventoCreado = eventoRepository.save(evento);
+        
+        EventoProgramacion sesion = new EventoProgramacion();
+        LocalDate fechaProgramacion = DawUtil.dateToLocalDate(eventoCreado.getFechaInicio());
+        LocalTime horaInicio = DawUtil.stringToLocalTime("10:00");
+        LocalTime horaFin = DawUtil.stringToLocalTime("12:00");
+
+        sesion.setEvento(eventoCreado);
+        sesion.setPonente(null);
+        sesion.setFechaProgramacion(fechaProgramacion);
+        sesion.setHoraInicio(horaInicio);
+        sesion.setHoraFin(horaFin);
+        sesion.setCupos(25);
+        sesion.setLugar(null);
+        sesion.setEnlace(null);
+        sesion.setVirtual(Boolean.TRUE);
+        eventoProgramacionRepository.save(sesion);
         return "Evento guardado con exito";
     }
 
@@ -94,11 +120,13 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
+    @Transactional
     public String eliminarEvento(Long id) {
         Evento evento = eventoRepository.findById(id).orElse(null);
         if (evento == null) {
             return "No se encontro el evento";
         }
+        eventoProgramacionRepository.deleteByEvento(evento);
         eventoRepository.delete(evento);
         return "Evento eliminado con exito";
     }
