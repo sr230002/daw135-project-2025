@@ -4,6 +4,16 @@
       layout:decorate="~{layout/document}">
 <head>
     <title>Eventos</title>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener("DOMContentLoaded", function () {
+            let mensaje = /*[[${msj}]]*/ null;
+            if (mensaje) {
+                mostrarToast(mensaje, 'danger');
+            }
+        });
+        /*]]>*/
+    </script>
 </head>
 <body>
     <div layout:fragment="content">

@@ -8,8 +8,12 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
@@ -26,7 +30,7 @@ import com.daw135.dawFinalProyect.repository.eventos.EventoRepository;
 import com.daw135.dawFinalProyect.repository.eventos.TipoEventoRepository;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 
-import jakarta.transaction.Transactional;
+
 
 @Service
 public class EventoServiceImpl implements EventoService {
@@ -74,7 +78,7 @@ public class EventoServiceImpl implements EventoService {
         evento.setEventoTipoId(tipo);
         evento.setFechaCreacion(new Date());
         Evento eventoCreado = eventoRepository.save(evento);
-        
+
         EventoProgramacion sesion = new EventoProgramacion();
         LocalDate fechaProgramacion = DawUtil.dateToLocalDate(eventoCreado.getFechaInicio());
         LocalTime horaInicio = DawUtil.stringToLocalTime("10:00");
@@ -122,14 +126,24 @@ public class EventoServiceImpl implements EventoService {
     @Override
     @Transactional
     public String eliminarEvento(Long id) {
-        Evento evento = eventoRepository.findById(id).orElse(null);
-        if (evento == null) {
-            return "No se encontro el evento";
+        try {
+            Evento evento = eventoRepository.findById(id).orElse(null);
+            if (evento == null) {
+                return "No se encontro el evento";
+            }
+            eventoProgramacionRepository.deleteByEvento(evento);
+            eventoRepository.delete(evento);
+            eventoProgramacionRepository.flush();
+            eventoRepository.flush();
+            return "Evento eliminado con exito";
+        } catch (DataIntegrityViolationException e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "No se puede eliminar el evento porque tiene participantes registrados";
+        } catch (Exception e) {
+            logger.warn("Error al eliminar el evento");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "Error al eliminar el evento";
         }
-        eventoProgramacionRepository.deleteByEvento(evento);
-        eventoRepository.delete(evento);
-        return "Evento eliminado con exito";
     }
-
 
 }
