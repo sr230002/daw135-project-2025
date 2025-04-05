@@ -28,7 +28,7 @@ function cargarParticipante(registroId) {
             modal.show();
             setTimeout(() => {
                 hideLoading();
-            }, 1000);
+            }, 500);
         })
         .catch(error => {
             hideLoading();

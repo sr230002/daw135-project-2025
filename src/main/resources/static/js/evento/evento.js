@@ -11,7 +11,7 @@ function cargarEvento(eventoId) {
     fetch(`eventos/ver/${eventoId}`)
         .then(response => response.json())
         .then(evento => {
-            hideLoading();
+            //hideLoading();
             document.getElementById("eventoForm").action =  `${basePath}eventos/editar`;
 
             document.getElementById("eventoId").value = evento.eventoId;
@@ -28,6 +28,9 @@ function cargarEvento(eventoId) {
             
             let modal = new bootstrap.Modal(document.getElementById("eventoModal"));
             modal.show();
+            setTimeout(() => {
+                hideLoading();
+            }, 500);
         })
         .catch(error =>{
             hideLoading();
