@@ -8,9 +8,11 @@ function mostrarFormulario() {
 }
 
 function cargarParticipante(registroId) {
+    showLoading('Cargando participante...');
     fetch(`registros/ver/${registroId}`)
         .then(response => response.json())
         .then(registro => {
+            hideLoading();
             document.getElementById('participanteForm').action =  `${basePath}registros/editar`;
 
             document.getElementById('eventoRegistroId').value = registroId;
@@ -19,12 +21,16 @@ function cargarParticipante(registroId) {
             
             cargarSesionesPorEvento(registro.eventoId).then(() => {
                 document.getElementById('sesionId').value = registro.sesionId;
+                mostrarCupos(registro.sesionId);
             });
             
             let modal = new bootstrap.Modal(document.getElementById('participanteModal'));
             modal.show();
         })
-        .catch(error => console.error('Error al cargar el evento:', error));
+        .catch(error => {
+            hideLoading();
+            console.error('Error al cargar el evento:', error);
+        });
 }
 
 function cargarSesionesPorEvento(eventoId) {
@@ -81,4 +87,5 @@ document.getElementById('participanteForm').addEventListener('submit', (e) => {
         mostrarToast('Debe seleccionar un Evento que tenga al menos una sesión.', 'danger');
         sesionId.focus();
     }
+    showLoading();
 });

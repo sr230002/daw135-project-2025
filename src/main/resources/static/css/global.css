@@ -44,3 +44,13 @@ footer {
     height: var(--footer-height);
     flex-shrink: 0;
 }
+
+
+#loadingModal {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+}
+
+#loadingModal .modal-content {
+    box-shadow: none;
+    background: transparent;
+}

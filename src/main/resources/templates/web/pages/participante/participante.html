@@ -46,7 +46,13 @@
                                         <a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarParticipante(${registro.eventoRegistroId})|">
                                             Ver
                                         </a>
-                                        <a th:href="|registros/eliminar/${registro.eventoRegistroId}|" class="btn btn-sm btn-danger">Eliminar</a>
+                                        <a 
+                                            th:href="|registros/eliminar/${registro.eventoRegistroId}|" 
+                                            class="btn btn-sm btn-danger"
+                                            onclick="showLoading();"
+                                        >
+                                            Eliminar
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(listadoRegistros)}">

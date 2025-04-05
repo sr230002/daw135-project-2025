@@ -7,9 +7,11 @@ function mostrarFormulario() {
 }
 
 function cargarEvento(eventoId) {
+    showLoading('Cargando Evento...');
     fetch(`eventos/ver/${eventoId}`)
         .then(response => response.json())
         .then(evento => {
+            hideLoading();
             document.getElementById("eventoForm").action =  `${basePath}eventos/editar`;
 
             document.getElementById("eventoId").value = evento.eventoId;
@@ -27,10 +29,17 @@ function cargarEvento(eventoId) {
             let modal = new bootstrap.Modal(document.getElementById("eventoModal"));
             modal.show();
         })
-        .catch(error => console.error("Error al cargar el evento:", error));
+        .catch(error =>{
+            hideLoading();
+            console.error('Error al cargar el evento:', error);
+        });
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
     eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
+});
+
+document.getElementById('eventoForm').addEventListener('submit', (e) => {
+    showLoading();
 });
