@@ -12,7 +12,7 @@ function cargarParticipante(registroId) {
     fetch(`registros/ver/${registroId}`)
         .then(response => response.json())
         .then(registro => {
-            hideLoading();
+            //hideLoading();
             document.getElementById('participanteForm').action =  `${basePath}registros/editar`;
 
             document.getElementById('eventoRegistroId').value = registroId;
@@ -26,6 +26,9 @@ function cargarParticipante(registroId) {
             
             let modal = new bootstrap.Modal(document.getElementById('participanteModal'));
             modal.show();
+            setTimeout(() => {
+                hideLoading();
+            }, 1000);
         })
         .catch(error => {
             hideLoading();
