@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
-import com.daw135.dawFinalProyect.entity.admin.Usuario;
+import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 
 import groovy.transform.ToString;
 import jakarta.persistence.Column;

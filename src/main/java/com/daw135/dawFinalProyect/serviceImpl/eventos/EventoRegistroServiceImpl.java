@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
-import com.daw135.dawFinalProyect.entity.admin.Usuario;
+import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.entity.eventos.EventoRegistro;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoRegistroMapper;

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.daw135.dawFinalProyect.dto.admin.UsuarioDTO;
-import com.daw135.dawFinalProyect.entity.admin.Usuario;
+import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.mapper.admin.UsuarioMapper;
 import com.daw135.dawFinalProyect.repository.admin.UsuarioRepository;
 import com.daw135.dawFinalProyect.service.admin.UsuarioService;

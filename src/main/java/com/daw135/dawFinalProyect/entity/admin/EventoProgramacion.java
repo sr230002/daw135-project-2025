@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 
 import groovy.transform.ToString;

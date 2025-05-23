@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 import com.daw135.dawFinalProyect.dto.admin.UsuarioDTO;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
-import com.daw135.dawFinalProyect.entity.admin.Usuario;
+import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 
 @Mapper
 public interface UsuarioMapper {

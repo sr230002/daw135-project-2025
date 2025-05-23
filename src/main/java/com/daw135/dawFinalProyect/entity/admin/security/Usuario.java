@@ -1,6 +1,9 @@
-package com.daw135.dawFinalProyect.entity.admin;
+package com.daw135.dawFinalProyect.entity.admin.security;
 
 import java.util.Date;
+
+import com.daw135.dawFinalProyect.entity.admin.Estado;
+import com.daw135.dawFinalProyect.entity.admin.Sede;
 
 import groovy.transform.ToString;
 import jakarta.persistence.Column;
