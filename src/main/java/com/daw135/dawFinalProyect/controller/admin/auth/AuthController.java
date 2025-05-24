@@ -52,4 +52,10 @@ public class AuthController {
     public String showAccessDeniedPage() {
         return "pages/auth/access-denied";
     }
+
+    @GetMapping("/private-page")
+    public String showPrivatePage() {
+        return "pages/auth/private-page";
+    }
+    
 }

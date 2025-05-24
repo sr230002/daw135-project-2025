@@ -64,6 +64,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**", "/eventos/**").hasRole("ADMIN")
                         .requestMatchers("/registros/**").hasRole("PONENTE")
                         .requestMatchers("/sesiones/**").hasRole("PARTICIPANTE")
+                        .requestMatchers("/private-page").hasRole("OTRO")
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
@@ -88,11 +89,11 @@ public class SecurityConfig {
                 Map<String, Object> claims = oidcUser.getClaims();
 
                 List<String> roles = (List<String>) claims.getOrDefault(rolesClaim, List.of("FA"));
-                logger.info("Roles: {}", roles);
+                logger.debug("Roles: {}", roles);
 
                 OidcIdToken idToken = oidcUser.getIdToken();
                 String idTokenValue = idToken.getTokenValue();
-                logger.info("ID Token recibido: " + idTokenValue);
+                logger.debug("ID Token recibido: " + idTokenValue);
 
                 Set<GrantedAuthority> authorities = roles.stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
