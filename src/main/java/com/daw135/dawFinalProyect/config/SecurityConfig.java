@@ -19,6 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${app.base-url}")
+    private String baseUrl;
     @Value("${spring.security.oauth2.client.provider.auth0.issuer-uri}")
     private String issuer;
     @Value("${spring.security.oauth2.client.registration.auth0.client-id}")
@@ -36,7 +38,7 @@ public class SecurityConfig {
     LogoutHandler oidcLogoutHandler() {
         return (request, response, authentication) -> {
             try {
-                response.sendRedirect(issuer + "v2/logout?client_id=" + clientId + "&returnTo=http://localhost:8080/");
+                response.sendRedirect(issuer + "v2/logout?client_id=" + clientId + "&returnTo=" + baseUrl);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -53,7 +55,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(this.oidcUserService())))
-                .logout(logout -> logout 
+                .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .addLogoutHandler(oidcLogoutHandler()));
 
