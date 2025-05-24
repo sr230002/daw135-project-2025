@@ -13,23 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AuthController {
-
-    // @GetMapping("/login")
-    // public String login(
-    // @RequestParam(value = "error", required = false) String error,
-    // @RequestParam(value = "logout", required = false) String logout,
-    // Model model) {
-
-    // if (error != null) {
-    // model.addAttribute("error", "Error al iniciar sesión");
-    // }
-    // if (logout != null) {
-    // model.addAttribute("message", "Has cerrado sesión correctamente");
-    // }
-
-    // return "pages/auth/login/login";
-    // }
-
     @GetMapping("/login")
     public String login(
             @RequestParam(value = "error", required = false) String error,
@@ -49,7 +32,7 @@ public class AuthController {
             return "redirect:/dashboard";
         }
 
-        return "pages/auth/login/login";
+        return "pages/auth/login";
     }
 
     @GetMapping("/profile")
@@ -63,5 +46,10 @@ public class AuthController {
         mav.addObject("user", user);
         mav.addObject("showAllAttributes", debug);
         return mav;
+    }
+
+    @GetMapping("/access-denied")
+    public String showAccessDeniedPage() {
+        return "pages/auth/access-denied";
     }
 }
