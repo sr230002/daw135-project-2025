@@ -18,11 +18,13 @@ public interface UsuarioMapper {
     @Mapping(target = "estado", source = "estado", qualifiedByName = "estadoToString") // Map Estado -> String
     @Mapping(target = "sedeId", source = "sedeId", qualifiedByName = "sedeToLong") // Map Sede -> Long
     @Mapping(target = "fechaCreacion", source = "fechaCreacion") // Map fechaCreacion
+    @Mapping(target = "rolId", source = "rol.rolId") // Map rolId
     UsuarioDTO toUsuarioDTO(Usuario usuario);
 
     @Mapping(target = "estado", source = "estado", qualifiedByName = "stringToEstado") // Map String -> Estado
     @Mapping(target = "sedeId", source = "sedeId", qualifiedByName = "longToSede") // Map Long -> Sede
     @Mapping(target = "fechaCreacion", source = "fechaCreacion") // Map fechaCreacion
+    @Mapping(target = "rol", ignore = true) // ignorar rolId
     Usuario toUsuario(UsuarioDTO usuarioDTO);
 
     // Métodos personalizados para mapear Estado y Sede
