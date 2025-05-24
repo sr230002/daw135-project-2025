@@ -13,7 +13,7 @@ import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.entity.eventos.EventoRegistro;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoRegistroMapper;
-import com.daw135.dawFinalProyect.repository.admin.UsuarioRepository;
+import com.daw135.dawFinalProyect.repository.admin.security.UsuarioRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRegistroRepository;
 import com.daw135.dawFinalProyect.service.eventos.EventoRegistroService;

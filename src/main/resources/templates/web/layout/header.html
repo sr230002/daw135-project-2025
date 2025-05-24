@@ -1,4 +1,4 @@
-<header th:fragment="header">
+<header th:fragment="header(user)">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="#">
@@ -15,7 +15,28 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
                     </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+                    </li> -->
                 </ul>
+                <!-- Área del usuario -->
+                <div class="d-flex align-items-center" th:if="${user}">
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img th:if="${user.attributes?.picture}" th:src="${user.attributes.picture}"
+                                alt="Foto de perfil" width="32" height="32" class="rounded-circle me-2">
+                            <span th:text="${user.attributes?.name ?: user.attributes?.email}">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownUser">
+                            <li><a class="dropdown-item" th:href="@{/profile}">Perfil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

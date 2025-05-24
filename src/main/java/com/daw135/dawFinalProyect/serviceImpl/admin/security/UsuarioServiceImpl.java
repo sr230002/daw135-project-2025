@@ -1,4 +1,4 @@
-package com.daw135.dawFinalProyect.serviceImpl.admin;
+package com.daw135.dawFinalProyect.serviceImpl.admin.security;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.daw135.dawFinalProyect.dto.admin.UsuarioDTO;
 import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.mapper.admin.UsuarioMapper;
-import com.daw135.dawFinalProyect.repository.admin.UsuarioRepository;
-import com.daw135.dawFinalProyect.service.admin.UsuarioService;
+import com.daw135.dawFinalProyect.repository.admin.security.UsuarioRepository;
+import com.daw135.dawFinalProyect.service.admin.security.UsuarioService;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {

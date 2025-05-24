@@ -9,7 +9,16 @@ public class HomeController {
 
     @RequestMapping
     public String index() {
-        return "redirect:/eventos";
+        return "redirect:/dashboard";
     }
+
+    // @GetMapping(value = "/")
+    // @ResponseBody
+    // public String home(final Authentication authentication) {
+    //     TestingAuthenticationToken token = (TestingAuthenticationToken) authentication;
+    //     DecodedJWT jwt = JWT.decode(token.getCredentials().toString());
+    //     String email = jwt.getClaims().get("email").asString();
+    //     return "Welcome, " + email + "!";
+    // }
 
 }

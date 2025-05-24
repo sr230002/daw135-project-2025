@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daw135.dawFinalProyect.dto.admin.UsuarioDTO;
-import com.daw135.dawFinalProyect.service.admin.UsuarioService;
+import com.daw135.dawFinalProyect.service.admin.security.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")

@@ -29,7 +29,6 @@ import lombok.Setter;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,8 +52,9 @@ public class Usuario {
     @JoinColumn(name = "estado", referencedColumnName = "estado")
     private Estado estado;
 
-    @Column(name = "rol_id")
-    private Long rolId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rol_id", referencedColumnName = "rol_id")
+    private Rol rol;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sede_id", referencedColumnName = "sede_id")

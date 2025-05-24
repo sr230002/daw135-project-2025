@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
-import com.daw135.dawFinalProyect.service.admin.UsuarioService;
+import com.daw135.dawFinalProyect.service.admin.security.UsuarioService;
 import com.daw135.dawFinalProyect.service.eventos.EventoProgramacionService;
 import com.daw135.dawFinalProyect.service.eventos.EventoRegistroService;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;

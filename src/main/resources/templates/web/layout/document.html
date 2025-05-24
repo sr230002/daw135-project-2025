@@ -17,10 +17,10 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <header th:replace="~{layout/header :: header}" class="fixed-top"></header>
+    <header th:replace="~{layout/header :: header(${#authentication.principal})}" class="fixed-top"></header>
 
     <div class="d-flex flex-grow-1 overflow-hidden">
-        <nav th:replace="~{layout/sidebar :: sidebar}" class="h-100 overflow-y-auto"></nav>
+        <nav th:replace="~{layout/sidebar :: sidebar(${#authentication.principal})}" class="h-100 overflow-y-auto"></nav>
         <main layout:fragment="content" class="h-100 overflow-y-auto p-3 flex-grow-1"></main>
     </div>
 
