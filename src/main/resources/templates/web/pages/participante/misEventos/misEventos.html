@@ -112,8 +112,9 @@
                 <div class="col" th:each="evento, iterStat : ${eventosList}">
                     <div class="card event-card h-100">
                         <div class="position-relative">
-                            <img th:src="'https://www.laprensagrafica.com/__export/1716568650267/sites/prensagrafica/img/2024/05/24/doge.png_1758632411.png'" 
-                                 class="card-img-top event-img" alt="Imagen del evento">
+                            <img 
+                                th:src="${evento.urlImagen != null} ? ${evento.urlImagen} : 'https://www.laprensagrafica.com/__export/1716568650267/sites/prensagrafica/img/2024/05/24/doge.png_1758632411.png'"
+                                class="card-img-top event-img" alt="Imagen del evento">
                             <span class="event-date position-absolute bottom-0 start-0 m-2">
                                 <span th:text="${evento.fechaInicio}"></span> - 
                                 <span th:text="${evento.fechaFin}"></span>

@@ -1,7 +1,5 @@
 package com.daw135.dawFinalProyect.serviceImpl.eventos;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,12 +16,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
-import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
-import com.daw135.dawFinalProyect.helpers.DawUtil;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
 import com.daw135.dawFinalProyect.repository.admin.SedeRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepository;
@@ -76,23 +72,7 @@ public class EventoServiceImpl implements EventoService {
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);
         evento.setFechaCreacion(new Date());
-        Evento eventoCreado = eventoRepository.save(evento);
-
-        EventoProgramacion sesion = new EventoProgramacion();
-        LocalDate fechaProgramacion = DawUtil.dateToLocalDate(eventoCreado.getFechaInicio());
-        LocalTime horaInicio = DawUtil.stringToLocalTime("10:00");
-        LocalTime horaFin = DawUtil.stringToLocalTime("12:00");
-
-        sesion.setEvento(eventoCreado);
-        sesion.setPonente(null);
-        sesion.setFechaProgramacion(fechaProgramacion);
-        sesion.setHoraInicio(horaInicio);
-        sesion.setHoraFin(horaFin);
-        sesion.setCupos(25);
-        sesion.setLugar(null);
-        sesion.setEnlace(null);
-        sesion.setVirtual(Boolean.TRUE);
-        eventoProgramacionRepository.save(sesion);
+        eventoRepository.save(evento);
         return "Evento guardado con exito";
     }
 

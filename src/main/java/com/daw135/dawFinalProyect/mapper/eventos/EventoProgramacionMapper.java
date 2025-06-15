@@ -24,7 +24,8 @@ public interface EventoProgramacionMapper {
     
     @Mapping(target = "evento.eventoId", source = "eventoId")
     @Mapping(target = "ponente.usuarioId", source = "ponenteId")
-    @Mapping(target = "fechaCreacion", source = "fechaCreacion") // Agregado
+    @Mapping(target = "fechaCreacion", source = "fechaCreacion")
+    @Mapping(target = "registros", ignore = true)
     EventoProgramacion toEventoProgramacion(EventoProgramacionDTO eventoProgramacionDTO);
     
     @Mapping(target = "eventoProgramacionId", source = "eventoProgramacionId")

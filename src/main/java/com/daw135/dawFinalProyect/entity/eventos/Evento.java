@@ -67,6 +67,9 @@ public class Evento {
     @JoinColumn(name = "sede_id", referencedColumnName = "sede_id")
     private Sede sedeId;
 
+    @Column(name = "url_imagen", nullable = false, length = 250)
+    private String urlImagen;
+
     @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
     private List<EventoProgramacion> programaciones = new ArrayList<>();
 

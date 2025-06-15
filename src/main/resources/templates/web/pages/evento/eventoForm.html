@@ -7,7 +7,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <form id="eventoForm" th:action="@{/eventos/guardar}" th:object="${evento}" method="post">
+                <form id="eventoForm" th:action="@{/eventos/guardar}" th:object="${evento}" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="eventoId" name="eventoId" th:value="*{eventoId}">
                     <input type="hidden" id="estadoId" name="estadoId" th:value="*{estadoId}">
                     <input type="hidden" id="fechaCreacion" name="fechaCreacion" th:value="*{fechaCreacion}">
@@ -75,6 +75,12 @@
                                 <label for="descripcion" class="form-label">Descripción</label>
                                 <textarea class="form-control" id="descripcion" name="descripcion" rows="3"
                                     th:text="*{descripcion}" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="imagen" class="form-label">Imagen del Evento</label>
+                                <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
                             </div>
                         </div>
                     </div>

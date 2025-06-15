@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw135.dawFinalProyect.dto.admin.SedeDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.TipoEventoDTO;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
+import com.daw135.dawFinalProyect.helpers.CloudinaryService;
 import com.daw135.dawFinalProyect.service.admin.SedeService;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 import com.daw135.dawFinalProyect.service.eventos.TipoEventoService;
@@ -39,6 +42,9 @@ public class EventoController {
 
     @Autowired
     private SedeService sedeService;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;  
 
     @GetMapping({ "", "/" })
     public String obtenerVistaEvento(Model model) {
@@ -66,8 +72,15 @@ public class EventoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarEvento(@ModelAttribute("evento") EventoDTO eventoDto) {
+    public String guardarEvento(
+        @ModelAttribute("evento") EventoDTO eventoDto,
+        @RequestParam("imagen") MultipartFile imagenFile
+    ) {
         try {
+            if (!imagenFile.isEmpty()) {
+                String urlImagen = cloudinaryService.uploadImage(imagenFile);
+                eventoDto.setUrlImagen(urlImagen);
+            }
             eventoService.guardarEvento(eventoDto);
         } catch (Exception e) {
             logger.error("Error al guardar evento", e);
