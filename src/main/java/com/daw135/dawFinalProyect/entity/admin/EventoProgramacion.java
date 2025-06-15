@@ -3,9 +3,12 @@ package com.daw135.dawFinalProyect.entity.admin;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
+import com.daw135.dawFinalProyect.entity.eventos.EventoRegistro;
 
 import groovy.transform.ToString;
 import jakarta.persistence.Column;
@@ -16,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,5 +73,7 @@ public class EventoProgramacion {
     @JoinColumn(name = "ponente_id", referencedColumnName = "usuario_id")
     private Usuario ponente;
 
+    @OneToMany(mappedBy = "sesion", fetch = FetchType.LAZY)
+    private List<EventoRegistro> registros = new ArrayList<>();
     
 }

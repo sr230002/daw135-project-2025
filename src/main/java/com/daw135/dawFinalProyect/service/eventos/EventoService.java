@@ -6,10 +6,13 @@ import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 
 public interface EventoService {
 
-    List<EventoDTO> findAll();
-    String guardarEvento(EventoDTO eventoDto) throws Exception ;
-    String editarEvento(EventoDTO eventoDto) throws Exception ;
-    EventoDTO obtenerPorId(Long id);
-    String eliminarEvento(Long id);
+    public List<EventoDTO> findAll();
+    public String guardarEvento(EventoDTO eventoDto) throws Exception ;
+    public String editarEvento(EventoDTO eventoDto) throws Exception ;
+    public EventoDTO obtenerPorId(Long id);
+    public String eliminarEvento(Long id);
+
+    /* MIS EVENTOS */
+    public List<EventoDTO> findAllMisEventos();
 
 }

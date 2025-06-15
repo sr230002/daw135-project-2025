@@ -1,8 +1,11 @@
 package com.daw135.dawFinalProyect.entity.eventos;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.daw135.dawFinalProyect.entity.admin.Estado;
+import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 
 import jakarta.persistence.Column;
@@ -13,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -62,5 +66,8 @@ public class Evento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sede_id", referencedColumnName = "sede_id")
     private Sede sedeId;
+
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    private List<EventoProgramacion> programaciones = new ArrayList<>();
 
 }
