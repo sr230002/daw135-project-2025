@@ -93,7 +93,7 @@ public class SecurityConfig {
 
                 OidcIdToken idToken = oidcUser.getIdToken();
                 String idTokenValue = idToken.getTokenValue();
-                logger.debug("ID Token recibido: " + idTokenValue);
+                logger.info("ID Token recibido: " + idTokenValue);
 
                 Set<GrantedAuthority> authorities = roles.stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
