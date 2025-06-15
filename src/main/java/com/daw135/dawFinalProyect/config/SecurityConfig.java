@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.daw135.dawFinalProyect.config.auth.AudienceValidator;
+import com.daw135.dawFinalProyect.service.admin.security.UsuarioService;
 
 @Configuration
 @EnableWebSecurity
@@ -55,6 +57,9 @@ public class SecurityConfig {
 
     @Value("${auth0.roles-claim}")
     private String rolesClaim;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -87,17 +92,19 @@ public class SecurityConfig {
             public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
                 OidcUser oidcUser = super.loadUser(userRequest);
                 Map<String, Object> claims = oidcUser.getClaims();
-
+                
                 List<String> roles = (List<String>) claims.getOrDefault(rolesClaim, List.of("FA"));
                 logger.debug("Roles: {}", roles);
-
+                
                 OidcIdToken idToken = oidcUser.getIdToken();
                 String idTokenValue = idToken.getTokenValue();
                 logger.info("ID Token recibido: " + idTokenValue);
-
+                
                 Set<GrantedAuthority> authorities = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
-                        .collect(Collectors.toSet());
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                .collect(Collectors.toSet());
+
+                usuarioService.sincronizarUsuarioAuthZero(claims.get("name").toString(), claims.get("email").toString(), roles.stream().findFirst().orElse("PARTICIPANTE"));
 
                 return new DefaultOidcUser(authorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
             }

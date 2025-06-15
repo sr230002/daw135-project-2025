@@ -9,4 +9,6 @@ public interface UsuarioService {
     UsuarioDTO obtenerPorId(Long id);
     String guardarUsuario(UsuarioDTO usuarioDTO);
     String eliminarUsuario(Long id);
+    
+    public UsuarioDTO sincronizarUsuarioAuthZero(String nombre, String correo, String rol);
 }
