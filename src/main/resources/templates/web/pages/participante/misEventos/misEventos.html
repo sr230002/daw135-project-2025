@@ -81,7 +81,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h6 class="text-muted mb-2">Activos</h6>
-                                    <h4 class="mb-0" th:text="${#lists.size(eventosList.?[estado == 'ACTIVO'])}">0</h4>
+                                    <h4 class="mb-0" th:text="${#lists.size(eventosList.?[estadoId == 'ACT'])}">0</h4>
                                 </div>
                                 <div class="bg-success bg-opacity-10 p-2 rounded">
                                     <i class="bi bi-check-circle text-success fs-4"></i>
@@ -96,7 +96,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h6 class="text-muted mb-2">Finalizados</h6>
-                                    <h4 class="mb-0" th:text="${#lists.size(eventosList.?[estado == 'FINALIZADO'])}">0</h4>
+                                    <h4 class="mb-0" th:text="${#lists.size(eventosList.?[estadoId == 'FIN'])}">0</h4>
                                 </div>
                                 <div class="bg-warning bg-opacity-10 p-2 rounded">
                                     <i class="bi bi-archive text-warning fs-4"></i>
@@ -119,11 +119,11 @@
                                 <span th:text="${evento.fechaFin}"></span>
                             </span>
                             <span class="event-status">
-                                <span th:if="${evento.estado == 'ACTIVO'}" 
+                                <span th:if="${evento.estadoId == 'ACT'}" 
                                       class="badge bg-success badge-custom">Activo</span>
-                                <span th:if="${evento.estado == 'FINALIZADO'}" 
+                                <span th:if="${evento.estadoId == 'FIN'}" 
                                       class="badge bg-secondary badge-custom">Finalizado</span>
-                                <span th:if="${evento.estado == 'CANCELADO'}" 
+                                <span th:if="${evento.estadoId == 'CNC'}" 
                                       class="badge bg-danger badge-custom">Cancelado</span>
                             </span>
                         </div>
