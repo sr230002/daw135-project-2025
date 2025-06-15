@@ -11,6 +11,10 @@ public class DawUtil {
 
     public static SimpleDateFormat ddMMyyyy = new SimpleDateFormat("dd/MM/yyyy");
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static String ROLE_PARTICIPANTE = "PARTICIPANTE";
+    public static String ROLE_PONENTE = "PONENTE";
+    public static String ROLE_ADMIN = "ADMIN";
+    public static String ROLE_OTRO = "OTRO";
 
     public static LocalDate dateToLocalDate(Date date) {
         return date.toInstant()

@@ -1,5 +1,6 @@
 package com.daw135.dawFinalProyect.serviceImpl.admin.security;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +96,17 @@ public class UsuarioServiceImpl implements UsuarioService {
             logger.error("Error al sincronizar usuario", e);
             return null;
         }
+    }
+
+    @Override
+    public List<UsuarioDTO> findUserByRol(String codigoRol) {
+        Optional<Rol> rol = roleRepo.findByCodigo(codigoRol);
+        if (rol.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return usuarioRepository.findByRol(rol.get()).stream()
+                .map(UsuarioMapper.INSTANCE::toUsuarioDTO)
+                .toList();
     }
 
 }
