@@ -1,17 +1,124 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/document}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/document}">
+
 <head>
     <title>Sesiones</title>
 </head>
+
 <body>
     <div layout:fragment="content">
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 text-gray-800">Listado de Sesiones</h1>
+                <h1 class="h3 text-gray-800">Gestión de Sesiones</h1>
+                <button class="btn btn-primary" onclick="mostrarFormulario()">
+                    <i class="fas fa-plus me-1"></i> Nueva Sesión
+                </button>
             </div>
+
+            <!-- Filtros -->
+            <!-- <div class="card mb-4">
+                <div class="card-body">
+                    <form id="filtroForm">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="filtroEvento" class="form-label">Evento</label>
+                                <select class="form-select" id="filtroEvento" name="eventoId">
+                                    <option value="">Todos los eventos</option>
+                                    <option th:each="evento : ${listadoEventos}" th:value="${evento.eventoId}"
+                                        th:text="${evento.titulo}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="filtroFechaInicio" class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="filtroFechaInicio" name="fechaInicio">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="filtroFechaFin" class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="filtroFechaFin" name="fechaFin">
+                            </div>
+                            <div class="col-md-2 mb-3 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary" onclick="filtrarSesiones()">
+                                    <i class="fas fa-filter me-1"></i> Filtrar
+                                </button>
+                                <button type="reset" class="btn btn-secondary ms-2">
+                                    <i class="fas fa-undo me-1"></i> Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+
+            <!-- Tabla de sesiones -->
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Sesiones Programadas</h5>
+                        <div class="text-white small"
+                            th:text="'Total: ' + ${#lists.size(listadoSesiones)} + ' sesiones'"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="tablaSesiones">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Evento</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Horario</th>
+                                    <th class="text-center">Ponente</th>
+                                    <th class="text-center">Modalidad</th>
+                                    <th class="text-center">Cupos</th>
+                                    <th class="text-center">Inscritos</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="sesion, iterStat : ${listadoSesiones}">
+                                    <td th:text="${iterStat.index + 1}">1</td>
+                                    <td th:text="${sesion.eventoTitulo}">Evento</td>
+                                    <td class="text-center"
+                                        th:text="${#temporals.format(sesion.fechaProgramacion, 'dd/MM/yyyy')}">
+                                        01/01/2023</td>
+                                    <td class="text-center"
+                                        th:text="${#temporals.format(sesion.horaInicio, 'HH:mm')} + ' - ' + ${#temporals.format(sesion.horaFin, 'HH:mm')}">
+                                        08:00 - 10:00</td>
+                                    <td th:text="${sesion.ponenteNombre}">Ponente</td>
+                                    <td class="text-center">
+                                        <span th:if="${sesion.virtual}" class="badge bg-info">Virtual</span>
+                                        <span th:unless="${sesion.virtual}" class="badge bg-success">Presencial</span>
+                                    </td>
+                                    <td class="text-center" th:text="${sesion.cupos}">50</td>
+                                    <!-- <td class="text-center" th:text="${sesion.numeroInscritos != null ? sesion.numeroInscritos : 0}">25</td> -->
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-sm btn-info"
+                                                th:attr="onclick=|cargarSesion(${sesion.eventoProgramacionId})|">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-danger"
+                                                th:attr="onclick=|eliminarSesion(${sesion.eventoProgramacionId})|">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(listadoSesiones)}">
+                                    <td colspan="9" class="text-center">No hay sesiones programadas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para crear/editar sesión -->
+            <div th:replace="~{pages/sesion/sesionForm :: formulario}"></div>
+            <script th:src="@{/js/evento/sesion.js}"></script>
         </div>
     </div>
 </body>
+
 </html>

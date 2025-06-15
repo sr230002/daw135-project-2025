@@ -17,6 +17,9 @@ public interface EventoProgramacionMapper {
     @Mapping(target = "ponenteId", source = "ponente.usuarioId")
     @Mapping(target = "fechaCreacion", source = "fechaCreacion") 
     @Mapping(target = "descripcion", ignore = true)
+    @Mapping(target = "eventoTitulo", source = "evento.titulo")
+    @Mapping(target = "eventoDescripcion", source = "evento.descripcion")
+    @Mapping(target = "ponenteNombre", source = "ponente.nombre")
     EventoProgramacionDTO toEventoProgramacionDTO(EventoProgramacion eventoProgramacion);
     
     @Mapping(target = "evento.eventoId", source = "eventoId")
@@ -28,6 +31,10 @@ public interface EventoProgramacionMapper {
     @Mapping(target = "descripcion", expression = "java(formatDescripcion(eventoProgramacion))")
     @Mapping(target = "eventoId", ignore = true)
     @Mapping(target = "ponenteId", ignore = true)
+    @Mapping(target = "fechaProgramacion", ignore = true)
+    @Mapping(target = "eventoTitulo", ignore = true)
+    @Mapping(target = "eventoDescripcion", ignore = true)
+    @Mapping(target = "ponenteNombre", ignore = true)
     EventoProgramacionDTO toEventoProgramacionDTOCmb(EventoProgramacion eventoProgramacion);
 
     default String formatDescripcion(EventoProgramacion eventoProgramacion) {

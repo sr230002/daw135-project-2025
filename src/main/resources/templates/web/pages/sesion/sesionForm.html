@@ -1,0 +1,105 @@
+<div th:fragment="formulario">
+    <div class="modal fade" id="sesionModal" tabindex="-1" aria-labelledby="sesionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="sesionModalLabel">Datos de la Sesión</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form id="sesionForm" th:action="@{/sesiones/guardar}" th:object="${sesion}" method="post">
+                    <input type="hidden" id="eventoProgramacionId" name="eventoProgramacionId">
+
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="eventoId" class="form-label">Evento <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="eventoId" name="eventoId" required>
+                                    <option value="">Seleccione un evento</option>
+                                    <option th:each="evento : ${listadoEventos}" th:value="${evento.eventoId}"
+                                        th:text="${evento.titulo}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ponenteId" class="form-label">Ponente <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="ponenteId" name="ponenteId" required>
+                                    <option value="">Seleccione un ponente</option>
+                                    <option th:each="ponente : ${listadoPonentes}" th:value="${ponente.usuarioId}"
+                                        th:text="${ponente.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="fechaProgramacion" class="form-label">Fecha <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="fechaProgramacion" name="fechaProgramacion"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="horaInicio" class="form-label">Hora Inicio <span
+                                        class="text-danger">*</span></label>
+                                <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="horaFin" class="form-label">Hora Fin <span
+                                        class="text-danger">*</span></label>
+                                <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" >
+                                    Modalidad 
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="d-flex gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="virtual" id="virtualSi"
+                                            value="true">
+                                        <label class="form-check-label" for="virtualSi">Virtual</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="virtual" id="virtualNo"
+                                            value="false" checked>
+                                        <label class="form-check-label" for="virtualNo">Presencial</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cupos" class="form-label">Cupos</label>
+                                <input type="number" class="form-control" id="cupos" name="cupos" min="1"
+                                    placeholder="Opcional">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3" id="virtualFields">
+                            <div class="col-md-12">
+                                <label for="enlace" class="form-label">Enlace de la sesión</label>
+                                <input type="url" class="form-control" id="enlace" name="enlace"
+                                    placeholder="https://...">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3" id="presencialFields">
+                            <div class="col-md-12">
+                                <label for="lugar" class="form-label">Lugar</label>
+                                <input type="text" class="form-control" id="lugar" name="lugar"
+                                    placeholder="Dirección o aula">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Sesión</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

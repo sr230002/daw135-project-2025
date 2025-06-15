@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.service.eventos.EventoProgramacionService;
+import com.daw135.dawFinalProyect.service.eventos.EventoService;
 
 @Controller
 @RequestMapping("/sesiones")
@@ -25,8 +27,16 @@ public class EventoProgramacionController {
     @Autowired
     private EventoProgramacionService eventoProgramacionService;
 
+    @Autowired
+    private EventoService eventoService;
+
     @GetMapping({ "", "/" })
-    public String obtenerVistaEvento(Model model) {
+    public String view(Model model) {
+        List<EventoProgramacionDTO> listaEventoProgramacion = eventoProgramacionService.listarTodos();
+        List<EventoDTO> listaEvento = eventoService.findAll();
+
+        model.addAttribute("listadoEventos", listaEvento);
+        model.addAttribute("listadoSesiones", listaEventoProgramacion);
         return "pages/sesion/sesion";
     }
 

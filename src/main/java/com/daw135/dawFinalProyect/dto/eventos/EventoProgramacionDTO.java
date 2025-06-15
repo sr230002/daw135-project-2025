@@ -28,5 +28,8 @@ public class EventoProgramacionDTO {
     private String enlace;
     private Long eventoId;
     private Long ponenteId;
+    private String ponenteNombre;
     private String descripcion;
+    private String eventoTitulo;
+    private String eventoDescripcion;
 }
