@@ -312,7 +312,7 @@
 
                                                 <!-- Botón de acción -->
                                                 <div th:if="${inscripcion.estadoId == 'INS'}">
-                                                    <button th:if="${inscripcion.asistenciaConfirmada == null}"
+                                                    <button th:if="${inscripcion.asistenciaConfirmada == false}"
                                                         class="btn btn-success btn-sm">
                                                         <i class="bi bi-check2-circle me-1"></i> Marcar Asistencia
                                                     </button>
