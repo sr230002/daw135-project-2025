@@ -204,17 +204,18 @@
                             <span class="text-muted small"
                                 th:text="${sesion.horaInicio} + ' - ' + ${sesion.horaFin}">Horario</span>
                         </div>
-                        <div class="ms-md-auto mt-2 mt-md-0">
+                        <div class="ms-md-auto mt-2 mt-md-0 me-1 d-flex align-items-center">
                             <span th:if="${sesion.virtual}" class="badge virtual-badge">
                                 <i class="bi bi-laptop"></i> Virtual
                             </span>
                             <span th:unless="${sesion.virtual}" class="badge presential-badge">
                                 <i class="bi bi-geo-alt"></i> Presencial
                             </span>
-                            <span class="badge bg-primary">
+
+                            <!-- <span class="badge bg-primary">
                                 <i class="bi bi-people"></i>
                                 <span th:text="${sesion.inscripciones.size()}">0</span> participantes
-                            </span>
+                            </span> -->
                         </div>
                     </div>
                 </button>
