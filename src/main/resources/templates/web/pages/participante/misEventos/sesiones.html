@@ -1,0 +1,338 @@
+<div th:fragment="allSesiones">
+    <!-- Header con acciones de admin -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="bi bi-list-ul text-primary me-2"></i>Sesiones Programadas
+            <span class="badge bg-primary ms-2" th:text="${evento.sesiones.size()}">0</span>
+        </h2>
+        <div>
+            <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#exportModal">
+                <i class="bi bi-download me-1"></i> Exportar Todo
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal para exportar -->
+    <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Exportar Sesiones</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Formato</label>
+                        <select class="form-select">
+                            <option>PDF</option>
+                            <option>Excel</option>
+                            <option>CSV</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rango de fechas</label>
+                        <input type="text" class="form-control daterange" placeholder="Seleccionar rango">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Generar Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listado de sesiones -->
+    <div class="accordion mb-5" id="sessionsAccordion">
+        <div class="accordion-item session-card mb-3" th:each="sesion, iterStat : ${evento.sesiones}">
+            <h3 class="accordion-header" th:id="'heading' + ${iterStat.index}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    th:data-bs-target="'#collapse' + ${iterStat.index}" aria-expanded="false"
+                    th:aria-controls="'collapse' + ${iterStat.index}">
+                    <div class="d-flex flex-column flex-md-row w-100 align-items-center">
+                        <div class="me-md-4 flex-grow-1">
+                            <span class="d-block fw-bold" th:text="${sesion.fechaProgramacion}">Fecha</span>
+                            <span class="text-muted small"
+                                th:text="${sesion.horaInicio} + ' - ' + ${sesion.horaFin}">Horario</span>
+                        </div>
+                        <div class="d-flex gap-2 mt-2 mt-md-0">
+                            <span th:if="${sesion.virtual}" class="badge virtual-badge">
+                                <i class="bi bi-laptop"></i> Virtual
+                            </span>
+                            <span th:unless="${sesion.virtual}" class="badge presential-badge">
+                                <i class="bi bi-geo-alt"></i> Presencial
+                            </span>
+                            <span class="badge bg-primary">
+                                <i class="bi bi-people"></i>
+                                <span th:text="${sesion.inscripciones.size()}">0</span>
+                            </span>
+                            <a th:href="@{'/sesiones/' + ${sesion.eventoProgramacionId} + '/export'}"
+                                class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-file-earmark-arrow-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                </button>
+            </h3>
+            <div th:id="'collapse' + ${iterStat.index}" class="accordion-collapse collapse"
+                th:aria-labelledby="'heading' + ${iterStat.index}" data-bs-parent="#sessionsAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <i class="bi bi-info-circle me-2"></i>Detalles de la Sesión
+                            </h5>
+                            <div th:if="${sesion.virtual}">
+                                <p class="mb-1"><strong>Enlace:</strong></p>
+                                <a th:href="${sesion.enlace}" target="_blank" th:text="${sesion.enlace}">Enlace</a>
+                            </div>
+                            <div th:unless="${sesion.virtual}">
+                                <p class="mb-1"><strong>Lugar:</strong></p>
+                                <p th:text="${sesion.lugar}">Lugar</p>
+                            </div>
+                            <p class="mb-1"><strong>Cupos:</strong>
+                                <span th:text="${sesion.cupos != null} ? ${sesion.cupos} : 'Sin límite'"></span>
+                            </p>
+                            <p class="mb-1"><strong>Ponente:</strong></p>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-person-circle fs-4"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0 fw-bold" th:text="${sesion.ponenteNombre}">Nombre ponente</p>
+                                    <p class="mb-0 text-muted small" th:text="${sesion.ponenteCorreo}">
+                                        correo@ejemplo.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-people-fill me-2"></i>Participantes
+                                    <span class="badge bg-primary ms-2"
+                                        th:text="${sesion.inscripciones.size()}">0</span>
+                                </h5>
+                                <button th:href="@{'/sesiones/' + ${sesion.eventoProgramacionId} + '/asistencias'}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-clipboard-check me-1"></i> Registrar Asistencias
+                                </button>
+                            </div>
+
+                            <div th:if="${sesion.inscripciones.isEmpty()}">
+                                <div class="alert alert-info mb-0">
+                                    No hay participantes inscritos en esta sesión.
+                                </div>
+                            </div>
+
+                            <div th:unless="${sesion.inscripciones.isEmpty()}" class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Participante</th>
+                                            <th>Estado</th>
+                                            <th>Asistencia</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="inscripcion : ${sesion.inscripciones}">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-person-circle me-2"></i>
+                                                    <div>
+                                                        <div th:text="${inscripcion.participanteNombre}">Nombre</div>
+                                                        <small class="text-muted"
+                                                            th:text="${inscripcion.participanteCorreo}">correo</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span th:if="${inscripcion.estadoId == 'CFM'}"
+                                                    class="badge bg-success">Confirmado</span>
+                                                <span th:if="${inscripcion.estadoId == 'INS'}"
+                                                    class="badge bg-warning text-dark">Inscrito</span>
+                                                <span th:if="${inscripcion.estadoId == 'CNC'}"
+                                                    class="badge bg-danger">Cancelado</span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${inscripcion.asistenciaConfirmada}"
+                                                    class="badge bg-success">Asistió</span>
+                                                <span th:unless="${inscripcion.asistenciaConfirmada}"
+                                                    class="badge bg-secondary">Pendiente</span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <button class="btn btn-outline-primary"
+                                                        th:attr="data-bs-target='#editInscripcionModal'+${inscripcion.eventoRegistroId}"
+                                                        data-bs-toggle="modal">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <a th:href="@{'/inscripciones/' + ${inscripcion.eventoRegistroId} + '/confirmar'}"
+                                                        class="btn btn-outline-success">
+                                                        <i class="bi bi-check2"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="misSesiones">
+    <!-- Sesiones del evento -->
+    <h2 class="mb-4">
+        <i class="bi bi-list-ul text-primary me-2"></i>Sesiones Programadas
+        <span class="badge bg-primary ms-2" th:text="${evento.sesiones.size()}">0</span>
+    </h2>
+
+    <div class="accordion mb-5" id="sessionsAccordion">
+        <div class="accordion-item session-card mb-3" th:each="sesion, iterStat : ${evento.sesiones}">
+            <h3 class="accordion-header" th:id="'heading' + ${iterStat.index}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    th:data-bs-target="'#collapse' + ${iterStat.index}" aria-expanded="false"
+                    th:aria-controls="'collapse' + ${iterStat.index}">
+                    <div class="d-flex flex-column flex-md-row w-100">
+                        <div class="me-md-4">
+                            <span class="d-block fw-bold" th:text="${sesion.fechaProgramacion}">Fecha</span>
+                            <span class="text-muted small"
+                                th:text="${sesion.horaInicio} + ' - ' + ${sesion.horaFin}">Horario</span>
+                        </div>
+                        <div class="ms-md-auto mt-2 mt-md-0">
+                            <span th:if="${sesion.virtual}" class="badge virtual-badge">
+                                <i class="bi bi-laptop"></i> Virtual
+                            </span>
+                            <span th:unless="${sesion.virtual}" class="badge presential-badge">
+                                <i class="bi bi-geo-alt"></i> Presencial
+                            </span>
+                            <span class="badge bg-primary">
+                                <i class="bi bi-people"></i>
+                                <span th:text="${sesion.inscripciones.size()}">0</span> participantes
+                            </span>
+                        </div>
+                    </div>
+                </button>
+            </h3>
+            <div th:id="'collapse' + ${iterStat.index}" class="accordion-collapse collapse"
+                th:aria-labelledby="'heading' + ${iterStat.index}" data-bs-parent="#sessionsAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <i class="bi bi-info-circle me-2"></i>Detalles de la Sesión
+                            </h5>
+                            <div th:if="${sesion.virtual}">
+                                <p class="mb-1"><strong>Enlace:</strong></p>
+                                <a th:href="${sesion.enlace}" target="_blank" th:text="${sesion.enlace}">Enlace</a>
+                            </div>
+                            <div th:unless="${sesion.virtual}">
+                                <p class="mb-1"><strong>Lugar:</strong></p>
+                                <p th:text="${sesion.lugar}">Lugar</p>
+                            </div>
+                            <p class="mb-1"><strong>Cupos:</strong>
+                                <span th:text="${sesion.cupos != null} ? ${sesion.cupos} : 'Sin límite'"></span>
+                            </p>
+                            <p class="mb-1"><strong>Ponente:</strong></p>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-person-circle fs-4"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0 fw-bold" th:text="${sesion.ponenteNombre}">Nombre ponente</p>
+                                    <p class="mb-0 text-muted small" th:text="${sesion.ponenteCorreo}">
+                                        correo@ejemplo.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="mb-0">
+                                <i class="bi bi-person-check me-2"></i>Mi Inscripción
+                            </h5>
+                            <div th:if="${sesion.inscripciones.isEmpty()}">
+                                <div class="alert alert-info mb-0">
+                                    No estás inscrito en esta sesión.
+                                </div>
+                            </div>
+                            <div th:unless="${sesion.inscripciones.isEmpty()}" class="participants-container">
+                                <div th:each="inscripcion : ${sesion.inscripciones}"
+                                    class="d-flex align-items-center mb-3">
+
+                                
+
+                                    <div class="flex-grow-1">
+                                        <p class="mb-1"><strong>Estado:</strong></p>
+
+                                        <!-- Badge de estado -->
+                                        <div class="mb-2">
+                                            <span th:switch="${inscripcion.estadoId}">
+                                                <span th:case="'CFM'" class="badge bg-success fs-6">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    <span th:text="${inscripcion.estadoDesc}">Confirmado</span>
+                                                </span>
+                                                <span th:case="'INS'" class="badge bg-warning text-dark fs-6">
+                                                    <i class="bi bi-hourglass me-1"></i>
+                                                    <span th:text="${inscripcion.estadoDesc}">Pendiente</span>
+                                                </span>
+                                                <span th:case="'CNC'" class="badge bg-danger fs-6">
+                                                    <i class="bi bi-x-circle me-1"></i>
+                                                    <span th:text="${inscripcion.estadoDesc}">Cancelado</span>
+                                                </span>
+                                                <span th:case="*" class="badge bg-secondary fs-6">
+                                                    <i class="bi bi-question-circle me-1"></i>
+                                                    <span th:text="${inscripcion.estadoDesc}">Desconocido</span>
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                        <!-- Estado de asistencia -->
+                                        <div class="mb-3">
+                                            <p class="mb-1"><strong>Asistencia:</strong></p>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <!-- Estado de asistencia -->
+                                                <span th:switch="${inscripcion.asistenciaConfirmada}">
+                                                    <span th:case="true" class="badge bg-success fs-6">
+                                                        <i class="bi bi-check2-circle me-1"></i> Confirmada
+                                                    </span>
+                                                    <span th:case="false" class="badge bg-secondary fs-6">
+                                                        <i class="bi bi-dash-circle me-1"></i> Pendiente
+                                                    </span>
+                                                    <span th:case="*" class="badge bg-light text-dark fs-6">
+                                                        <i class="bi bi-question-circle me-1"></i> No registrada
+                                                    </span>
+                                                </span>
+
+
+                                                <!-- Botón de acción -->
+                                                <div th:if="${inscripcion.estadoId == 'INS'}">
+                                                    <button th:if="${inscripcion.asistenciaConfirmada == null}"
+                                                        class="btn btn-success btn-sm">
+                                                        <i class="bi bi-check2-circle me-1"></i> Marcar Asistencia
+                                                    </button>
+                                                    <button th:if="${inscripcion.asistenciaConfirmada == true}"
+                                                        class="btn btn-outline-success btn-sm" disabled>
+                                                        <i class="bi bi-check2-all me-1"></i> Asistencia Confirmada
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

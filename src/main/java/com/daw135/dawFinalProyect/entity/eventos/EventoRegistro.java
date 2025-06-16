@@ -53,5 +53,9 @@ public class EventoRegistro {
     @JoinColumn(name = "estado", referencedColumnName = "estado")
     private Estado estado;
 
+    @Column(name = "asistencia", nullable = true, length = 3)
+    private String asistencia;
+    @Column(name = "asistencia_confirmada", nullable = false)
+    private Boolean asistenciaConfirmada;
 
 }

@@ -15,14 +15,19 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
+import com.daw135.dawFinalProyect.mapper.eventos.EventoProgramacionMapper;
+import com.daw135.dawFinalProyect.mapper.eventos.EventoRegistroMapper;
 import com.daw135.dawFinalProyect.repository.admin.SedeRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepository;
+import com.daw135.dawFinalProyect.repository.eventos.EventoRegistroRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRepository;
 import com.daw135.dawFinalProyect.repository.eventos.TipoEventoRepository;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
@@ -42,6 +47,9 @@ public class EventoServiceImpl implements EventoService {
 
     @Autowired
     private EventoProgramacionRepository eventoProgramacionRepository;
+
+    @Autowired
+    private EventoRegistroRepository eventoRegistroRepository;
 
     @Override
     public List<EventoDTO> findAll() {
@@ -130,6 +138,36 @@ public class EventoServiceImpl implements EventoService {
         return AuthUtils.getEmail().map(email -> eventoRepository.findEventosByParticipanteCorreo(email).stream()
                 .map(EventoMapper.INSTANCE::toEventoDTO)
                 .toList()).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public EventoDTO obtenerEventoInformacionByEventoIdAndCorreo(Long eventoId) {
+        String email = AuthUtils.getEmail().orElse(null);
+        return eventoRepository.findById(eventoId)
+                .map(evento -> {
+                    EventoDTO eventoDTO = EventoMapper.INSTANCE.toEventoDTO(evento);
+
+                    List<EventoProgramacionDTO> sesiones = eventoProgramacionRepository
+                            .findByEventoIdAndParticipanteCorreo(evento.getEventoId(), email).stream()
+                            .map(sesion -> {
+                                EventoProgramacionDTO sesionDTO = EventoProgramacionMapper.INSTANCE
+                                        .toEventoProgramacionDTO(sesion);
+
+                                List<EventoRegistroDTO> inscripciones = eventoRegistroRepository
+                                        .findBySesionIdAndParticipanteCorreo(sesion.getEventoProgramacionId(), email)
+                                        .stream()
+                                        .map(EventoRegistroMapper.INSTANCE::toEventoRegistroDTO)
+                                        .toList();
+
+                                sesionDTO.setInscripciones(inscripciones);
+                                return sesionDTO;
+                            })
+                            .toList();
+
+                    eventoDTO.setSesiones(sesiones);
+                    return eventoDTO;
+                })
+                .orElse(null);
     }
 
 }

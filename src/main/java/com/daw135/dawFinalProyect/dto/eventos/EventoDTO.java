@@ -1,6 +1,8 @@
 
 package com.daw135.dawFinalProyect.dto.eventos;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +28,6 @@ public class EventoDTO {
     private Long sedeId;
     private String sedeNombre;
     private String urlImagen;
+
+    private List<EventoProgramacionDTO> sesiones;
 }

@@ -146,7 +146,7 @@
                                     </small>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <a th:href="@{'/eventos/' + ${evento.eventoId}}" class="btn btn-outline-primary btn-sm">
+                                    <a th:href="@{'/participante/detalleEvento/' + ${evento.eventoId}}" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-eye-fill me-1"></i> Ver Detalles
                                     </a>
                                 </div>
@@ -171,43 +171,6 @@
             </div>
         </div>
 
-        <!-- Script para filtrado y búsqueda -->
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            document.addEventListener('DOMContentLoaded', function() {
-                const searchInput = document.getElementById('searchInput');
-                const filterSelect = document.getElementById('filterSelect');
-                const eventCards = document.querySelectorAll('#eventsContainer .col');
-                
-                function filterEvents() {
-                    const searchTerm = searchInput.value.toLowerCase();
-                    const filterValue = filterSelect.value;
-                    
-                    eventCards.forEach(card => {
-                        const title = card.querySelector('.card-title').textContent.toLowerCase();
-                        const status = card.querySelector('.event-status .badge').textContent.toLowerCase();
-                        const matchesSearch = title.includes(searchTerm);
-                        let matchesFilter = true;
-                        
-                        if (filterValue === 'active') {
-                            matchesFilter = status === 'activo';
-                        } else if (filterValue === 'finished') {
-                            matchesFilter = status === 'finalizado';
-                        }
-                        
-                        if (matchesSearch && matchesFilter) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                }
-                
-                searchInput.addEventListener('input', filterEvents);
-                filterSelect.addEventListener('change', filterEvents);
-            });
-            /*]]>*/
-        </script>
     </div>
 </body>
 </html>

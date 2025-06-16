@@ -1,8 +1,6 @@
 package com.daw135.dawFinalProyect.dto.eventos;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -18,18 +16,22 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EventoProgramacionDTO {
     private Long eventoProgramacionId;
-    private LocalDateTime fechaCreacion; 
-    private LocalDate fechaProgramacion;
-    private LocalTime horaInicio;
-    private LocalTime horaFin;
+    private String fechaCreacion;
+    private String fechaProgramacion;
+    private String horaInicio;
+    private String horaFin;
     private Boolean virtual;
     private Integer cupos;
     private String lugar;
     private String enlace;
     private Long eventoId;
-    private Long ponenteId;
-    private String ponenteNombre;
-    private String descripcion;
     private String eventoTitulo;
     private String eventoDescripcion;
+    private String descripcion; // sirve para concatenar feha, y horas
+
+    private Long ponenteId;
+    private String ponenteNombre;
+    private String ponenteCorreo;
+
+    private List<EventoRegistroDTO> inscripciones;
 }

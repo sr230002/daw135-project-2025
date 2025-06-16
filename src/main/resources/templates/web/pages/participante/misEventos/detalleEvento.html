@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/document}">
+
+<head>
+    <title>Detalle del Evento</title>
+    <style>
+        .event-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .event-img {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .session-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #0d6efd;
+        }
+
+        .session-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .participant-badge {
+            font-size: 0.85rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .virtual-badge {
+            background-color: #6f42c1;
+        }
+
+        .presential-badge {
+            background-color: #20c997;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <!-- Encabezado con imagen del evento -->
+        <div class="event-header" th:style="'--bg-image: url(' + ${evento.urlImagen} + ')'">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <img th:src="${evento.urlImagen}" class="event-img img-fluid"
+                            th:onerror="this.src='https://www.laprensagrafica.com/__export/1716568650267/sites/prensagrafica/img/2024/05/24/doge.png_1758632411.png'"
+                            alt="Imagen del evento">
+                    </div>
+                    <div class="col-md-9">
+                        <h1 class="display-5 fw-bold" th:text="${evento.titulo}">Título del Evento</h1>
+                        <p class="lead" th:text="${evento.descripcionCorta}">Descripción corta del evento</p>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <span class="badge bg-primary">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                <span th:text="${evento.fechaInicio} + ' a ' + ${evento.fechaFin}">Fechas</span>
+                            </span>
+                            <span class="badge bg-info text-dark">
+                                <i class="bi bi-bookmark me-1"></i>
+                                <span th:text="${evento.tipoEvento}">Tipo</span>
+                            </span>
+                            <span class="badge bg-success" th:if="${evento.estado == 'ACTIVO'}">
+                                <i class="bi bi-check-circle me-1"></i> Activo
+                            </span>
+                            <span class="badge bg-secondary" th:if="${evento.estado == 'FINALIZADO'}">
+                                <i class="bi bi-archive me-1"></i> Finalizado
+                            </span>
+                            <span class="badge bg-warning text-dark" th:if="${evento.estado == 'CANCELADO'}">
+                                <i class="bi bi-exclamation-triangle me-1"></i> Cancelado
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mb-5">
+            <!-- Descripción completa -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="bi bi-info-circle text-primary me-2"></i>Descripción del Evento
+                    </h3>
+                    <p class="card-text" th:text="${evento.descripcion}">Descripción completa del evento...</p>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="info-icon bg-primary bg-opacity-10 rounded-circle">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Sede</h6>
+                                    <p class="text-muted mb-0" th:text="${evento.sedeNombre}">Nombre sede</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="info-icon bg-success bg-opacity-10 rounded-circle">
+                                    <i class="bi bi-calendar-check-fill"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Estado</h6>
+                                    <p class="text-muted mb-0" th:text="${evento.estado}">Estado</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="info-icon bg-info bg-opacity-10 rounded-circle">
+                                    <i class="bi bi-tag-fill"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Tipo</h6>
+                                    <p class="text-muted mb-0" th:text="${evento.tipoEvento}">Tipo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="~{pages/participante/misEventos/sesiones :: allSesiones}" sec:authorize="!hasRole('PARTICIPANTE')"></div>
+            <div th:replace="~{pages/participante/misEventos/sesiones :: misSesiones}" sec:authorize="hasRole('PARTICIPANTE')"></div>
+
+            
+        </div>
+    </div>
+</body>
+
+</html>

@@ -18,10 +18,14 @@ public class EventoRegistroDTO {
     private Long sesionId;
     
     private Long participanteId;
-    private String nombreParticipante;
+    private String participanteNombre;
+    private String participanteCorreo;
 
     private String estadoId;
-    private String estado;
+    private String estadoDesc;
+    
+    private String asistencia;
+    private Boolean asistenciaConfirmada;
 
     private String fechaProgramacion;
     private String horaInicio;
@@ -31,5 +35,6 @@ public class EventoRegistroDTO {
     private String descripcionEvento;
     private String descripcionCortaEvento;
     private Long eventoId;
+
 
 }
