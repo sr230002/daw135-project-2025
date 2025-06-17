@@ -16,5 +16,6 @@ public interface EventoService {
     public List<EventoDTO> findAllMisEventos();
     public EventoDTO obtenerEventoInformacionByEventoIdAndCorreo(Long eventoId);
     public boolean marcarAsistencia(Long eventoRegistroId); 
+    public List<EventoDTO> findEventosDisponibles();
 
 }

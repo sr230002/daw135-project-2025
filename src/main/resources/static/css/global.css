@@ -47,10 +47,52 @@ footer {
 
 
 #loadingModal {
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente */
 }
 
 #loadingModal .modal-content {
     box-shadow: none;
     background: transparent;
 }
+
+
+
+
+/* PARA CARD DE EVENTOS*/
+.event-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.badge-custom {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+}
+
+.event-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.event-date {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* PARA CARD DE EVENTOS*/

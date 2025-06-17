@@ -180,4 +180,11 @@ public class EventoServiceImpl implements EventoService {
         }).orElse(false);
     }
 
+    @Override
+    public List<EventoDTO> findEventosDisponibles() {
+        return AuthUtils.getEmail().map(email -> eventoRepository.findEventosDisponibles(email).stream()
+                .map(EventoMapper.INSTANCE::toEventoDTO)
+                .toList()).orElse(Collections.emptyList());
+    }
+
 }

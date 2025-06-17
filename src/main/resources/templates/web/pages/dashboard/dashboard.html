@@ -8,48 +8,65 @@
 
 <body>
     <div layout:fragment="content">
-        <div class="d-flex justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        </div>
-        <!-- Resumen de eventos -->
-        <div class="row">
-            <div class="col-md-2">
-                <div class="card border-left-info shadow h-100">
-                    <div class="card-body">
-                        <div class="text-xs font-weight-bold text-info mb-1">
-                            Total de Eventos
+        <div class="container py-4">
+            <!-- Header con título y filtros -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+                <h1 class="h2 text-primary mb-3 mb-md-0">
+                    <i class="bi bi-calendar-event me-2"></i>Eventos Disponibles
+                </h1>
+            </div>
+            <!-- Listado de eventos en cards -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="eventsContainer">
+                <div class="col" th:each="evento, iterStat : ${eventosList}">
+                    <div class="card event-card h-100">
+                        <div class="position-relative">
+                            <img th:src="${evento.urlImagen != null} ? ${evento.urlImagen} : 'https://www.laprensagrafica.com/__export/1716568650267/sites/prensagrafica/img/2024/05/24/doge.png_1758632411.png'"
+                                class="card-img-top event-img" alt="Imagen del evento">
+                            <span class="event-date position-absolute bottom-0 start-0 m-2">
+                                <span th:text="${evento.fechaInicio}"></span> -
+                                <span th:text="${evento.fechaFin}"></span>
+                            </span>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosTotales}">0</div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0" th:text="${evento.titulo}">Título del Evento</h5>
+                                <span class="badge bg-info text-dark" th:text="${evento.tipoEvento}">Tipo</span>
+                            </div>
+                            <p class="card-text text-muted small" th:text="${evento.descripcionCorta}">Descripción corta
+                                del evento que resume su contenido.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-geo-alt"></i>
+                                        <span th:text="${evento.sedeNombre}">Sede</span>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-bookmark"></i>
+                                        <span th:text="${evento.estado}">Estado</span>
+                                    </small>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a th:href="@{'/participante/detalleEvento/' + ${evento.eventoId}}"
+                                        class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-eye-fill me-1"></i> Ver Detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card border-left-success shadow h-100">
-                    <div class="card-body">
-                        <div class="text-xs font-weight-bold text-success mb-1">
-                            Eventos Activos
+
+                <!-- Mensaje cuando no hay eventos -->
+                <div class="col-12" th:if="${#lists.isEmpty(eventosList)}">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="bi bi-calendar-x text-muted fs-1"></i>
+                            <h5 class="mt-3 text-muted">No tienes eventos inscritos</h5>
+                            <p class="text-muted">Parece que aún no te has registrado en ningún evento.</p>
+                            <a href="/eventos" class="btn btn-primary mt-2">
+                                <i class="bi bi-search me-1"></i> Explorar Eventos
+                            </a>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosActivos}">0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card border-left-warning shadow h-100">
-                    <div class="card-body">
-                        <div class="text-xs font-weight-bold text-warning mb-1">
-                            Eventos Finalizados
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosFinalizados}">0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card border-left-danger shadow h-100">
-                    <div class="card-body">
-                        <div class="text-xs font-weight-bold text-danger mb-1">
-                            Eventos Cancelados
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${eventosCancelados}">0</div>
                     </div>
                 </div>
             </div>

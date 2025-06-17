@@ -18,4 +18,14 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
             "WHERE r.participanteId.correo = :correo")
     List<Evento> findEventosByParticipanteCorreo(@Param("correo") String correo);
 
+    @Query("""
+            SELECT DISTINCT e FROM Evento e
+            JOIN e.programaciones p
+            JOIN p.registros r
+            WHERE 
+                r.participanteId.correo != :correo
+                AND e.estado.estado = 'ACT'
+    """)
+    List<Evento> findEventosDisponibles(@Param("correo") String correo);
+
 }
