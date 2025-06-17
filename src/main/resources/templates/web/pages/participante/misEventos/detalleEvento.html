@@ -101,56 +101,94 @@
             </div>
         </div>
 
-        <div class="container mb-5">
-            <!-- Descripción completa -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        <i class="bi bi-info-circle text-primary me-2"></i>Descripción del Evento
-                    </h3>
-                    <p class="card-text" th:text="${evento.descripcion}">Descripción completa del evento...</p>
-                    <div class="row mt-4">
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="info-icon bg-primary bg-opacity-10 rounded-circle">
-                                    <i class="bi bi-geo-alt-fill"></i>
+        <div class="card mb-4">
+            <div class="card-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs mb-3" id="eventTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="descripcion-tab" data-bs-toggle="tab"
+                            data-bs-target="#descripcion" type="button" role="tab" aria-controls="descripcion"
+                            aria-selected="true">
+                            Descripción del Evento
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="anexos-tab" data-bs-toggle="tab" data-bs-target="#anexos"
+                            type="button" role="tab" aria-controls="anexos" aria-selected="false">
+                            Anexos
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content" id="eventTabsContent">
+                    <!-- Descripción Tab -->
+                    <div class="tab-pane fade show active" id="descripcion" role="tabpanel"
+                        aria-labelledby="descripcion-tab">
+                        <h3 class="card-title mb-3">
+                            <i class="bi bi-info-circle text-primary me-2"></i>Descripción del Evento
+                        </h3>
+                        <p class="card-text" th:text="${evento.descripcion}">Descripción completa del evento...</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon bg-primary bg-opacity-10 rounded-circle">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">Sede</h6>
+                                        <p class="text-muted mb-0" th:text="${evento.sedeNombre}">Nombre sede</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h6 class="mb-0">Sede</h6>
-                                    <p class="text-muted mb-0" th:text="${evento.sedeNombre}">Nombre sede</p>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon bg-success bg-opacity-10 rounded-circle">
+                                        <i class="bi bi-calendar-check-fill"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">Estado</h6>
+                                        <p class="text-muted mb-0" th:text="${evento.estado}">Estado</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon bg-info bg-opacity-10 rounded-circle">
+                                        <i class="bi bi-tag-fill"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">Tipo</h6>
+                                        <p class="text-muted mb-0" th:text="${evento.tipoEvento}">Tipo</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="info-icon bg-success bg-opacity-10 rounded-circle">
-                                    <i class="bi bi-calendar-check-fill"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Estado</h6>
-                                    <p class="text-muted mb-0" th:text="${evento.estado}">Estado</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="info-icon bg-info bg-opacity-10 rounded-circle">
-                                    <i class="bi bi-tag-fill"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Tipo</h6>
-                                    <p class="text-muted mb-0" th:text="${evento.tipoEvento}">Tipo</p>
-                                </div>
-                            </div>
-                        </div>
+
+                        <!-- Sesiones -->
+                        <div th:replace="~{pages/participante/misEventos/eventosSesiones :: allSesiones}"
+                            sec:authorize="!hasRole('PARTICIPANTE')"></div>
+                        <div th:replace="~{pages/participante/misEventos/eventosSesiones :: misSesiones}"
+                            sec:authorize="hasRole('PARTICIPANTE')"></div>
+                    </div>
+
+                    <!-- Anexos Tab -->
+                    <div class="tab-pane fade" id="anexos" role="tabpanel" aria-labelledby="anexos-tab">
+                        <h3 class="card-title mb-3">
+                            <i class="bi bi-paperclip text-secondary me-2"></i>Anexos
+                        </h3>
+                        <p class="card-text text-muted">
+                            Aquí puedes mostrar los anexos del evento (documentos, imágenes, enlaces, etc.).
+                        </p>
+                        <!-- Aquí podrías iterar anexos si los tienes, por ejemplo:
+                        <ul>
+                            <li th:each="anexo : ${evento.anexos}" th:text="${anexo.nombre}"></li>
+                        </ul>
+                        -->
                     </div>
                 </div>
             </div>
-
-            <div th:replace="~{pages/participante/misEventos/eventosSesiones :: allSesiones}" sec:authorize="!hasRole('PARTICIPANTE')"></div>
-            <div th:replace="~{pages/participante/misEventos/eventosSesiones :: misSesiones}" sec:authorize="hasRole('PARTICIPANTE')"></div>
-
-            
         </div>
     </div>
 </body>

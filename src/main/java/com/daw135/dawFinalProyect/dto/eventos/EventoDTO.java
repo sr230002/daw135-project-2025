@@ -3,6 +3,8 @@ package com.daw135.dawFinalProyect.dto.eventos;
 
 import java.util.List;
 
+import com.daw135.dawFinalProyect.dto.adjunto.AdjuntoDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +34,5 @@ public class EventoDTO {
     private String urlImagen;
 
     private List<EventoProgramacionDTO> sesiones;
+    private List<AdjuntoDTO> adjuntos;
 }
