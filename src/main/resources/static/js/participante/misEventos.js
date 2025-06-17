@@ -205,8 +205,27 @@ function generarReporte(eventoId) {
             return response.text();
         })
         .then(base64 => {
-            const url = 'data:application/pdf;base64,' + base64;
-            window.open(url, '_blank');
+            // const url = 'data:application/pdf;base64,' + base64;
+            // window.open(url, '_blank');
+            
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            
+            const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `reporte_asistencia_evento_${eventoId}.xlsx`; 
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         })
         .catch(error => {
             console.error('Error:', error);

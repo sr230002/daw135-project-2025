@@ -1,8 +1,7 @@
 package com.daw135.dawFinalProyect.controller.eventos;
 
-import java.util.HashMap;
+import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +26,7 @@ import com.daw135.dawFinalProyect.dto.eventos.TipoEventoDTO;
 import com.daw135.dawFinalProyect.service.admin.SedeService;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 import com.daw135.dawFinalProyect.service.eventos.TipoEventoService;
-import com.daw135.dawFinalProyect.service.report.JasperReportService;
+import com.daw135.dawFinalProyect.service.report.ExcelService;
 
 @Controller
 @RequestMapping("/eventos")
@@ -45,7 +44,7 @@ public class EventoController {
     private SedeService sedeService;
 
     @Autowired
-    private JasperReportService jasperReportService;
+    private ExcelService excelService;
 
     @GetMapping({ "", "/" })
     public String obtenerVistaEvento(Model model) {
@@ -103,9 +102,9 @@ public class EventoController {
     @GetMapping("/reporteAsistencia/{id}")
     public ResponseEntity<String> exportarEvento(@PathVariable Long id) {
         try {
-            Map<String, Object> parametros = new HashMap<>();
-            parametros.put("evento_programacion_id", id);
-            String base64 = jasperReportService.generarReportePDF(parametros, "reporteAsistenciaSesion.jrxml");
+            byte[] excelBytes = excelService.generateAttendanceExcel(id);
+            // Convert base64
+            String base64 = Base64.getEncoder().encodeToString(excelBytes);
             return ResponseEntity.ok(base64);
         } catch (Exception e) {
             logger.error("Error al exportar evento", e);
