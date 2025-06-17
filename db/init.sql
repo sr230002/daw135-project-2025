@@ -110,6 +110,17 @@ create table ema.encuesta(
     constraint ema_encuesta_fk_evento_programacion foreign key (evento_programacion_id) references ema.evento_programacion(evento_programacion_id)
 );
 
+CREATE TABLE ema.adjunto(
+    adjunto_id BIGSERIAL PRIMARY KEY,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    url VARCHAR(250) NOT NULL,
+    public_id VARCHAR(100) NOT NULL,  
+    tipo_archivo VARCHAR(20) NOT NULL, 
+    formato VARCHAR(10) NOT NULL,      
+    tamano BIGINT NOT NULL,            
+    nombre_original VARCHAR(150)       
+);
+
 
 /******************************************************************************
 Cargando Datos Inciales
