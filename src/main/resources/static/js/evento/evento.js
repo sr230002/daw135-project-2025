@@ -26,12 +26,14 @@ function cargarEvento(eventoId) {
             document.getElementById("sedeId").value = evento.sedeId;
             document.getElementById("estadoId").value = evento.estadoId;
 
-            const imagenPreview = document.getElementById("imagenPreview");
-            if (evento.imagenUrl) {
+            const imagenPreview = document.getElementById("imagenPreview"), imagenPreviewContainer = document.getElementById("imagenPreviewContainer");
+            if (evento.urlImagen) {
+                imagenPreviewContainer.classList.remove('d-none');
                 imagenPreview.innerHTML = `
-                    <img src="${evento.imagenUrl}" alt="Imagen actual" class="img-thumbnail" style="max-height: 200px;">
+                    <img src="${evento.urlImagen}" alt="Imagen actual" class="img-thumbnail" style="max-height: 200px;">
                 `;
             } else {
+                imagenPreviewContainer.classList.add('d-none');
                 imagenPreview.innerHTML = '<p class="text-muted">No hay imagen cargada.</p>';
             }
             

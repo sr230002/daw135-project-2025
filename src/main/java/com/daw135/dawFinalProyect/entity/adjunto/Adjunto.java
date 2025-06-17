@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 
 import jakarta.persistence.Column;
@@ -26,6 +28,7 @@ public class Adjunto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "adjunto_id")
     private Long adjuntoId;
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
