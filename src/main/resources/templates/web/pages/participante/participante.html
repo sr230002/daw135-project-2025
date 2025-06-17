@@ -1,26 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/document}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/document}">
+
 <head>
     <title>Participantes</title>
+    <style>
+        .btn-action {
+            margin: 0 2px;
+        }
+    </style>
 </head>
+
 <body>
     <div layout:fragment="content">
         <div class="container mt-4">
+
+            <!-- Título y botón -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 text-gray-800">Listado de Participantes</h1>
-                <button class="btn btn-primary" onclick="mostrarFormulario()">Registrar participante</button>
+                <h1 class="h3 text-primary">
+                    <i class="bi bi-calendar-event-fill me-2"></i> Listado de Participantes
+                </h1>
+                <button class="btn btn-primary" onclick="mostrarFormulario()">
+                    <i class="bi bi-plus-circle me-1"></i> Registrar participante
+                </button>
             </div>
 
             <!-- Tabla de participantes -->
-            <div class="card shadow mt-4">
-                <div class="card-header bg-primary text-white text-center">
-                    <h5 class="mb-0">Participantes Registrados</h5>
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Inscripciones</h5>
+                    <small class="text-white" th:text="'Total: ' + ${listadoRegistros.size()}">Total: 0</small>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="padding: 0;">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-hover align-middle">
                             <thead class="table-dark">
                                 <tr>
                                     <th class="text-center">#</th>
@@ -29,34 +42,60 @@
                                     <th class="text-center">Hora Inicio</th>
                                     <th class="text-center">Hora Fin</th>
                                     <th class="text-center">Evento</th>
-                                    <th class="text-center">Estado de inscripción</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Asistencia</th>
+                                    <th class="text-center">Confirmada</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="registro, iterStat : ${listadoRegistros}">
-                                    <td th:text="${iterStat.index + 1}">1</td>
-                                    <td class="text-center" th:text="${registro.nombreParticipante}">0</td>
-                                    <td class="text-center" th:text="${registro.fechaProgramacion}">fecha</td>
-                                    <td class="text-center" th:text="${registro.horaInicio}">00:00</td>
-                                    <td class="text-center" th:text="${registro.horaFin}">00:00</td>
-                                    <td class="text-center" th:text="${registro.tituloEvento}">Titulo</td>
-                                    <td class="text-center" th:text="${registro.estado}">Estado</td>
+                                    <td th:text="${iterStat.index + 1}" class="text-center">1</td>
+                                    <td th:text="${registro.participanteNombre}" class="text-center">Nombre</td>
+                                    <td th:text="${registro.fechaProgramacion}" class="text-center">Fecha</td>
+                                    <td th:text="${registro.horaInicio}" class="text-center">00:00</td>
+                                    <td th:text="${registro.horaFin}" class="text-center">00:00</td>
+                                    <td th:text="${registro.tituloEvento}" class="text-center">Evento</td>
+                                    <td th:text="${registro.estadoDesc}" class="text-center">Estado</td>
                                     <td class="text-center">
-                                        <a href="#" class="btn btn-sm btn-info" th:attr="onclick=|cargarParticipante(${registro.eventoRegistroId})|">
-                                            Ver
-                                        </a>
-                                        <a 
-                                            th:href="|registros/eliminar/${registro.eventoRegistroId}|" 
-                                            class="btn btn-sm btn-danger"
-                                            onclick="showLoading();"
-                                        >
-                                            Eliminar
-                                        </a>
+                                        <span th:if="${registro.asistencia == 'PST'}" class="badge bg-success">
+                                            Presente
+                                        </span>
+                                        <span th:if="${registro.asistencia == 'INJ'}" class="badge bg-danger">
+                                            Falta Injustificada
+                                        </span>
+                                        <span th:if="${registro.asistencia == 'ISJ'}"
+                                            class="badge bg-warning text-dark">
+                                            Falta Justificada
+                                        </span>
+                                        <span th:if="${registro.asistencia == null}" class="badge bg-secondary">
+                                            Inscrito
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span th:if="${registro.asistenciaConfirmada}" class="badge bg-success">
+                                            Confirmada
+                                        </span>
+                                        <span th:if="${!registro.asistenciaConfirmada}" class="badge bg-secondary">
+                                            No confirmada
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                            <button class="btn btn-info btn-sm btn-action"
+                                                th:attr="onclick=|cargarParticipante(${registro.eventoRegistroId})|">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </button>
+                                            <a th:href="@{|/registros/eliminar/${registro.eventoRegistroId}|}"
+                                                class="btn btn-danger btn-sm btn-action" onclick="showLoading();">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(listadoRegistros)}">
-                                    <td colspan="6" class="text-center">No hay participantes registrados.</td>
+                                    <td colspan="10" class="text-center py-4">No hay participantes registrados.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -71,4 +110,5 @@
         </div>
     </div>
 </body>
+
 </html>

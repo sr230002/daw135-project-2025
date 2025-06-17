@@ -50,7 +50,9 @@ public class EventoRegistroServiceImpl implements EventoRegistroService {
         eventoRegistro.setSesion(sesion);
         eventoRegistro.setParticipanteId(usuario);
         eventoRegistro.setFechaCreacion(new Date());
-        eventoRegistro.setEstado(new Estado(EstadoEnum.Activo.getCodigo()));
+        eventoRegistro.setEstado(new Estado(EstadoEnum.Inscrito.getCodigo()));
+        eventoRegistro.setAsistencia(null);
+        eventoRegistro.setAsistenciaConfirmada(false);
         eventoRegistroRepository.save(eventoRegistro);
         return "Evento registrado con exito";
     }

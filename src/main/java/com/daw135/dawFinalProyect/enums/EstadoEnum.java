@@ -5,7 +5,9 @@ public enum EstadoEnum {
     Inactivo("INA"),
     Finalizado("FIN"),
     Suspendido("SUS"),
-    Cancelado("CNC");
+    Cancelado("CNC"),
+    Inscrito("INS"),
+    Confirmado("CFM");
 
     private final String codigo;
 
