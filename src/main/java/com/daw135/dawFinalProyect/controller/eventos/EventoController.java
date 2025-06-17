@@ -1,10 +1,13 @@
 package com.daw135.dawFinalProyect.controller.eventos;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import com.daw135.dawFinalProyect.dto.eventos.TipoEventoDTO;
 import com.daw135.dawFinalProyect.service.admin.SedeService;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 import com.daw135.dawFinalProyect.service.eventos.TipoEventoService;
+import com.daw135.dawFinalProyect.service.report.JasperReportService;
 
 @Controller
 @RequestMapping("/eventos")
@@ -40,6 +44,8 @@ public class EventoController {
     @Autowired
     private SedeService sedeService;
 
+    @Autowired
+    private JasperReportService jasperReportService;
 
     @GetMapping({ "", "/" })
     public String obtenerVistaEvento(Model model) {
@@ -94,4 +100,16 @@ public class EventoController {
         return "redirect:/eventos";
     }
 
+    @GetMapping("/reporteAsistencia/{id}")
+    public ResponseEntity<String> exportarEvento(@PathVariable Long id) {
+        try {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("evento_programacion_id", id);
+            String base64 = jasperReportService.generarReportePDF(parametros, "reporteAsistenciaSesion.jrxml");
+            return ResponseEntity.ok(base64);
+        } catch (Exception e) {
+            logger.error("Error al exportar evento", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

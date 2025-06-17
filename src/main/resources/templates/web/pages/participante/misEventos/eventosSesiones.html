@@ -75,8 +75,10 @@
                                     <span class="badge bg-primary ms-2"
                                         th:text="${sesion.inscripciones.size()}">0</span>
                                 </h5>
-                                <button th:href="@{'/sesiones/' + ${sesion.eventoProgramacionId} + '/asistencias'}"
-                                    class="btn btn-sm btn-outline-success">
+                                <button
+                                    class="btn btn-sm btn-outline-success"
+                                    th:onclick="|generarReporte(${sesion.eventoProgramacionId})|"
+                                >
                                     <i class="bi bi-file-earmark-arrow-down"></i> Reporte Asistencias
                                 </button>
                             </div>

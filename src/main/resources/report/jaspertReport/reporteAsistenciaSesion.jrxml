@@ -1,0 +1,149 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="reporteAsistenciaSesion" language="java" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2db00ba6-949e-455e-bad8-76974a93ff38">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DAW"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="evento_programacion_id" class="java.lang.Long"/>
+	<query language="sql"><![CDATA[SELECT
+    e.titulo AS evento_titulo,
+    e.descripcion AS evento_descripcion,
+    e.codigo AS evento_codigo,
+    e.fecha_inicio AS evento_fecha_inicio,
+    e.fecha_fin AS evento_fecha_fin,
+    et.descripcion AS tipo_evento_nombre,
+    adj.url AS adjunto_ruta,
+    ep.fecha_programacion AS programacion_fecha,
+    ep.hora_inicio AS programacion_hora_inicio,
+    ep.hora_fin AS programacion_hora_fin,
+    ep.virtual AS programacion_virtual,
+    ep.lugar AS programacion_lugar,
+    ep.enlace AS programacion_enlace,
+    ep.cupos AS programacion_cupos,
+    p.nombre AS ponente_nombre,
+    er.fecha_creacion AS registro_fecha_creacion,
+    u.nombre AS participante_nombre,
+    u.correo AS participante_correo,
+    er.asistencia_confirmada AS participante_asistencia_confirmada
+FROM
+    ema.evento_programacion ep
+JOIN
+    ema.evento e ON ep.evento_id = e.evento_id
+LEFT JOIN
+    ema.evento_tipo et ON e.evento_tipo_id = et.evento_tipo_id
+LEFT JOIN
+    ema.adjunto adj ON e.adjunto_id = adj.adjunto_id
+LEFT JOIN
+    sec.usuario p ON ep.ponente_id = p.usuario_id
+LEFT JOIN
+    ema.evento_registro er ON ep.evento_programacion_id = er.evento_programacion_id
+LEFT JOIN
+    sec.usuario u ON er.participante_id = u.usuario_id
+WHERE
+    ep.evento_programacion_id = $P{evento_programacion_id}
+ORDER BY
+    u.nombre]]></query>
+	<field name="evento_titulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="evento_titulo"/>
+		<property name="com.jaspersoft.studio.field.label" value="evento_titulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento"/>
+	</field>
+	<field name="evento_descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="evento_descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="evento_descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento"/>
+	</field>
+	<field name="evento_codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="evento_codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="evento_codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento"/>
+	</field>
+	<field name="evento_fecha_inicio" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="evento_fecha_inicio"/>
+		<property name="com.jaspersoft.studio.field.label" value="evento_fecha_inicio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento"/>
+	</field>
+	<field name="evento_fecha_fin" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="evento_fecha_fin"/>
+		<property name="com.jaspersoft.studio.field.label" value="evento_fecha_fin"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento"/>
+	</field>
+	<field name="tipo_evento_nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_evento_nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_evento_nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_tipo"/>
+	</field>
+	<field name="adjunto_ruta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="adjunto_ruta"/>
+		<property name="com.jaspersoft.studio.field.label" value="adjunto_ruta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="adjunto"/>
+	</field>
+	<field name="programacion_fecha" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="programacion_hora_inicio" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_hora_inicio"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_hora_inicio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="programacion_hora_fin" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_hora_fin"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_hora_fin"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="programacion_virtual" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_virtual"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_virtual"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="programacion_lugar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_lugar"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_lugar"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="programacion_enlace" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_enlace"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_enlace"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="programacion_cupos" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="programacion_cupos"/>
+		<property name="com.jaspersoft.studio.field.label" value="programacion_cupos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_programacion"/>
+	</field>
+	<field name="ponente_nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ponente_nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="ponente_nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="registro_fecha_creacion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="registro_fecha_creacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="registro_fecha_creacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_registro"/>
+	</field>
+	<field name="participante_nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="participante_nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="participante_nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="participante_correo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="participante_correo"/>
+		<property name="com.jaspersoft.studio.field.label" value="participante_correo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="participante_asistencia_confirmada" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="participante_asistencia_confirmada"/>
+		<property name="com.jaspersoft.studio.field.label" value="participante_asistencia_confirmada"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="evento_registro"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="79" splitType="Stretch"/>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="61" splitType="Stretch"/>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

@@ -27,7 +27,7 @@ public interface EventoService {
 
     public boolean marcarAsistencia(Long eventoRegistroId);
 
-    public boolean marcarAsistenciaAdm(Long eventoRegistroId, boolean asistencia)
+    public boolean marcarAsistenciaAdm(Long eventoRegistroId, boolean asistencia);
 
     public List<EventoDTO> findEventosDisponibles();
 

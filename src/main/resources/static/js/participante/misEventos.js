@@ -194,3 +194,22 @@ function abrirArchivo(element) {
             alert('No se pudo abrir el archivo');
         });
 }
+
+
+function generarReporte(eventoId) {
+    fetch(`/eventos/reporteAsistencia/${eventoId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al generar el reporte');
+            }
+            return response.text();
+        })
+        .then(base64 => {
+            const url = 'data:application/pdf;base64,' + base64;
+            window.open(url, '_blank');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('No se pudo generar el reporte');
+        });
+}
