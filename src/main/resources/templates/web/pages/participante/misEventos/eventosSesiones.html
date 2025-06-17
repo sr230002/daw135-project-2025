@@ -79,6 +79,7 @@
                                     class="btn btn-sm btn-outline-success"
                                     th:onclick="|generarReporte(${sesion.eventoProgramacionId})|"
                                     th:disabled="${sesion.inscripciones.isEmpty()}"
+                                    sec:authorize="hasRole('PONENTE') or hasRole('ADMIN')"
                                 >
                                     <i class="bi bi-file-earmark-arrow-down"></i> Reporte Asistencias
                                 </button>
