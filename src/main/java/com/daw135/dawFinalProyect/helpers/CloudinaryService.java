@@ -36,35 +36,58 @@ public class CloudinaryService {
     }
 
     public CloudinaryUploadResult uploadFile(MultipartFile file) throws IOException {
+
+        String resourceType = getResourceType(file.getContentType());
+
         Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-                "resource_type", "auto" 
-        ));
+                "resource_type", resourceType));
 
         CloudinaryUploadResult result = new CloudinaryUploadResult();
-        result.setSecureUrl(uploadResult.get("secure_url").toString());
-        result.setPublicId(uploadResult.get("public_id").toString());
-        result.setFormato(uploadResult.get("format").toString());
-        result.setTamaño(Long.parseLong(uploadResult.get("bytes").toString()));
+        result.setSecureUrl(DawUtil.aString(uploadResult.get("secure_url")));
+        result.setPublicId(DawUtil.aString(uploadResult.get("public_id")));
+        result.setFormato(DawUtil.aString(uploadResult.get("format"), file.getContentType()));
+        result.setTamano(DawUtil.aLong(uploadResult.get("bytes")));
         result.setNombreOriginal(file.getOriginalFilename());
 
-        // Determina el tipo de archivo
-        String resourceType = uploadResult.get("resource_type").toString();
-        result.setTipoArchivo(mapResourceTypeToFileType(resourceType, file.getContentType()));
+        result.setTipoArchivo(getTipoArchivo(file.getContentType()));
 
         return result;
     }
 
-    private String mapResourceTypeToFileType(String resourceType, String contentType) {
-        return switch (resourceType) {
-            case "image" -> "imagen";
-            case "pdf", "raw" -> "documento";
-            case "video" -> "video";
-            default -> {
-                if (contentType != null && contentType.contains("pdf"))
-                    yield "pdf";
-                yield "otro";
+    private String getResourceType(String contentType) {
+        if (contentType != null) {
+            if (contentType.startsWith("image/")) {
+                return "image";
+            } else if (contentType.startsWith("video/")) {
+                return "video";
+            } else if (contentType.startsWith("application/pdf") ||
+                    contentType.startsWith("application/msword") ||
+                    contentType.startsWith("application/vnd.openxmlformats-officedocument")) {
+                return "raw"; // documentos: pdf, word, excel
             }
-        };
+        }
+        return "raw"; // por defecto
+    }
+
+    private String getTipoArchivo(String contentType) {
+        if (contentType != null) {
+            if (contentType.startsWith("image/")) {
+                return "imagen";
+            } else if (contentType.startsWith("video/")) {
+                return "video";
+            } else if (contentType.startsWith("audio/")) {
+                return "audio";
+            } else if (contentType.equals("application/pdf")) {
+                return "pdf";
+            } else if (contentType.equals("application/msword") ||
+                    contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+                return "word";
+            } else if (contentType.equals("application/vnd.ms-excel") ||
+                    contentType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+                return "excel";
+            }
+        }
+        return "otro";
     }
 
     @SuppressWarnings("rawtypes")

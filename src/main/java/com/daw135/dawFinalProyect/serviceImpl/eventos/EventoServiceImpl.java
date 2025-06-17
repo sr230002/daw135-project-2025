@@ -16,6 +16,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
+import com.daw135.dawFinalProyect.dto.adjunto.EventoAdjuntoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
@@ -23,9 +24,11 @@ import com.daw135.dawFinalProyect.entity.adjunto.Adjunto;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
+import com.daw135.dawFinalProyect.entity.eventos.EventoAdjunto;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 import com.daw135.dawFinalProyect.enums.AsistenciaEnum;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
+import com.daw135.dawFinalProyect.mapper.adjunto.AdjuntoMapper;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoProgramacionMapper;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoRegistroMapper;
@@ -91,7 +94,7 @@ public class EventoServiceImpl implements EventoService {
         if (adjunto.isEmpty()) {
             throw new Exception("Error al subir adjunto");
         }
-        
+
         evento.setAdjunto(adjunto.get());
         evento.setEstado(estado);
         evento.setSedeId(sede);
@@ -118,14 +121,13 @@ public class EventoServiceImpl implements EventoService {
         Adjunto currentAdjunto = eventoRepository.findById(dto.getEventoId()).map(Evento::getAdjunto).orElse(null);
         if (newAdjunto != null && !newAdjunto.isEmpty()) {
 
-            //primero elimino el adjunto actual, si es que tiene
+            // primero elimino el adjunto actual, si es que tiene
             if (currentAdjunto != null) {
                 adjuntoService.deleteFile(currentAdjunto.getAdjuntoId());
             }
             // despues se sube el nuevo adjunto
             adjuntoService.uploadFile(newAdjunto).ifPresent(evento::setAdjunto);
         }
-
 
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);
@@ -175,6 +177,12 @@ public class EventoServiceImpl implements EventoService {
         return eventoRepository.findById(eventoId)
                 .map(evento -> {
                     EventoDTO eventoDTO = EventoMapper.INSTANCE.toEventoDTO(evento);
+
+                    List<EventoAdjunto> adjuntos = evento.getEventoAdjuntos();
+                    List<EventoAdjuntoDTO> adjuntosDTO = adjuntos.stream()
+                            .map(AdjuntoMapper.INSTANCE::toEventoAdjuntoDTO)
+                            .toList();
+                    eventoDTO.setAdjuntos(adjuntosDTO);
 
                     List<EventoProgramacionDTO> sesiones = eventoProgramacionRepository
                             .findByEventoIdAndParticipanteCorreo(evento.getEventoId(), email).stream()

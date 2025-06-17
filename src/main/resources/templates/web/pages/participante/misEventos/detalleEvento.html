@@ -175,17 +175,9 @@
 
                     <!-- Anexos Tab -->
                     <div class="tab-pane fade" id="anexos" role="tabpanel" aria-labelledby="anexos-tab">
-                        <h3 class="card-title mb-3">
-                            <i class="bi bi-paperclip text-secondary me-2"></i>Anexos
-                        </h3>
-                        <p class="card-text text-muted">
-                            Aquí puedes mostrar los anexos del evento (documentos, imágenes, enlaces, etc.).
-                        </p>
-                        <!-- Aquí podrías iterar anexos si los tienes, por ejemplo:
-                        <ul>
-                            <li th:each="anexo : ${evento.anexos}" th:text="${anexo.nombre}"></li>
-                        </ul>
-                        -->
+                        <div
+                            th:replace="~{pages/participante/misEventos/eventosAdjuntos :: eventosAdjuntos}">
+                        </div>
                     </div>
                 </div>
             </div>

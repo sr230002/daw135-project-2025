@@ -22,8 +22,22 @@ public class DawUtil {
                    .toLocalDate();
     }
 
-     public static LocalTime stringToLocalTime(String timeString) {
+    public static LocalTime stringToLocalTime(String timeString) {
         return LocalTime.parse(timeString); 
     }
 
+    
+    public static String aString(Object obj, String defaultValue) {
+        if (obj == null) { return defaultValue; }
+        return String.valueOf(obj);
+    }
+
+    public static String aString(Object obj) {
+        return String.valueOf(obj);
+    }
+
+    public static Long aLong(Object obj) {
+        if (obj == null) { return null; }
+        return Long.parseLong(aString(obj));
+    }
 }

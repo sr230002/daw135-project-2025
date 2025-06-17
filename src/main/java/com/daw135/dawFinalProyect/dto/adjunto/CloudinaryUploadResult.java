@@ -8,6 +8,6 @@ public class CloudinaryUploadResult {
     private String publicId;
     private String formato;
     private String tipoArchivo; 
-    private Long tamaño;
+    private Long tamano;
     private String nombreOriginal;
 }

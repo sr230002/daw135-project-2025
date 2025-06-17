@@ -38,7 +38,7 @@ public class Adjunto {
     private String publicId;
     @Column(name = "tipo_archivo", nullable = false, length = 20)
     private String tipoArchivo;
-    @Column(name = "formato", nullable = false, length = 10)
+    @Column(name = "formato", nullable = false, length = 50)
     private String formato;
     @Column(name = "tamano", nullable = false)
     private Long tamano;
