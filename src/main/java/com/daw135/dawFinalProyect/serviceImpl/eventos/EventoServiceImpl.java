@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,11 +13,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
+import com.daw135.dawFinalProyect.entity.adjunto.Adjunto;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
@@ -31,6 +34,7 @@ import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepositor
 import com.daw135.dawFinalProyect.repository.eventos.EventoRegistroRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRepository;
 import com.daw135.dawFinalProyect.repository.eventos.TipoEventoRepository;
+import com.daw135.dawFinalProyect.service.adjunto.AdjuntoService;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 
 @Service
@@ -52,6 +56,9 @@ public class EventoServiceImpl implements EventoService {
     @Autowired
     private EventoRegistroRepository eventoRegistroRepository;
 
+    @Autowired
+    private AdjuntoService adjuntoService;
+
     @Override
     public List<EventoDTO> findAll() {
         try {
@@ -63,7 +70,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public String guardarEvento(EventoDTO dto) throws Exception {
+    public String guardarEvento(EventoDTO dto, MultipartFile imagenFile) throws Exception {
         dto.setFechaCreacion(null);
         Evento evento = EventoMapper.INSTANCE.toEvento(dto);
         Estado estado = new Estado(EstadoEnum.Activo.getCodigo());
@@ -76,7 +83,16 @@ public class EventoServiceImpl implements EventoService {
         if (tipo == null) {
             throw new Exception("Tipo de evento no encontrado");
         }
+        if (imagenFile == null) {
+            throw new Exception("La imagen es obligatoria");
+        }
 
+        Optional<Adjunto> adjunto = adjuntoService.uploadFile(imagenFile);
+        if (adjunto.isEmpty()) {
+            throw new Exception("Error al subir adjunto");
+        }
+        
+        evento.setAdjunto(adjunto.get());
         evento.setEstado(estado);
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);
@@ -86,7 +102,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public String editarEvento(EventoDTO dto) throws Exception {
+    public String editarEvento(EventoDTO dto, MultipartFile newAdjunto) throws Exception {
         Evento evento = EventoMapper.INSTANCE.toEvento(dto);
         Sede sede = sedeRepository.findById(dto.getSedeId()).orElse(null);
         EventoTipo tipo = eventoTipoRepository.findById(dto.getTipoEventoId()).orElse(null);
@@ -98,6 +114,18 @@ public class EventoServiceImpl implements EventoService {
         if (tipo == null) {
             throw new Exception("Tipo de evento no encontrado");
         }
+
+        Adjunto currentAdjunto = eventoRepository.findById(dto.getEventoId()).map(Evento::getAdjunto).orElse(null);
+        if (newAdjunto != null && !newAdjunto.isEmpty()) {
+
+            //primero elimino el adjunto actual, si es que tiene
+            if (currentAdjunto != null) {
+                adjuntoService.deleteFile(currentAdjunto.getAdjuntoId());
+            }
+            // despues se sube el nuevo adjunto
+            adjuntoService.uploadFile(newAdjunto).ifPresent(evento::setAdjunto);
+        }
+
 
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);

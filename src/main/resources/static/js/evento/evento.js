@@ -25,6 +25,15 @@ function cargarEvento(eventoId) {
             document.getElementById("tipoEventoId").value = evento.tipoEventoId;
             document.getElementById("sedeId").value = evento.sedeId;
             document.getElementById("estadoId").value = evento.estadoId;
+
+            const imagenPreview = document.getElementById("imagenPreview");
+            if (evento.imagenUrl) {
+                imagenPreview.innerHTML = `
+                    <img src="${evento.imagenUrl}" alt="Imagen actual" class="img-thumbnail" style="max-height: 200px;">
+                `;
+            } else {
+                imagenPreview.innerHTML = '<p class="text-muted">No hay imagen cargada.</p>';
+            }
             
             let modal = new bootstrap.Modal(document.getElementById("eventoModal"));
             modal.show();

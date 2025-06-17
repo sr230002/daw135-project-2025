@@ -27,6 +27,8 @@ public class EventoDTO {
     private String estado;
     private Long sedeId;
     private String sedeNombre;
+
+    private Long adjuntoId;
     private String urlImagen;
 
     private List<EventoProgramacionDTO> sesiones;

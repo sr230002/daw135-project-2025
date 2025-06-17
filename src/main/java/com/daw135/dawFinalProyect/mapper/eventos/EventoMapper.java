@@ -28,9 +28,10 @@ public interface EventoMapper {
     @Mapping(target = "estado", source = "estado.descripcion")
     @Mapping(target = "sedeId", source = "sedeId.sedeId")
     @Mapping(target = "sedeNombre", source = "sedeId.nombre")
-    @Mapping(target = "urlImagen", source = "urlImagen")
     @Mapping(target = "sesiones", ignore = true)
-    EventoDTO toEventoDTO(Evento evento); 
+    @Mapping(target = "adjuntoId", source = "adjunto.adjuntoId")
+    @Mapping(target = "urlImagen", source = "adjunto.url")
+    EventoDTO toEventoDTO(Evento evento);
 
     @Mapping(target = "eventoId", source = "eventoId")
     @Mapping(target = "codigo", source = "codigo")
@@ -42,9 +43,9 @@ public interface EventoMapper {
     @Mapping(target = "descripcionCorta", source = "descripcionCorta")
     @Mapping(target = "eventoTipoId", ignore = true)
     @Mapping(target = "estado", ignore = true)
-    @Mapping(target = "sedeId", ignore = true)  
-    @Mapping(target = "urlImagen", source = "urlImagen")
+    @Mapping(target = "sedeId", ignore = true) 
     @Mapping(target = "programaciones", ignore = true)
+    @Mapping(target = "adjunto", ignore = true)
     Evento toEvento(EventoDTO eventoDto);
 
     @Mapping(target = "tipoEventoId", source = "eventoTipoId")

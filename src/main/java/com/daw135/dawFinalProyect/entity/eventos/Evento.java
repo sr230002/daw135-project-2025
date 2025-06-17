@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.daw135.dawFinalProyect.entity.adjunto.Adjunto;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.EventoProgramacion;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
@@ -67,8 +68,9 @@ public class Evento {
     @JoinColumn(name = "sede_id", referencedColumnName = "sede_id")
     private Sede sedeId;
 
-    @Column(name = "url_imagen", nullable = false, length = 250)
-    private String urlImagen;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adjunto_id", referencedColumnName = "adjunto_id", nullable = true)
+    private Adjunto adjunto;
 
     @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
     private List<EventoProgramacion> programaciones = new ArrayList<>();

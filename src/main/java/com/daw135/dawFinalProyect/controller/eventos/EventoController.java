@@ -21,12 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.daw135.dawFinalProyect.dto.admin.SedeDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.TipoEventoDTO;
-import com.daw135.dawFinalProyect.enums.EstadoEnum;
-import com.daw135.dawFinalProyect.helpers.CloudinaryService;
 import com.daw135.dawFinalProyect.service.admin.SedeService;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 import com.daw135.dawFinalProyect.service.eventos.TipoEventoService;
-
 
 @Controller
 @RequestMapping("/eventos")
@@ -43,8 +40,6 @@ public class EventoController {
     @Autowired
     private SedeService sedeService;
 
-    @Autowired
-    private CloudinaryService cloudinaryService;  
 
     @GetMapping({ "", "/" })
     public String obtenerVistaEvento(Model model) {
@@ -52,18 +47,7 @@ public class EventoController {
         List<TipoEventoDTO> listTiposEvento = tipoEventoService.findAll();
         List<SedeDTO> listSedes = sedeService.findAll();
 
-        long eventosActivos = eventos.stream()
-                .filter(e -> (e.getEstadoId().contentEquals(EstadoEnum.Activo.getCodigo()))).count();
-        Long eventosFinalizados = eventos.stream()
-                .filter(e -> (e.getEstadoId().contentEquals(EstadoEnum.Finalizado.getCodigo()))).count();
-        long eventosCancelados = eventos.stream()
-                .filter(e -> (e.getEstadoId().contentEquals(EstadoEnum.Cancelado.getCodigo()))).count();
-
         model.addAttribute("listadoEventos", eventos);
-        model.addAttribute("eventosTotales", eventos.size());
-        model.addAttribute("eventosActivos", eventosActivos);
-        model.addAttribute("eventosFinalizados", eventosFinalizados);
-        model.addAttribute("eventosCancelados", eventosCancelados);
         model.addAttribute("evento", new EventoDTO());
         model.addAttribute("listTiposEventos", listTiposEvento);
         model.addAttribute("listSedes", listSedes);
@@ -73,15 +57,11 @@ public class EventoController {
 
     @PostMapping("/guardar")
     public String guardarEvento(
-        @ModelAttribute("evento") EventoDTO eventoDto,
-        @RequestParam("imagen") MultipartFile imagenFile
-    ) {
+            @ModelAttribute("evento") EventoDTO eventoDto,
+            @RequestParam("imagen") MultipartFile imagenFile) {
         try {
-            if (!imagenFile.isEmpty()) {
-                String urlImagen = cloudinaryService.uploadImage(imagenFile);
-                eventoDto.setUrlImagen(urlImagen);
-            }
-            eventoService.guardarEvento(eventoDto);
+
+            eventoService.guardarEvento(eventoDto, imagenFile);
         } catch (Exception e) {
             logger.error("Error al guardar evento", e);
         }
@@ -89,9 +69,11 @@ public class EventoController {
     }
 
     @PostMapping("/editar")
-    public String editarEvento(@ModelAttribute("evento") EventoDTO eventoDto) {
+    public String editarEvento(
+            @ModelAttribute("evento") EventoDTO eventoDto,
+            @RequestParam("imagen") MultipartFile imagenFile) {
         try {
-            eventoService.editarEvento(eventoDto);
+            eventoService.editarEvento(eventoDto, imagenFile);
         } catch (Exception e) {
             logger.error("Error al editar evento", e);
         }
