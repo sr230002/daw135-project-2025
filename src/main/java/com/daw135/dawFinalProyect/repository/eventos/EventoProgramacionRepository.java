@@ -28,5 +28,13 @@ public interface EventoProgramacionRepository extends JpaRepository<EventoProgra
     public List<EventoProgramacion> findByEventoIdAndParticipanteCorreo(@Param("eventoId") Long eventoId,
             @Param("correo") String correo);
 
+    @Query("""
+                SELECT ep
+                FROM EventoProgramacion ep
+                JOIN ep.evento e
+                WHERE e.eventoId = :eventoId
+            """)
+    public List<EventoProgramacion> findByEventoId(@Param("eventoId") Long eventoId);
+
     public void deleteByEvento(Evento evento);
 }

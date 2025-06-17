@@ -13,17 +13,26 @@ import com.daw135.dawFinalProyect.entity.eventos.EventoRegistro;
 @Repository
 public interface EventoRegistroRepository extends JpaRepository<EventoRegistro, Long> {
 
-    public List<EventoRegistro> findBySesion(EventoProgramacion eventoProgramacion);
+        public List<EventoRegistro> findBySesion(EventoProgramacion eventoProgramacion);
 
-    @Query("""
+        @Query("""
                 SELECT r
                 FROM EventoRegistro r
                 JOIN r.sesion s
                 JOIN r.participanteId p
                 WHERE s.eventoProgramacionId = :sesionId
-                  AND LOWER(p.correo) = LOWER(:correo)
-            """)
-    public List<EventoRegistro> findBySesionIdAndParticipanteCorreo(@Param("sesionId") Long sesionId,
-            @Param("correo") String correo);
+                        AND LOWER(p.correo) = LOWER(:correo)
+                """)
+        public List<EventoRegistro> findBySesionIdAndParticipanteCorreo(@Param("sesionId") Long sesionId,
+                        @Param("correo") String correo);
+
+        @Query("""
+                SELECT r
+                FROM EventoRegistro r
+                JOIN r.sesion s
+                JOIN r.participanteId p
+                WHERE s.eventoProgramacionId = :sesionId
+                """)
+        public List<EventoRegistro> findBySesionId(@Param("sesionId") Long sesionId);
 
 }

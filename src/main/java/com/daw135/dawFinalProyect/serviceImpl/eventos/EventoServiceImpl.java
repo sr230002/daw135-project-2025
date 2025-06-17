@@ -208,6 +208,42 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
+    public EventoDTO obtenerEventoInformacionByEventoId(Long eventoId) {
+        
+        return eventoRepository.findById(eventoId)
+                .map(evento -> {
+                    EventoDTO eventoDTO = EventoMapper.INSTANCE.toEventoDTO(evento);
+
+                    List<EventoAdjunto> adjuntos = evento.getEventoAdjuntos();
+                    List<EventoAdjuntoDTO> adjuntosDTO = adjuntos.stream()
+                            .map(AdjuntoMapper.INSTANCE::toEventoAdjuntoDTO)
+                            .toList();
+                    eventoDTO.setAdjuntos(adjuntosDTO);
+
+                    List<EventoProgramacionDTO> sesiones = eventoProgramacionRepository
+                            .findByEventoId(evento.getEventoId()).stream()
+                            .map(sesion -> {
+                                EventoProgramacionDTO sesionDTO = EventoProgramacionMapper.INSTANCE
+                                        .toEventoProgramacionDTO(sesion);
+
+                                List<EventoRegistroDTO> inscripciones = eventoRegistroRepository
+                                        .findBySesionId(sesion.getEventoProgramacionId())
+                                        .stream()
+                                        .map(EventoRegistroMapper.INSTANCE::toEventoRegistroDTO)
+                                        .toList();
+
+                                sesionDTO.setInscripciones(inscripciones);
+                                return sesionDTO;
+                            })
+                            .toList();
+
+                    eventoDTO.setSesiones(sesiones);
+                    return eventoDTO;
+                })
+                .orElse(null);
+    }
+
+    @Override
     public boolean marcarAsistencia(Long eventoRegistroId) {
         return eventoRegistroRepository.findById(eventoRegistroId).map(eventoRegistro -> {
             eventoRegistro.setAsistencia(AsistenciaEnum.Presente.getCodigo());
@@ -215,6 +251,16 @@ public class EventoServiceImpl implements EventoService {
             return true;
         }).orElse(false);
     }
+
+    @Override
+    public boolean marcarAsistenciaAdm(Long eventoRegistroId, boolean asistencia) {
+        return eventoRegistroRepository.findById(eventoRegistroId).map(eventoRegistro -> {
+            eventoRegistro.setAsistenciaConfirmada(asistencia);
+            eventoRegistroRepository.save(eventoRegistro);
+            return true;
+        }).orElse(false);
+    }
+
 
     @Override
     public List<EventoDTO> findEventosDisponibles() {

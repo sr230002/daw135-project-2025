@@ -168,9 +168,9 @@
 
                         <!-- Sesiones -->
                         <div th:replace="~{pages/participante/misEventos/eventosSesiones :: allSesiones}"
-                            sec:authorize="!hasRole('PARTICIPANTE')"></div>
+                            sec:authorize="hasRole('PONENTE') or hasRole('ADMIN')"></div>
                         <div th:replace="~{pages/participante/misEventos/eventosSesiones :: misSesiones}"
-                            sec:authorize="hasRole('PARTICIPANTE')"></div>
+                            sec:authorize="hasRole('PARTICIPANTE') and !hasRole('PONENTE') and !hasRole('ADMIN')"></div>
                     </div>
 
                     <!-- Anexos Tab -->

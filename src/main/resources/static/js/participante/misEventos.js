@@ -12,6 +12,54 @@ function marcarAsistencia(eventoRegistroId, eventoId) {
         .catch(error => console.error('Error:', error));
 }
 
+function marcarAsistenciaAdm(eventoRegistroId, estado) {
+    fetch(`/participante/marcarAsistenciaAdm/${eventoRegistroId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ estado: estado })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Actualizar badge de asistencia
+                const row = document.querySelector(`#btn-group-${eventoRegistroId}`).closest('tr');
+                const badge = row.querySelector('td:nth-child(3) span');
+
+                if (data.asistenciaConfirmada) {
+                    badge.className = 'badge bg-success';
+                    badge.textContent = 'Si';
+                } else {
+                    badge.className = 'badge bg-secondary';
+                    badge.textContent = 'No';
+                }
+
+                // Actualizar botones
+                const btnGroup = document.querySelector(`#btn-group-${eventoRegistroId}`);
+                btnGroup.innerHTML = '';
+
+                if (data.asistenciaConfirmada) {
+                    // Mostrar botón para quitar asistencia
+                    btnGroup.innerHTML = `
+                    <a class="btn btn-outline-danger" onclick="marcarAsistenciaAdm(${eventoRegistroId}, false)">
+                        <i class="bi bi-x-circle"></i>
+                    </a>`;
+                } else {
+                    // Mostrar botón para marcar asistencia
+                    btnGroup.innerHTML = `
+                    <a class="btn btn-outline-success" onclick="marcarAsistenciaAdm(${eventoRegistroId}, true)">
+                        <i class="bi bi-check2"></i>
+                    </a>`;
+                }
+            } else {
+                console.error('Error al actualizar asistencia:', data.message);
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 async function subirAdjuntoEvento(eventoId, file, descripcion = '', visible = true) {
     const formData = new FormData();
     formData.append('file', file);

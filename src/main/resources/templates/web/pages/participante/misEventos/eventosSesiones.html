@@ -5,42 +5,8 @@
             <i class="bi bi-list-ul text-primary me-2"></i>Sesiones Programadas
             <span class="badge bg-primary ms-2" th:text="${evento.sesiones.size()}">0</span>
         </h2>
-        <div>
-            <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#exportModal">
-                <i class="bi bi-download me-1"></i> Exportar Todo
-            </button>
-        </div>
     </div>
 
-    <!-- Modal para exportar -->
-    <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Exportar Sesiones</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Formato</label>
-                        <select class="form-select">
-                            <option>PDF</option>
-                            <option>Excel</option>
-                            <option>CSV</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Rango de fechas</label>
-                        <input type="text" class="form-control daterange" placeholder="Seleccionar rango">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Generar Reporte</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Listado de sesiones -->
     <div class="accordion mb-5" id="sessionsAccordion">
@@ -55,7 +21,7 @@
                             <span class="text-muted small"
                                 th:text="${sesion.horaInicio} + ' - ' + ${sesion.horaFin}">Horario</span>
                         </div>
-                        <div class="d-flex gap-2 mt-2 mt-md-0">
+                        <div class="d-flex gap-2 mt-2 mt-md-0 me-1 d-flex align-items-center">
                             <span th:if="${sesion.virtual}" class="badge virtual-badge">
                                 <i class="bi bi-laptop"></i> Virtual
                             </span>
@@ -66,10 +32,7 @@
                                 <i class="bi bi-people"></i>
                                 <span th:text="${sesion.inscripciones.size()}">0</span>
                             </span>
-                            <a th:href="@{'/sesiones/' + ${sesion.eventoProgramacionId} + '/export'}"
-                                class="btn btn-sm btn-outline-success">
-                                <i class="bi bi-file-earmark-arrow-down"></i>
-                            </a>
+
                         </div>
                     </div>
                 </button>
@@ -113,8 +76,8 @@
                                         th:text="${sesion.inscripciones.size()}">0</span>
                                 </h5>
                                 <button th:href="@{'/sesiones/' + ${sesion.eventoProgramacionId} + '/asistencias'}"
-                                    class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-clipboard-check me-1"></i> Registrar Asistencias
+                                    class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-file-earmark-arrow-down"></i> Reporte Asistencias
                                 </button>
                             </div>
 
@@ -130,7 +93,7 @@
                                         <tr>
                                             <th>Participante</th>
                                             <th>Estado</th>
-                                            <th>Asistencia</th>
+                                            <th>Asistió</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -156,19 +119,27 @@
                                             </td>
                                             <td>
                                                 <span th:if="${inscripcion.asistenciaConfirmada}"
-                                                    class="badge bg-success">Asistió</span>
+                                                    class="badge bg-success">Si</span>
                                                 <span th:unless="${inscripcion.asistenciaConfirmada}"
-                                                    class="badge bg-secondary">Pendiente</span>
+                                                    class="badge bg-secondary">No</span>
                                             </td>
                                             <td>
-                                                <div class="btn-group btn-group-sm">
-                                                    <button class="btn btn-outline-primary"
-                                                        th:attr="data-bs-target='#editInscripcionModal'+${inscripcion.eventoRegistroId}"
-                                                        data-bs-toggle="modal">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </button>
-                                                    <a th:href="@{'/inscripciones/' + ${inscripcion.eventoRegistroId} + '/confirmar'}"
-                                                        class="btn btn-outline-success">
+                                                <div 
+                                                    class="btn-group btn-group-sm" 
+                                                    th:id="|btn-group-${inscripcion.eventoRegistroId}|"
+                                                >
+                                                    <a
+                                                        class="btn btn-outline-danger"
+                                                        th:onclick="|marcarAsistenciaAdm(${inscripcion.eventoRegistroId}, false)|"
+                                                        th:if="${inscripcion.asistenciaConfirmada == true}"
+                                                    >
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </a>
+                                                    <a
+                                                        class="btn btn-outline-success"
+                                                        th:onclick="|marcarAsistenciaAdm(${inscripcion.eventoRegistroId}, true)|"
+                                                        th:if="${inscripcion.asistenciaConfirmada == false}"
+                                                    >
                                                         <i class="bi bi-check2"></i>
                                                     </a>
                                                 </div>
@@ -322,7 +293,8 @@
                                                         class="btn btn-outline-primary btn-sm" disabled>
                                                         <i class="bi bi-shield-check me-1"></i> Asistencia Confirmada
                                                     </button>
-                                                    <button th:if="${inscripcion.asistencia == 'PST' && inscripcion.asistenciaConfirmada == false}"
+                                                    <button
+                                                        th:if="${inscripcion.asistencia == 'PST' && inscripcion.asistenciaConfirmada == false}"
                                                         class="btn btn-outline-warning btn-sm" disabled>
                                                         <i class="bi bi-hourglass-split me-1"></i> Asistencia Pendiente
                                                     </button>
