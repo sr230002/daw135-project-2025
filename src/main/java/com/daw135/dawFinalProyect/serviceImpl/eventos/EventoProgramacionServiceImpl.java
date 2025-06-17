@@ -2,6 +2,7 @@ package com.daw135.dawFinalProyect.serviceImpl.eventos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,11 @@ public class EventoProgramacionServiceImpl implements EventoProgramacionService 
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+
+    public Optional<EventoProgramacionDTO> findById(Long id) {
+        return eventoProgramacionRepository.findById(id).map(EventoProgramacionMapper.INSTANCE::toEventoProgramacionDTO);
     }
 
     @Override

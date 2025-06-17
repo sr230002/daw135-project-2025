@@ -6,25 +6,24 @@ function mostrarFormulario() {
     sesionModal.show();
 }
 
-function cargarEvento(eventoId) {
-    showLoading('Cargando Evento...');
-    fetch(`sesiones/ver/${eventoId}`)
+function cargarSesion (eventoProgrmacionId) {
+    showLoading('Cargando Sesion...');
+    fetch(`sesiones/ver/${eventoProgrmacionId}`)
         .then(response => response.json())
-        .then(evento => {
-            //hideLoading();
+        .then(sesion => {
             document.getElementById("sesionForm").action =  `${basePath}sesiones/editar`;
 
-            document.getElementById("eventoId").value = evento.eventoId;
-            document.getElementById("codigo").value = evento.codigo;
-            document.getElementById("fechaCreacion").value = evento.fechaCreacion;
-            document.getElementById("fechaInicio").value = evento.fechaInicio;
-            document.getElementById("fechaFin").value = evento.fechaFin;
-            document.getElementById("titulo").value = evento.titulo;
-            document.getElementById("descripcion").value = evento.descripcion;
-            document.getElementById("descripcionCorta").value = evento.descripcionCorta;
-            document.getElementById("tipoEventoId").value = evento.tipoEventoId;
-            document.getElementById("sedeId").value = evento.sedeId;
-            document.getElementById("estadoId").value = evento.estadoId;
+            document.getElementById("eventoProgramacionId").value = sesion.eventoProgramacionId;
+            document.getElementById("eventoId").value = sesion.eventoId;
+            document.getElementById("ponenteId").value = sesion.ponenteId;
+            document.getElementById("fechaProgramacion").value = sesion.fechaProgramacion;
+            document.getElementById("horaInicio").value = sesion.horaInicio;
+            document.getElementById("horaFin").value = sesion.horaFin;
+            document.getElementById("virtualSi").checked = sesion.virtual;
+            document.getElementById("virtualNo").checked = !sesion.virtual;
+            document.getElementById("cupos").value = sesion.cupos;
+            document.getElementById("lugar").value = sesion.lugar ?? '';
+            document.getElementById("enlace").value = sesion.enlace ?? '';
             
             let modal = new bootstrap.Modal(document.getElementById("sesionModal"));
             modal.show();

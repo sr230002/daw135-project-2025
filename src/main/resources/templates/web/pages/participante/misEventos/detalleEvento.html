@@ -147,8 +147,8 @@
                 </div>
             </div>
 
-            <div th:replace="~{pages/participante/misEventos/sesiones :: allSesiones}" sec:authorize="!hasRole('PARTICIPANTE')"></div>
-            <div th:replace="~{pages/participante/misEventos/sesiones :: misSesiones}" sec:authorize="hasRole('PARTICIPANTE')"></div>
+            <div th:replace="~{pages/participante/misEventos/eventosSesiones :: allSesiones}" sec:authorize="!hasRole('PARTICIPANTE')"></div>
+            <div th:replace="~{pages/participante/misEventos/eventosSesiones :: misSesiones}" sec:authorize="hasRole('PARTICIPANTE')"></div>
 
             
         </div>

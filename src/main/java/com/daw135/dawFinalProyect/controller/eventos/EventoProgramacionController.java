@@ -8,13 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,7 +26,7 @@ import com.daw135.dawFinalProyect.service.eventos.EventoService;
 @Controller
 @RequestMapping("/sesiones")
 public class EventoProgramacionController {
-    
+
     private static final Logger logger = LogManager.getLogger(EventoProgramacionController.class);
     @Autowired
     private EventoProgramacionService eventoProgramacionService;
@@ -39,7 +36,6 @@ public class EventoProgramacionController {
 
     @Autowired
     private UsuarioService usuarioService;
-
 
     @GetMapping({ "", "/" })
     public String view(Model model) {
@@ -53,6 +49,14 @@ public class EventoProgramacionController {
         return "pages/sesion/sesion";
     }
 
+    @GetMapping("/ver/{id}")
+    @ResponseBody
+    public ResponseEntity<EventoProgramacionDTO> obtenerEventoProgramacion(@PathVariable Long id) {
+        EventoProgramacionDTO eventoProgramacion = eventoProgramacionService.findById(id)
+                .orElse(new EventoProgramacionDTO());
+        return ResponseEntity.ok(eventoProgramacion);
+    }
+
     @PostMapping("/guardar")
     public String guardarEventoProgramacion(@ModelAttribute("sesion") EventoProgramacionDTO dto) {
         try {
@@ -63,20 +67,21 @@ public class EventoProgramacionController {
         return "redirect:/sesiones";
     }
 
-    @PutMapping
-    public ResponseEntity<String> editarEventoProgramacion(@RequestBody EventoProgramacionDTO dto) {
+    @PostMapping("/editar")
+    public String editarEventoProgramacion(
+            @ModelAttribute("sesion") EventoProgramacionDTO dto) {
         try {
-            String mensaje = eventoProgramacionService.editarEventoProgramacion(dto);
-            return ResponseEntity.ok(mensaje);
+            eventoProgramacionService.editarEventoProgramacion(dto);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al editar el evento programado: " + e.getMessage());
+            logger.error("Error al editar evento programado", e);
         }
+        return "redirect:/sesiones";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarEventoProgramacion(@PathVariable Long id) {
-        String mensaje = eventoProgramacionService.eliminarEventoProgramacion(id);
-        return ResponseEntity.ok(mensaje);
+    @GetMapping("/eliminar/{id}")
+    public String eliminarEventoProgramacion(@PathVariable Long id) {
+        eventoProgramacionService.eliminarEventoProgramacion(id);
+        return "redirect:/sesiones";
     }
 
     @GetMapping("/sesionesPorEventoCmb/{id}")
