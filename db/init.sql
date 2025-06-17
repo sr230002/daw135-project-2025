@@ -121,6 +121,17 @@ CREATE TABLE ema.adjunto(
     nombre_original VARCHAR(150)       
 );
 
+create table ema.evento_adjunto(
+	evento_adjunto_id bigserial primary key,
+    evento_id bigint not null,
+    adjunto_id bigint not null,
+    descripcion varchar(500) not null,
+    visible boolean default true,
+    constraint ema_evento_adjunto_fk_evento foreign key (evento_id) references ema.evento(evento_id),
+    constraint ema_evento_adjunto_fk_adjunto foreign key (adjunto_id) references ema.adjunto(adjunto_id)
+);
+
+
 
 /******************************************************************************
 Cargando Datos Inciales
