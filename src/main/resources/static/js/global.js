@@ -17,6 +17,8 @@ function showLoading(message = 'Procesando...') {
 function hideLoading() {
     const loadingModal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
     if (loadingModal) {
-        loadingModal.hide();
+        setTimeout(() => {
+            loadingModal.hide();
+        }, 500);
     }
 }

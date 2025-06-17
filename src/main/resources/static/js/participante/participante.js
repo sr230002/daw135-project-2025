@@ -26,9 +26,7 @@ function cargarParticipante(registroId) {
             
             let modal = new bootstrap.Modal(document.getElementById('participanteModal'));
             modal.show();
-            setTimeout(() => {
-                hideLoading();
-            }, 500);
+            hideLoading();
         })
         .catch(error => {
             hideLoading();

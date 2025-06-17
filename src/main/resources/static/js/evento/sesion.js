@@ -28,9 +28,7 @@ function cargarEvento(eventoId) {
             
             let modal = new bootstrap.Modal(document.getElementById("sesionModal"));
             modal.show();
-            setTimeout(() => {
-                hideLoading();
-            }, 500);
+            hideLoading();
         })
         .catch(error =>{
             hideLoading();

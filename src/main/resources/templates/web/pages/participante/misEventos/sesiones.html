@@ -265,7 +265,7 @@
                                 <div th:each="inscripcion : ${sesion.inscripciones}"
                                     class="d-flex align-items-center mb-3">
 
-                                
+
 
                                     <div class="flex-grow-1">
                                         <p class="mb-1"><strong>Estado:</strong></p>
@@ -312,13 +312,19 @@
 
                                                 <!-- Botón de acción -->
                                                 <div th:if="${inscripcion.estadoId == 'INS'}">
-                                                    <button th:if="${inscripcion.asistenciaConfirmada == false}"
-                                                        class="btn btn-success btn-sm">
-                                                        <i class="bi bi-check2-circle me-1"></i> Marcar Asistencia
+                                                    <button
+                                                        th:if="${inscripcion.asistenciaConfirmada == false && (inscripcion.asistencia == null || inscripcion.asistencia == '')}"
+                                                        class="btn btn-success btn-sm"
+                                                        th:attr="onclick=|marcarAsistencia(${inscripcion.eventoRegistroId},${evento.eventoId})|">
+                                                        <i class="bi bi-person-check-fill me-1"></i> Marcar Asistencia
                                                     </button>
                                                     <button th:if="${inscripcion.asistenciaConfirmada == true}"
-                                                        class="btn btn-outline-success btn-sm" disabled>
-                                                        <i class="bi bi-check2-all me-1"></i> Asistencia Confirmada
+                                                        class="btn btn-outline-primary btn-sm" disabled>
+                                                        <i class="bi bi-shield-check me-1"></i> Asistencia Confirmada
+                                                    </button>
+                                                    <button th:if="${inscripcion.asistencia == 'PST' && inscripcion.asistenciaConfirmada == false}"
+                                                        class="btn btn-outline-warning btn-sm" disabled>
+                                                        <i class="bi bi-hourglass-split me-1"></i> Asistencia Pendiente
                                                     </button>
                                                 </div>
                                             </div>

@@ -14,6 +14,7 @@ public interface EventoService {
 
     /* MIS EVENTOS */
     public List<EventoDTO> findAllMisEventos();
-    public EventoDTO obtenerEventoInformacionByEventoIdAndCorreo(Long eventoId); 
+    public EventoDTO obtenerEventoInformacionByEventoIdAndCorreo(Long eventoId);
+    public boolean marcarAsistencia(Long eventoRegistroId); 
 
 }

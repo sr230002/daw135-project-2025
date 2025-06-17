@@ -21,6 +21,7 @@ import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
+import com.daw135.dawFinalProyect.enums.AsistenciaEnum;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoProgramacionMapper;
@@ -168,6 +169,15 @@ public class EventoServiceImpl implements EventoService {
                     return eventoDTO;
                 })
                 .orElse(null);
+    }
+
+    @Override
+    public boolean marcarAsistencia(Long eventoRegistroId) {
+        return eventoRegistroRepository.findById(eventoRegistroId).map(eventoRegistro -> {
+            eventoRegistro.setAsistencia(AsistenciaEnum.Presente.getCodigo());
+            eventoRegistroRepository.save(eventoRegistro);
+            return true;
+        }).orElse(false);
     }
 
 }
