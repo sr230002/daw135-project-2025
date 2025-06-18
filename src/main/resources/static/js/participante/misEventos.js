@@ -141,6 +141,7 @@ async function subirAdjuntoModal(eventoId) {
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Subir';
+        recargarManteniendoTab();
     }
 }
 
@@ -154,6 +155,7 @@ async function eliminarAdjuntoModal(eventoAdjuntoId) {
 
         if (resultado.ok) {
             mostrarToast('Adjunto eliminado con éxito', 'success');
+            recargarManteniendoTab();
         } else {
             mostrarToast(resultado.error || 'Error al eliminar adjunto', 'danger');
         }
@@ -261,7 +263,7 @@ function guardarEvaluacionEvento(eventoId) {
             return response.json(); // suponiendo que tu backend devuelve JSON
         })
         .then(_result => {
-            location.reload();
+            recargarManteniendoTab();
         })
         .catch(error => {
             hideLoading();
@@ -269,3 +271,14 @@ function guardarEvaluacionEvento(eventoId) {
             mostrarToast('Error al guardar la evaluación', 'danger');
         });
 }
+function recargarManteniendoTab() {
+    let activeTabButton = document.querySelector('#eventTabs button.nav-link.active');
+    if (activeTabButton) {
+        let activeTabId = activeTabButton.getAttribute('data-bs-target'); // ej: "#evaluaciones"
+        let tabName = activeTabId.replace('#', '');
+        location.href = window.location.pathname + '?tab=' + tabName;
+    } else {
+        location.reload(); // fallback en caso de no encontrar
+    }
+}
+

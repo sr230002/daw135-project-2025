@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
@@ -38,7 +39,10 @@ public class ParticipanteController {
     }
 
     @GetMapping("/detalleEvento/{id}")
-    public String detalleEvento(@PathVariable Long id, Model model) {
+    public String detalleEvento(
+            @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "descripcion") String tab,
+            Model model) {
         EventoDTO evento = new EventoDTO();
         if (AuthUtils.hasRole(DawUtil.ROLE_ADMIN) || AuthUtils.hasRole(DawUtil.ROLE_PONENTE)) {
             evento = eventoService.obtenerEventoInformacionByEventoId(id);
@@ -47,6 +51,7 @@ public class ParticipanteController {
         }
 
         model.addAttribute("evento", evento);
+        model.addAttribute("activeTab", tab);
         return "pages/participante/misEventos/detalleEvento";
     }
 

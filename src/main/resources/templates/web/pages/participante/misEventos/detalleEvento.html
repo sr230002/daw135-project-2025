@@ -61,6 +61,20 @@
         }
     </style>
     <script th:src="@{/js/participante/misEventos.js}"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener("DOMContentLoaded", function () {
+            let activeTab = /*[[${activeTab}]]*/ 'descripcion';
+
+            // Forzar el tab activo
+            let tabTrigger = document.querySelector(`#${activeTab}-tab`);
+            if (tabTrigger) {
+                new bootstrap.Tab(tabTrigger).show();
+            }
+
+        });
+        /*]]>*/
+    </script>
 </head>
 
 <body>
