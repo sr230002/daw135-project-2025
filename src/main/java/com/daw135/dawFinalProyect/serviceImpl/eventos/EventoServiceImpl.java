@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -122,6 +123,7 @@ public class EventoServiceImpl implements EventoService {
         Sede sede = sedeRepository.findById(dto.getSedeId()).orElse(null);
         EventoTipo tipo = eventoTipoRepository.findById(dto.getTipoEventoId()).orElse(null);
         Estado estado = new Estado(dto.getEstadoId());
+        AtomicBoolean eliminarPrevAdjunto = new AtomicBoolean(false);
 
         if (sede == null) {
             throw new Exception("Sede no encontrada");
@@ -132,19 +134,22 @@ public class EventoServiceImpl implements EventoService {
 
         Adjunto currentAdjunto = eventoRepository.findById(dto.getEventoId()).map(Evento::getAdjunto).orElse(null);
         if (newAdjunto != null && !newAdjunto.isEmpty()) {
-
-            // primero elimino el adjunto actual, si es que tiene
-            if (currentAdjunto != null) {
-                adjuntoService.deleteFile(currentAdjunto.getAdjuntoId());
-            }
             // despues se sube el nuevo adjunto
-            adjuntoService.uploadFile(newAdjunto).ifPresent(evento::setAdjunto);
+            adjuntoService.uploadFile(newAdjunto).ifPresent(adj->{
+                evento.setAdjunto(adj);
+                eliminarPrevAdjunto.set(true);
+            });
         }
 
         evento.setSedeId(sede);
         evento.setEventoTipoId(tipo);
         evento.setEstado(estado);
         eventoRepository.save(evento);
+
+        //  Eliminar adjunto anterior
+        if (eliminarPrevAdjunto.get()) {
+            adjuntoService.deleteFile(currentAdjunto.getAdjuntoId());
+        }
         return "Evento editado con exito";
     }
 
