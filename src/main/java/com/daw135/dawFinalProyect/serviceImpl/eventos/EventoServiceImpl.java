@@ -1,5 +1,6 @@
 package com.daw135.dawFinalProyect.serviceImpl.eventos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,13 +19,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
 import com.daw135.dawFinalProyect.dto.adjunto.EventoAdjuntoDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoEvaluacionDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoProgramacionDTO;
 import com.daw135.dawFinalProyect.dto.eventos.EventoRegistroDTO;
 import com.daw135.dawFinalProyect.entity.adjunto.Adjunto;
 import com.daw135.dawFinalProyect.entity.admin.Estado;
 import com.daw135.dawFinalProyect.entity.admin.Sede;
+import com.daw135.dawFinalProyect.entity.admin.security.Usuario;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
 import com.daw135.dawFinalProyect.entity.eventos.EventoAdjunto;
+import com.daw135.dawFinalProyect.entity.eventos.EventoEvaluacion;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 import com.daw135.dawFinalProyect.enums.AsistenciaEnum;
 import com.daw135.dawFinalProyect.enums.EstadoEnum;
@@ -33,6 +37,8 @@ import com.daw135.dawFinalProyect.mapper.eventos.EventoMapper;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoProgramacionMapper;
 import com.daw135.dawFinalProyect.mapper.eventos.EventoRegistroMapper;
 import com.daw135.dawFinalProyect.repository.admin.SedeRepository;
+import com.daw135.dawFinalProyect.repository.admin.security.UsuarioRepository;
+import com.daw135.dawFinalProyect.repository.eventos.EventoEvaluacionRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoProgramacionRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRegistroRepository;
 import com.daw135.dawFinalProyect.repository.eventos.EventoRepository;
@@ -61,6 +67,12 @@ public class EventoServiceImpl implements EventoService {
 
     @Autowired
     private AdjuntoService adjuntoService;
+
+    @Autowired
+    private EventoEvaluacionRepository eventoEvaluacionRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public List<EventoDTO> findAll() {
@@ -184,6 +196,11 @@ public class EventoServiceImpl implements EventoService {
                             .toList();
                     eventoDTO.setAdjuntos(adjuntosDTO);
 
+                    List<EventoEvaluacionDTO> evaluaciones = evento.getEventoEvaluaciones().stream()
+                            .map(EventoMapper.INSTANCE::toEventoEvaluacionDTO)
+                            .toList();
+                    eventoDTO.setEvaluaciones(evaluaciones);
+
                     List<EventoProgramacionDTO> sesiones = eventoProgramacionRepository
                             .findByEventoIdAndParticipanteCorreo(evento.getEventoId(), email).stream()
                             .map(sesion -> {
@@ -209,7 +226,7 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public EventoDTO obtenerEventoInformacionByEventoId(Long eventoId) {
-        
+
         return eventoRepository.findById(eventoId)
                 .map(evento -> {
                     EventoDTO eventoDTO = EventoMapper.INSTANCE.toEventoDTO(evento);
@@ -219,6 +236,11 @@ public class EventoServiceImpl implements EventoService {
                             .map(AdjuntoMapper.INSTANCE::toEventoAdjuntoDTO)
                             .toList();
                     eventoDTO.setAdjuntos(adjuntosDTO);
+
+                    List<EventoEvaluacionDTO> evaluaciones = evento.getEventoEvaluaciones().stream()
+                            .map(EventoMapper.INSTANCE::toEventoEvaluacionDTO)
+                            .toList();
+                    eventoDTO.setEvaluaciones(evaluaciones);
 
                     List<EventoProgramacionDTO> sesiones = eventoProgramacionRepository
                             .findByEventoId(evento.getEventoId()).stream()
@@ -261,12 +283,52 @@ public class EventoServiceImpl implements EventoService {
         }).orElse(false);
     }
 
-
     @Override
     public List<EventoDTO> findEventosDisponibles() {
         return AuthUtils.getEmail().map(email -> eventoRepository.findEventosDisponibles(email).stream()
                 .map(EventoMapper.INSTANCE::toEventoDTO)
                 .toList()).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<EventoEvaluacionDTO> findEvaluacionesByEventoId(Long eventoId) {
+        return eventoEvaluacionRepository.findEvaluacionesByEventoId(eventoId).stream()
+                .map(EventoMapper.INSTANCE::toEventoEvaluacionDTO)
+                .toList();
+    }
+
+    @Override
+    public EventoEvaluacionDTO guardarEvaluacion(EventoEvaluacionDTO eventoEvaluacionDto) {
+        try {
+            EventoEvaluacion evaluacion = EventoMapper.INSTANCE.toEventoEvaluacion(eventoEvaluacionDto);
+            Evento evento = eventoRepository.findById(eventoEvaluacionDto.getEventoId()).orElse(null);
+            Usuario usuario = AuthUtils.getEmail().map(email -> usuarioRepository.findByCorreo(email).orElse(null))
+                    .orElse(null);
+
+            evaluacion.setFecha(LocalDateTime.now());
+            evaluacion.setEvento(evento);
+            evaluacion.setUsuario(usuario);
+            eventoEvaluacionRepository.save(evaluacion);
+            return EventoMapper.INSTANCE.toEventoEvaluacionDTO(evaluacion);
+        } catch (Exception e) {
+            logger.error("Error al guardar evaluacion", e);
+            return new EventoEvaluacionDTO();
+        }
+    }
+
+    @Override
+    public boolean eliminarEvaluacion(Long eventoEvaluacionId) {
+        try {
+            EventoEvaluacion eventoEvaluacion = eventoEvaluacionRepository.findById(eventoEvaluacionId).orElse(null);
+            if (eventoEvaluacion == null) {
+                return false;
+            }
+            eventoEvaluacionRepository.delete(eventoEvaluacion);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error al eliminar evaluacion", e);
+            return false;
+        }
     }
 
 }

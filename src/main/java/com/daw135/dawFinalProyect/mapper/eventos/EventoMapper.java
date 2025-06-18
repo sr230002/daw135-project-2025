@@ -5,8 +5,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoEvaluacionDTO;
 import com.daw135.dawFinalProyect.dto.eventos.TipoEventoDTO;
 import com.daw135.dawFinalProyect.entity.eventos.Evento;
+import com.daw135.dawFinalProyect.entity.eventos.EventoEvaluacion;
 import com.daw135.dawFinalProyect.entity.eventos.EventoTipo;
 
 @Mapper
@@ -53,5 +55,23 @@ public interface EventoMapper {
     @Mapping(target = "tipoEventoId", source = "eventoTipoId")
     @Mapping(target = "descripcion", source = "descripcion")
     TipoEventoDTO toTipoEventoDTO(EventoTipo eventoTipo);
+
+    @Mapping(target = "eventoEvaluacionId", source = "eventoEvaluacionId")
+    @Mapping(target = "eventoId", source = "evento.eventoId")
+    @Mapping(target = "usuarioId", source = "usuario.usuarioId")
+    @Mapping(target = "usuarioNombre", source = "usuario.nombre")
+    @Mapping(target = "usuarioCorreo", source = "usuario.correo")
+    @Mapping(target = "calificacion", source = "calificacion")
+    @Mapping(target = "comentario", source = "comentario")
+    @Mapping(target = "fecha", source = "fecha", dateFormat = "dd/MM/yyyy")
+    EventoEvaluacionDTO toEventoEvaluacionDTO(EventoEvaluacion eventoEvaluacion);
+
+    @Mapping(target = "eventoEvaluacionId", source = "eventoEvaluacionId")
+    @Mapping(target = "evento", ignore = true)
+    @Mapping(target = "usuario", ignore = true)
+    @Mapping(target = "calificacion", source = "calificacion")
+    @Mapping(target = "comentario", source = "comentario")
+    @Mapping(target = "fecha", source = "fecha", dateFormat = "dd/MM/yyyy")
+    EventoEvaluacion toEventoEvaluacion(EventoEvaluacionDTO eventoEvaluacionDto);
 
 }

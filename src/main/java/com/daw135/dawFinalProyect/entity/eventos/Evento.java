@@ -78,4 +78,7 @@ public class Evento {
     @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
     private List<EventoAdjunto> eventoAdjuntos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    private List<EventoEvaluacion> eventoEvaluaciones = new ArrayList<>();
+
 }

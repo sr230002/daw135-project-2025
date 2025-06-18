@@ -118,6 +118,13 @@
                             Anexos
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="evaluaciones-tab" data-bs-toggle="tab"
+                            data-bs-target="#evaluaciones" type="button" role="tab" aria-controls="evaluaciones"
+                            aria-selected="false">
+                            Evaluaciones
+                        </button>
+                    </li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -175,8 +182,12 @@
 
                     <!-- Anexos Tab -->
                     <div class="tab-pane fade" id="anexos" role="tabpanel" aria-labelledby="anexos-tab">
-                        <div
-                            th:replace="~{pages/participante/misEventos/eventosAdjuntos :: eventosAdjuntos}">
+                        <div th:replace="~{pages/participante/misEventos/eventosAdjuntos :: eventosAdjuntos}">
+                        </div>
+                    </div>
+                    <!-- Evaluaciones Tab -->
+                    <div class="tab-pane fade" id="evaluaciones" role="tabpanel" aria-labelledby="evaluaciones-tab">
+                        <div th:replace="~{pages/participante/misEventos/eventosEvaluaciones :: eventosEvaluaciones}">
                         </div>
                     </div>
                 </div>

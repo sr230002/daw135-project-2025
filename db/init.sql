@@ -132,7 +132,17 @@ create table ema.evento_adjunto(
 );
 
 
-
+create table ema.evento_evaluacion (
+    evento_evaluacion_id bigserial primary key,
+    evento_id bigint not null,
+    usuario_id bigint not null,
+    calificacion integer not null default 0,
+    comentario varchar(800) not null,
+    fecha timestamp default current_timestamp,
+    constraint ema_evento_evaluacion_uq_evento_participante unique (evento_id, usuario_id),
+    constraint ema_evento_evaluacion_fk_evento foreign key (evento_id) references ema.evento (evento_id),
+    constraint ema_evento_evaluacion_fk_participante foreign key (usuario_id) references sec.usuario (usuario_id)
+);
 /******************************************************************************
 Cargando Datos Inciales
 ******************************************************************************/

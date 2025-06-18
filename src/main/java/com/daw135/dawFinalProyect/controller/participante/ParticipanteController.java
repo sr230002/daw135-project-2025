@@ -1,5 +1,6 @@
 package com.daw135.dawFinalProyect.controller.participante;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.daw135.dawFinalProyect.config.auth.AuthUtils;
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoEvaluacionDTO;
 import com.daw135.dawFinalProyect.helpers.DawUtil;
 import com.daw135.dawFinalProyect.service.eventos.EventoService;
 
@@ -84,4 +86,23 @@ public class ParticipanteController {
                     .body(Map.of("success", false, "message", "Ocurrió un error al marcar asistencia"));
         }
     }
+
+    @GetMapping("/evaluaciones/{eventoId}")
+    public ResponseEntity<List<EventoEvaluacionDTO>> obtenerEvaluaciones(@PathVariable Long eventoId) {
+        List<EventoEvaluacionDTO> eventoEvaluacionDTOs = eventoService.findEvaluacionesByEventoId(eventoId);
+        return ResponseEntity.ok(eventoEvaluacionDTOs);
+    }
+
+    @PostMapping("/evaluacion/guardar")
+    public ResponseEntity<EventoEvaluacionDTO> guardarEvaluacion(@RequestBody EventoEvaluacionDTO eventoEvaluacionDto) {
+        try {
+            EventoEvaluacionDTO eventoEvaluacion = eventoService.guardarEvaluacion(eventoEvaluacionDto);
+            return ResponseEntity.ok(eventoEvaluacion);
+        } catch (Exception e) {
+            logger.error("Error al guardar evaluacion", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new EventoEvaluacionDTO());
+        }
+    }
+
 }

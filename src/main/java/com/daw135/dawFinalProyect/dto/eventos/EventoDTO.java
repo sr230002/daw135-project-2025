@@ -35,4 +35,5 @@ public class EventoDTO {
 
     private List<EventoProgramacionDTO> sesiones;
     private List<EventoAdjuntoDTO> adjuntos;
+    private List<EventoEvaluacionDTO> evaluaciones;
 }

@@ -1,0 +1,128 @@
+<!-- Fragmento para mostrar las evaluaciones del evento -->
+<div th:fragment="eventosEvaluaciones">
+    <style>
+        .evaluaciones-container {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .evaluaciones-list {
+            flex: 2;
+            border-right: 1px solid #e0e0e0;
+            padding-right: 1.5rem;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+
+        .evaluacion-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #ffffff;
+        }
+
+        .evaluacion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .evaluacion-usuario {
+            font-weight: 500;
+        }
+
+        .evaluacion-fecha {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .evaluacion-comentario {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .evaluacion-calificacion {
+            margin-top: 0.25rem;
+            color: #ffc107;
+        }
+
+        .evaluacion-form {
+            flex: 1;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            height: fit-content;
+        }
+
+        .evaluacion-form h5 {
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="card-title mb-0">
+            <i class="bi bi-chat-left-text text-secondary me-2"></i>Evaluaciones
+        </h3>
+    </div>
+
+    <div class="evaluaciones-container">
+
+        <!-- LISTADO DE EVALUACIONES -->
+        <div class="evaluaciones-list">
+
+            <div th:if="${evento.evaluaciones == null or evento.evaluaciones.empty}"
+                class="evaluacion-card text-center text-muted">
+                <p class="mb-2">Aún no hay comentarios.</p>
+                <p class="mb-0">¡Sé el primero en opinar!</p>
+            </div>
+
+            <div class="evaluacion-card" th:each="evaluacion : ${evento.evaluaciones}">
+                <div class="evaluacion-header">
+                    <span class="evaluacion-usuario" th:text="${evaluacion.usuarioNombre}">Nombre Usuario</span>
+                    <span class="evaluacion-fecha" th:text="${evaluacion.fecha}">Fecha</span>
+                </div>
+                <div class="evaluacion-comentario" th:text="${evaluacion.comentario}">
+                    Comentario de la evaluación
+                </div>
+                <div class="evaluacion-calificacion">
+                    <i class="bi bi-star-fill" th:each="star : ${#numbers.sequence(1, evaluacion.calificacion)}"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FORMULARIO PARA NUEVA EVALUACIÓN -->
+        <div class="evaluacion-form">
+            <h5>Mi Evaluación</h5>
+            <form id="formNuevaEvaluacion">
+                <input type="hidden" name="eventoId" th:value="${evento.eventoId}" />
+
+                <div class="mb-3">
+                    <label for="calificacion" class="form-label">Calificación (1 a 5)</label>
+                    <select class="form-select" id="calificacion" name="calificacion" required>
+                        <option value="" disabled selected>Seleccione</option>
+                        <option th:each="i : ${#numbers.sequence(1,5)}" th:value="${i}" th:text="${i}">1</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comentario" class="form-label">Comentario</label>
+                    <textarea class="form-control" id="comentario" name="comentario" rows="4" required></textarea>
+                </div>
+
+                <button 
+                    type="button" class="btn btn-primary" id="guardarEvaluacion"
+                    th:onclick="|guardarEvaluacionEvento(${evento.eventoId})|"
+                >
+                    Guardar
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>

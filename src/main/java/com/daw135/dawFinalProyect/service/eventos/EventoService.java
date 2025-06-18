@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.daw135.dawFinalProyect.dto.eventos.EventoDTO;
+import com.daw135.dawFinalProyect.dto.eventos.EventoEvaluacionDTO;
 
 public interface EventoService {
 
@@ -30,5 +31,11 @@ public interface EventoService {
     public boolean marcarAsistenciaAdm(Long eventoRegistroId, boolean asistencia);
 
     public List<EventoDTO> findEventosDisponibles();
+
+    public List<EventoEvaluacionDTO> findEvaluacionesByEventoId(Long eventoId);
+
+    public EventoEvaluacionDTO guardarEvaluacion(EventoEvaluacionDTO eventoEvaluacionDto);
+
+    public boolean eliminarEvaluacion(Long eventoEvaluacionId);
 
 }

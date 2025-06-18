@@ -207,21 +207,21 @@ function generarReporte(eventoId) {
         .then(base64 => {
             // const url = 'data:application/pdf;base64,' + base64;
             // window.open(url, '_blank');
-            
+
             const binaryString = atob(base64);
             const len = binaryString.length;
             const bytes = new Uint8Array(len);
             for (let i = 0; i < len; i++) {
                 bytes[i] = binaryString.charCodeAt(i);
             }
-            
+
             const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `reporte_asistencia_evento_${eventoId}.xlsx`; 
+            a.download = `reporte_asistencia_evento_${eventoId}.xlsx`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -230,5 +230,42 @@ function generarReporte(eventoId) {
         .catch(error => {
             console.error('Error:', error);
             alert('No se pudo generar el reporte');
+        });
+}
+
+function guardarEvaluacionEvento(eventoId) {
+    // Obtener los valores del form
+    const calificacion = document.getElementById('calificacion').value;
+    const comentario = document.getElementById('comentario').value;
+
+    // Crear el DTO (igual que tu EventoEvaluacionDTO en el backend)
+    const data = {
+        eventoId: eventoId,
+        calificacion: calificacion,
+        comentario: comentario
+    };
+
+    showLoading('Guardando evaluación...');
+    // Hacer el fetch POST
+    fetch('/participante/evaluacion/guardar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al guardar la evaluación');
+            }
+            return response.json(); // suponiendo que tu backend devuelve JSON
+        })
+        .then(_result => {
+            location.reload();
+        })
+        .catch(error => {
+            hideLoading();
+            console.error('Error:', error);
+            mostrarToast('Error al guardar la evaluación', 'danger');
         });
 }
