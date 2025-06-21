@@ -67,11 +67,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/admin/**", "/eventos/**").hasRole("ADMIN")
-                        .requestMatchers("/registros/**", "/sesiones/**", "/participante/detalleEvento/**").hasRole("PONENTE")
-                        .requestMatchers("/participante/**").hasRole("PARTICIPANTE")
+                        // Rutas para PONENTE o PARTICIPANTE
+                        .requestMatchers("/participante/**").hasAnyRole("PONENTE", "PARTICIPANTE")
+                        .requestMatchers( "/registros/**", "/sesiones/**").hasRole("PONENTE")
+                        .requestMatchers("/admin/**", "/eventos/**", "/registros/**", "/sesiones/**").hasRole("ADMIN")
                         .requestMatchers("/private-page").hasRole("OTRO")
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                        )
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(oidcUserService())))
@@ -93,19 +95,21 @@ public class SecurityConfig {
             public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
                 OidcUser oidcUser = super.loadUser(userRequest);
                 Map<String, Object> claims = oidcUser.getClaims();
-                
+
                 List<String> roles = (List<String>) claims.getOrDefault(rolesClaim, List.of("FA"));
                 logger.debug("Roles: {}", roles);
-                
+
                 OidcIdToken idToken = oidcUser.getIdToken();
                 String idTokenValue = idToken.getTokenValue();
                 logger.info("ID Token recibido: " + idTokenValue);
-                
-                Set<GrantedAuthority> authorities = roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
-                .collect(Collectors.toSet());
+                logger.info("Roles: {}", roles);
 
-                usuarioService.sincronizarUsuarioAuthZero(claims.get("name").toString(), claims.get("email").toString(), roles.stream().findFirst().orElse("PARTICIPANTE"));
+                Set<GrantedAuthority> authorities = roles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                        .collect(Collectors.toSet());
+
+                usuarioService.sincronizarUsuarioAuthZero(claims.get("name").toString(), claims.get("email").toString(),
+                        roles.stream().findFirst().orElse("PARTICIPANTE"));
 
                 return new DefaultOidcUser(authorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
             }
